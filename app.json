@@ -1,0 +1,23 @@
+{
+  "name": "airpick",
+  "description": "Convenient web app provides free service for airport pickup for UF students",
+  "repository": "TODO",
+  "logo": "TODO",
+  "keywords": [
+    "UF", "airport", "pickup", "CSA", "students"
+  ],
+  "addons": [
+    {
+      "plan": "mongolab:sandbox"
+    },
+    {
+      "plan": "papertrail:choklad"
+    }
+  ],
+  "env": {
+    "NPM_CONFIG_PRODUCTION": "false",
+    "NPM_CONFIG_LOGLEVEL": "error",
+    "NODE_ENV": "development",
+    "NODE_VERBOSE": "false"
+  }
+}

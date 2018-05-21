@@ -1,0 +1,14 @@
+{
+  "name": "airpick",
+  "short_name": "airpick",
+  "start_url": ".",
+  "display": "browser",
+  "background_color": "#fff",
+  "theme_color": "#000",
+  "description": "Convenient web app provides free service for airport pickup for UF students",
+  "icons": [{
+    "src": "/modules/core/client/img/brand/icon.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  }]
+}
