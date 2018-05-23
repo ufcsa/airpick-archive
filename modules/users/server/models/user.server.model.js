@@ -48,6 +48,19 @@ var validateUsername = function (username) {
   );
 };
 
+//gender choice validation
+//@author: Yinghan Ma
+var validateGender = function (gender) {
+  var butMale = document.getElementByID('male').checked;
+  var butFemale = document.getElementByID('female').checked;
+
+  if (butMale == false && butFemale == false) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
 /**
  * User Schema
  */
@@ -90,6 +103,11 @@ var UserSchema = new Schema({
   password: {
     type: String,
     default: ''
+  },
+  gender: {
+    type: String,
+    default: '',
+    required: 'Please choose your gender'
   },
   salt: {
     type: String
