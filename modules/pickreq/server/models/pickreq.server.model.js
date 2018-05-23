@@ -48,6 +48,10 @@ var RequestSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
+  userInfo:{
+    type: Object,
+    default: null
+  },
   accepted: {
     type: Boolean,
     default: false
