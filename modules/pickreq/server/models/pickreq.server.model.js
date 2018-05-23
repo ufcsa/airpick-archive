@@ -48,7 +48,7 @@ var RequestSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  userInfo:{
+  userInfo: {
     type: Object,
     default: null
   },
