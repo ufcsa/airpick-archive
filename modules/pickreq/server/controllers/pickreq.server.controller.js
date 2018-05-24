@@ -82,7 +82,7 @@ exports.requestUserId = function (req, res, next, id) {
     });
   }
 
-  Request.findById(id).exec(function (err, request) {
+  Request.find({user: id}).exec(function (err, request) {
     if (err) {
       return next(err);
     } else if (!request) {
@@ -96,7 +96,7 @@ exports.requestUserId = function (req, res, next, id) {
 
 exports.getUserInfo = function (req, res, next) {
   // Add a field for User's information
-  User.find({ user: req.body.user }).exec(function (err, user) {
+  User.findById(req.body.user).exec(function (err, user) {
     if (err) {
       return next(err);
     } else if (!user) {
