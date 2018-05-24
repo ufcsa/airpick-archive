@@ -44,39 +44,73 @@ a:hover .header-profile-image {
 }
 
 .collapsible {
-	background-color: #eee;
-	color: #444;
+	background: rgba(250,70,22,0.5);
 	cursor: pointer;
 	padding: 18px;
-	width:100%;
+	width: 100%;
 	border: none;
 	text-align: left;
 	outline: none;
-	font-size: 15px;
-	cursor:pointer;
+	font-size: 20px;
+	font-weight: bold;
+	font-family: 'Microsoft YaHei';
+	cursor: pointer;
 	transition: background-color 0.3s linear;
+	color: #0021A5;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
+
 .collapsible:hover, .small-collapsible:hover, .single-step:hover {
-	background-color: #ccc;
+	background: rgba(250,70,22,0.9);
+	opacity: 1;
 }
+
 .detail {
 	padding: 0 18px;
 	overflow: hidden;
-	background-color: #f1f1f1;
-	display:none;
+	background: rgba(250,70,22,0.5);
+	display: none;
 }
+
 .single-step {
-	background-color: #eee;
-	color: #444;
+	background: rgba(250,70,22,0.5);
 	padding: 20px;
 	width: 100%;
-	border:outset;
+	border: solid;
+	border-color: #0021A5;
+	border-width: 2px;
 	text-align: left;
 	outline: none;
-	font-size: 15px;
-	cursor:auto;
+	font-size: 18px;
+	font-weight: 800;
+	font-family: 'Microsoft YaHei';
+	cursor: auto;
 	transition: background-color 0.3s linear;
+	color: #0021A5;
+	text-shadow: -1px 0 rgba(255,255,255,0.5), 0 1px rgba(255,255,255,0.5), 1px 0 rgba(255,255,255,0.5), 0 -1px rgba(255,255,255,0.5);
 }
+
 .tutorial_pic {
 	width:100%;
+}
+
+.bottom {
+	text-align:center;
+	font-weight:900;
+	font-family:'Microsoft YaHei';
+}
+
+.background {
+	background-image: url("/modules/core/client/img/background/UF.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+	width:100%;
+
+}
+
+.intro {
+	color: #0021A5;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	margin-bottom:150px;
 }
