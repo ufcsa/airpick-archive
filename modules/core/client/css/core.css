@@ -47,7 +47,9 @@ a:hover .header-profile-image {
 	background: rgba(250,70,22,0.5);
 	cursor: pointer;
 	padding: 18px;
-	width: 100%;
+	width: 80%;
+	margin-left:10%;
+	margin-right:10%;
 	border: none;
 	text-align: left;
 	outline: none;
@@ -109,8 +111,11 @@ a:hover .header-profile-image {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-attachment: fixed;
-	width:100%;
-
+	background-size: 100% auto ;padding: 0;
+	display: block;
+	margin: 0 auto;
+	max-height: 100%;
+	max-width: 100%;
 }
 
 .intro {
