@@ -15,16 +15,18 @@
       $state.go('home');
     }
 
-    console.log(Authentication.user);
-
-    function addRequest(isValid){
+    function addRequest(isValid) {
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.requestForm');
 
         return false;
       }
+      var req = vm.request;
+      req.timeArrival = req.year + '-' + req.month + '-' + req.day +
+        'T' + req.hour + ':' + req.minute + ':00Z';
 
-      PickreqService.addOrUpdateRequest(vm.request)
+      req.username = Authentication.user.username;
+      PickreqService.addOrUpdateRequest(req)
         .then(onUpdateRequestSuccess)
         .catch(onUpdateRequestError);
     }

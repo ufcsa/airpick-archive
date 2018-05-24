@@ -4,7 +4,7 @@
   // Request service used for communicating with the request REST endpoint
   angular
     .module('pickreq.services')
-    .factory('PickreqService', PickreqService);
+    .service('PickreqService', PickreqService);
 
   PickreqService.$inject = ['$resource'];
 
@@ -13,10 +13,15 @@
       list: {
         method: 'GET'
       },
+      view: {
+        method: 'GET',
+        url: '/api/request'
+      },
       update: {
-        method: 'POST'
+        method: 'POST',
+        url: '/api/request'
       }
-    };
+    });
 
     angular.extend(Request, {
       addOrUpdateRequest: function (details) {

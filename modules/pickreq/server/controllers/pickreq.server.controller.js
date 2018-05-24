@@ -82,7 +82,7 @@ exports.requestUserId = function (req, res, next, id) {
     });
   }
 
-  Request.find({user: id}).exec(function (err, request) {
+  Request.find({ user: id }).exec(function (err, request) {
     if (err) {
       return next(err);
     } else if (!request) {
