@@ -5,10 +5,17 @@
     .module('pickreq')
     .controller('PickreqController', PickreqController);
 
-  PickreqController.$inject = ['$scope', '$state', 'PickreqService', 'Authentication', 'Notification'];
+  PickreqController.$inject = ['$scope', '$state', 'requestsResolve', 'PickreqService', 'Authentication', 'Notification'];
 
-  function PickreqController($scope, $state, PickreqService, Authentication, Notification) {
+  function PickreqController($scope, $state, requests, PickreqService, Authentication, Notification) {
     var vm = this;
+
+    if(requests){
+      vm.requests = requests.requests;
+      vm.requests.forEach(function (rqst) {
+        rqst.request.arrivalTime = moment(rqst.request.arrivalTime).tz('America/New_York').format();
+      });
+    }
     vm.userHasRequest = false;
     var username = Authentication.user.username;
 
@@ -16,10 +23,10 @@
     if (!Authentication.user) { $state.go('home'); }
 
     function findMyRequest() {
-
       PickreqService.viewMyRequest(username)
         .then(function (response) {
           vm.request = response;
+          vm.request.arrivalTime = moment(vm.request.arrivalTime).tz('America/New_York').format();
           // vm.request = response.data;
           if (vm.request.user != null && vm.request.user !== 'undefined') {
             vm.userHasRequest = true;
@@ -28,17 +35,13 @@
     }
 
     function addRequest(isValid) {
-      console.log('addRequest');
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.requestForm');
         return false;
       }
       var req = vm.request;
-      // req.timeArrival = req.year + '-' + req.month + '-' + req.day +
-      //   'T' + req.hour + ':' + req.minute + ':00Z';
 
       req.arrivalTimeStr = new Date(req.arrivalTime + '00-04:00');
-      console.log(req);
 
       if (vm.userHasRequest) {
         PickreqService.updateRequest(username, req)

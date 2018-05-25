@@ -7,7 +7,7 @@ var requests = require('../controllers/pickreq.server.controller');
 
 module.exports = function (app) {
   // Articles collection routes
-  app.route('/api/requests').all(requests.getUserInfo)
+  app.route('/api/requests')
     .get(requests.list);
 
   app.route('/api/requests/:username')
