@@ -10,7 +10,7 @@
   function PickreqController($scope, $state, requests, PickreqService, Authentication, Notification) {
     var vm = this;
 
-    if(requests){
+    if (requests) {
       vm.requests = requests.requests;
       vm.requests.forEach(function (rqst) {
         rqst.request.arrivalTime = moment(rqst.request.arrivalTime).tz('America/New_York').format();
