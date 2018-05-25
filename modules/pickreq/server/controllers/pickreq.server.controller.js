@@ -63,15 +63,42 @@ exports.read = function (req, res) {
  * List of pickup requests TODO: aggregation & get user info
  */
 exports.list = function (req, res) {
-  Request.findById().sort('-arrivalTime').exec(function (err, requests) {
+  Request.find({}).sort('arrivalTime').exec(function (err, requests) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(requests);
+      var counter = 0;
+      var result = {
+        requests: []
+      };
+      requests.forEach(function (rqst) {
+        getUserInfo(rqst.user).then(function (userInfo) {
+          var entry = {
+            request: rqst,
+            userInfo: {
+              displayName: userInfo.displayName,
+              gender: userInfo.gender,
+              email: userInfo.email,
+              username: userInfo.username
+            }
+          };
+          counter = counter + 1;
+          result.requests.push(entry);
+          if (counter === requests.length) {
+            console.log(result);
+            res.json(result);
+          }
+        });
+      });
     }
   });
+
+  function getUserInfo(un) {
+    // lookup User's information
+    return User.findOne({ username: un });
+  }
 };
 
 /**
@@ -87,22 +114,6 @@ exports.requestUserId = function (req, res, next, un) {
       req.request = null;
     } else {
       req.request = request;
-    }
-    next();
-  });
-};
-
-exports.getUserInfo = function (req, res, next, un) {
-  if (req.request === null) { next(); }
-
-  // Add a field for User's information
-  User.findOne({ username: req.username }).exec(function (err, user) {
-    if (err) {
-      return next(err);
-    } else if (!user) {
-      req.request.userInfo = null;
-    } else {
-      req.request.userInfo = user;
     }
     next();
   });

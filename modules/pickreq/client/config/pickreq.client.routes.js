@@ -14,6 +14,9 @@
         templateUrl: '/modules/pickreq/client/views/pickreqs.client.view.html',
         controller: 'PickreqController',
         controllerAs: 'vm',
+        resolve: {
+          requestsResolve: getRequests
+        },
         data: {
           roles: ['user', 'admin']
         }
@@ -28,4 +31,11 @@
         }
       });
   }
+
+  getRequests.$inject = ['PickreqService'];
+
+  function getRequests(PickreqService) {
+    return PickreqService.list({}).$promise;
+  }
+
 }());
