@@ -33,8 +33,11 @@ exports.create = function (req, res) {
 exports.update = function (req, res) {
   var request = req.request;
 
-  request.title = req.body.title;
-  request.content = req.body.content;
+  request.airport = req.body.airport;
+  request.arrivalTime = req.body.arrivalTime;
+  request.bag = req.body.bag;
+  request.carryon = req.body.carryon;
+  request.baggage = req.body.baggage;
 
   request.save(function (err) {
     if (err) {

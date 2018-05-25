@@ -50,4 +50,9 @@ var RequestSchema = new Schema({
   }
 });
 
+RequestSchema.pre('save', function (next) {
+  this.created = new Date;
+  next();
+});
+
 mongoose.model('Request', RequestSchema);

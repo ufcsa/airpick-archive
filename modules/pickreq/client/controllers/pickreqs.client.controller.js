@@ -21,7 +21,7 @@
         .then(function (response) {
           vm.request = response;
           // vm.request = response.data;
-          if (vm.request != null && vm.request !== 'undefined') {
+          if (vm.request.user != null && vm.request.user !== 'undefined') {
             vm.userHasRequest = true;
           }
         });
