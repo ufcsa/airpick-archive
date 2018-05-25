@@ -14,8 +14,7 @@
         method: 'GET'
       },
       view: {
-        method: 'GET',
-        url: '/api/request'
+        method: 'POST'
       },
       update: {
         method: 'POST',

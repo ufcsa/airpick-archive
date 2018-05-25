@@ -15,6 +15,10 @@
       $state.go('home');
     }
 
+    function listRequests() {
+      vm.requests = PickreqService.list();
+    }
+
     function addRequest(isValid) {
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.requestForm');
@@ -22,10 +26,11 @@
         return false;
       }
       var req = vm.request;
-      req.timeArrival = req.year + '-' + req.month + '-' + req.day +
-        'T' + req.hour + ':' + req.minute + ':00Z';
+      // req.timeArrival = req.year + '-' + req.month + '-' + req.day +
+      //   'T' + req.hour + ':' + req.minute + ':00Z';
 
-      req.username = Authentication.user.username;
+      req.user = Authentication.user.username;
+      req.timeArrival = new Date(req.timeArrival);
       PickreqService.addOrUpdateRequest(req)
         .then(onUpdateRequestSuccess)
         .catch(onUpdateRequestError);

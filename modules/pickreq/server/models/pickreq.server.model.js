@@ -45,17 +45,18 @@ var RequestSchema = new Schema({
     required: 'Number of baggages cannot be blank'
   },
   user: {
-    type: Schema.ObjectId,
-    ref: 'User'
-  },
-  userInfo: {
-    type: Object,
-    default: null
+    type: String,
+    required: 'username of requester cannot be blank'
   },
   accepted: {
     type: Boolean,
     default: false
   }
+});
+
+RequestSchema.pre('save', function (next) {
+
+  next();
 });
 
 mongoose.model('Request', RequestSchema);
