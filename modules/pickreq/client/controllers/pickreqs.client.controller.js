@@ -9,10 +9,13 @@
 
   function PickreqController($scope, $state, requests, PickreqService, Authentication, Notification) {
     var vm = this;
-    vm.requests = requests.requests;
-    vm.requests.forEach(function (rqst) {
-      rqst.request.arrivalTime = moment(rqst.request.arrivalTime).tz('America/New_York').format();
-    });
+
+    if(requests){
+      vm.requests = requests.requests;
+      vm.requests.forEach(function (rqst) {
+        rqst.request.arrivalTime = moment(rqst.request.arrivalTime).tz('America/New_York').format();
+      });
+    }
     vm.userHasRequest = false;
     var username = Authentication.user.username;
 
@@ -20,10 +23,10 @@
     if (!Authentication.user) { $state.go('home'); }
 
     function findMyRequest() {
-
       PickreqService.viewMyRequest(username)
         .then(function (response) {
           vm.request = response;
+          vm.request.arrivalTime = moment(vm.request.arrivalTime).tz('America/New_York').format();
           // vm.request = response.data;
           if (vm.request.user != null && vm.request.user !== 'undefined') {
             vm.userHasRequest = true;

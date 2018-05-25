@@ -26,6 +26,9 @@
         templateUrl: '/modules/pickreq/client/views/addreq.client.view.html',
         controller: 'PickreqController',
         controllerAs: 'vm',
+        resolve: {
+          requestsResolve: empty
+        },
         data: {
           roles: ['user', 'admin']
         }
@@ -36,6 +39,10 @@
 
   function getRequests(PickreqService) {
     return PickreqService.list({}).$promise;
+  }
+
+  function empty() {
+    return null;
   }
 
 }());
