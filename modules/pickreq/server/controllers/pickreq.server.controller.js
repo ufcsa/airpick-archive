@@ -14,7 +14,7 @@ var path = require('path'),
    */
 exports.create = function (req, res) {
   var request = new Request(req.body);
-  request.user = req.user;
+  request.user = req.username;
 
   request.save(function (err) {
     if (err) {
@@ -48,12 +48,11 @@ exports.update = function (req, res) {
 };
 
 /**
- * Show the current requests
+ * Show the current user's request
  */
 exports.read = function (req, res) {
   // convert mongoose document to JSON
-  var request = req.request ? req.request.toJSON() : {};
-
+  var request = req.request ? req.request : {};
   res.json(request);
 };
 
@@ -75,14 +74,10 @@ exports.list = function (req, res) {
 /**
  * Request middleware
  */
-exports.requestUserId = function (req, res, next, id) {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Pickup request is invalid'
-    });
-  }
+exports.requestUserId = function (req, res, next, un) {
+  req.username = un;
 
-  Request.find({ user: id }).exec(function (err, request) {
+  Request.findOne({ user: un }).exec(function (err, request) {
     if (err) {
       return next(err);
     } else if (!request) {
@@ -94,15 +89,17 @@ exports.requestUserId = function (req, res, next, id) {
   });
 };
 
-exports.getUserInfo = function (req, res, next) {
+exports.getUserInfo = function (req, res, next, un) {
+  if (req.request === null) { next(); }
+
   // Add a field for User's information
-  User.findById(req.body.user).exec(function (err, user) {
+  User.findOne({ username: req.username }).exec(function (err, user) {
     if (err) {
       return next(err);
     } else if (!user) {
-      req.userInfo = null;
+      req.request.userInfo = null;
     } else {
-      req.userInfo = user;
+      req.request.userInfo = user;
     }
     next();
   });

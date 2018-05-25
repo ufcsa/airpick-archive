@@ -15,18 +15,36 @@
       },
       view: {
         method: 'GET',
-        url: '/api/request'
+        url: '/api/requests/:user'
+      },
+      create: {
+        method: 'POST',
+        url: '/api/requests/:user'
       },
       update: {
-        method: 'POST',
-        url: '/api/request'
+        method: 'PUT',
+        url: '/api/requests/:user'
       }
     });
 
     angular.extend(Request, {
-      addOrUpdateRequest: function (details) {
-        return this.update(details).$promise;
+      createRequest: function (user, details) {
+        return this.create({
+          user: user
+        }, details).$promise;
+      },
+      updateRequest: function (user, details) {
+        return this.update({
+          user: user
+        }, details).$promise;
+      },
+      viewMyRequest: function (user) {
+        return this.view({
+          user: user
+        }).$promise;
       }
     });
+
+    return Request;
   }
 }());
