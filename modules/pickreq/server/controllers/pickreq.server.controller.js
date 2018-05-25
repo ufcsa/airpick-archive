@@ -14,7 +14,7 @@ var path = require('path'),
    */
 exports.create = function (req, res) {
   var request = new Request(req.body);
-  request.user = req.user;
+  request.user = req.username;
 
   request.save(function (err) {
     if (err) {
@@ -33,8 +33,11 @@ exports.create = function (req, res) {
 exports.update = function (req, res) {
   var request = req.request;
 
-  request.title = req.body.title;
-  request.content = req.body.content;
+  request.airport = req.body.airport;
+  request.arrivalTime = req.body.arrivalTime;
+  request.bag = req.body.bag;
+  request.carryon = req.body.carryon;
+  request.baggage = req.body.baggage;
 
   request.save(function (err) {
     if (err) {
@@ -48,12 +51,11 @@ exports.update = function (req, res) {
 };
 
 /**
- * Show the current requests
+ * Show the current user's request
  */
 exports.read = function (req, res) {
   // convert mongoose document to JSON
-  var request = req.request ? req.request.toJSON() : {};
-
+  var request = req.request ? req.request : {};
   res.json(request);
 };
 
@@ -61,48 +63,57 @@ exports.read = function (req, res) {
  * List of pickup requests TODO: aggregation & get user info
  */
 exports.list = function (req, res) {
-  Request.findById().sort('-arrivalTime').exec(function (err, requests) {
+  Request.find({}).sort('arrivalTime').exec(function (err, requests) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(requests);
+      var counter = 0;
+      var result = {
+        requests: []
+      };
+      requests.forEach(function (rqst) {
+        getUserInfo(rqst.user).then(function (userInfo) {
+          var entry = {
+            request: rqst,
+            userInfo: {
+              displayName: userInfo.displayName,
+              gender: userInfo.gender,
+              email: userInfo.email,
+              username: userInfo.username
+            }
+          };
+          counter = counter + 1;
+          result.requests.push(entry);
+          if (counter === requests.length) {
+            console.log(result);
+            res.json(result);
+          }
+        });
+      });
     }
   });
+
+  function getUserInfo(un) {
+    // lookup User's information
+    return User.findOne({ username: un });
+  }
 };
 
 /**
  * Request middleware
  */
-exports.requestUserId = function (req, res, next, id) {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Pickup request is invalid'
-    });
-  }
+exports.requestUserId = function (req, res, next, un) {
+  req.username = un;
 
-  Request.find({ user: id }).exec(function (err, request) {
+  Request.findOne({ user: un }).exec(function (err, request) {
     if (err) {
       return next(err);
     } else if (!request) {
       req.request = null;
     } else {
       req.request = request;
-    }
-    next();
-  });
-};
-
-exports.getUserInfo = function (req, res, next) {
-  // Add a field for User's information
-  User.findById(req.body.user).exec(function (err, user) {
-    if (err) {
-      return next(err);
-    } else if (!user) {
-      req.userInfo = null;
-    } else {
-      req.userInfo = user;
     }
     next();
   });

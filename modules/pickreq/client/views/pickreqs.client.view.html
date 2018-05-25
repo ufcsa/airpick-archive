@@ -3,5 +3,26 @@
   <div class="page-header">
     <h1>Airport Pickup Requests</h1>
   </div>
-
+  <div class="row">
+    <div class="tableWrapper">
+    <table class="table table-hover">
+      <tr>
+        <th>Name</th>
+        <th>Pick-up Date</th>
+        <th>Airport/Address</th>
+        <th>bag</th>
+        <th>carryon</th>
+        <th>baggage</th>
+      </tr>
+      <tr ng-repeat="rqst in vm.requests">
+        <td>{{rqst.userInfo.displayName}}</td>
+        <td>{{rqst.request.arrivalTime}}</td>
+        <td>{{rqst.request.airport}}</td>
+        <td>{{rqst.request.bag}}</td>
+        <td>{{rqst.request.carryon}}</td>
+        <td>{{rqst.request.baggage}}</td>
+      </tr>
+    </table>
+  </div>
+  </div>
 </section>

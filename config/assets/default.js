@@ -23,6 +23,8 @@ module.exports = {
         'public/lib/angular-resource/angular-resource.js',
         'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
         'public/lib/angular-ui-router/release/angular-ui-router.js',
+        'public/lib/moment/moment.js',
+        'public/moment-timezone-with-data.min.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
         // endbower
       ],

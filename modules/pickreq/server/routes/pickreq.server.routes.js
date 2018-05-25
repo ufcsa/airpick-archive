@@ -10,11 +10,11 @@ module.exports = function (app) {
   app.route('/api/requests')
     .get(requests.list);
 
-  // Single article routes
-  app.route('/api/request')
+  app.route('/api/requests/:username')
     .get(requests.read)
-    .post(requests.create);
+    .post(requests.create)
+    .put(requests.update);
 
   // Finish by binding the article middleware
-  app.param('userId', requests.requestUserId, requests.getUserInfo);
+  app.param('username', requests.requestUserId);
 };
