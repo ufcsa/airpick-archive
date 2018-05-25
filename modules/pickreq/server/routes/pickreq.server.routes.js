@@ -7,14 +7,14 @@ var requests = require('../controllers/pickreq.server.controller');
 
 module.exports = function (app) {
   // Articles collection routes
-  app.route('/api/requests')
+  app.route('/api/requests').all(requests.getUserInfo)
     .get(requests.list);
 
-  // Single article routes
-  app.route('/api/request')
+  app.route('/api/requests/:username')
     .get(requests.read)
-    .post(requests.create);
+    .post(requests.create)
+    .put(requests.update);
 
   // Finish by binding the article middleware
-  app.param('userId', requests.requestUserId, requests.getUserInfo);
+  app.param('username', requests.requestUserId);
 };

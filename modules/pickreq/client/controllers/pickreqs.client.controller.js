@@ -9,37 +9,61 @@
 
   function PickreqController($scope, $state, PickreqService, Authentication, Notification) {
     var vm = this;
+    vm.userHasRequest = false;
+    var username = Authentication.user.username;
 
     // If user is not signed in then redirect back home
-    if (!Authentication.user) {
-      $state.go('home');
+    if (!Authentication.user) { $state.go('home'); }
+
+    function findMyRequest() {
+
+      PickreqService.viewMyRequest(username)
+        .then(function (response) {
+          vm.request = response;
+          // vm.request = response.data;
+          if (vm.request.user != null && vm.request.user !== 'undefined') {
+            vm.userHasRequest = true;
+          }
+        });
     }
 
     function addRequest(isValid) {
+      console.log('addRequest');
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.requestForm');
-
         return false;
       }
       var req = vm.request;
-      req.timeArrival = req.year + '-' + req.month + '-' + req.day +
-        'T' + req.hour + ':' + req.minute + ':00Z';
+      // req.timeArrival = req.year + '-' + req.month + '-' + req.day +
+      //   'T' + req.hour + ':' + req.minute + ':00Z';
 
-      req.username = Authentication.user.username;
-      PickreqService.addOrUpdateRequest(req)
-        .then(onUpdateRequestSuccess)
-        .catch(onUpdateRequestError);
+      req.arrivalTimeStr = new Date(req.arrivalTime + '00-04:00');
+      console.log(req);
+
+      if (vm.userHasRequest) {
+        PickreqService.updateRequest(username, req)
+          .then(function (response) {
+            Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Request is successfully updated!' });
+            $state.go('pickreqs');
+          })
+          .catch(function (response) {
+            Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Request updating failed!', delay: 6000 });
+          });
+      } else {
+        PickreqService.createRequest(username, req)
+          .then(function (response) {
+            Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Request is successfully added!' });
+            $state.go('pickreqs');
+          })
+          .catch(function (response) {
+            Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Request adding failed!', delay: 6000 });
+          });
+      }
+
     }
 
-    // Request adding Callbacks
-    function onUpdateRequestSuccess(response) {
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Request is successfully added!' });
-      // And redirect to the list request page
-      $state.go('pickreqs');
-    }
-
-    function onUpdateRequestError(response) {
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Request adding failed!', delay: 6000 });
-    }
+    vm.init = findMyRequest;
+    vm.addRequest = addRequest;
+    vm.init();
   }
 }());

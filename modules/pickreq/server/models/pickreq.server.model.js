@@ -19,43 +19,40 @@ var RequestSchema = new Schema({
   },
   airport: {
     type: String,
-    default: 'Orlando International Airport',
     trim: true,
     required: 'Airport cannot be blank'
   },
   arrivalTime: {
     type: Date,
-    default: '',
-    trim: true,
     required: 'Arrival Time cannot be blank'
   },
-  numberBag: {
+  bag: {
     type: Number,
     default: 1,
     required: 'Number of bags cannot be blank'
   },
-  numberCarryon: {
+  carryon: {
     type: Number,
     default: 0,
     required: 'Number of carry-ons cannot be blank'
   },
-  numberBaggage: {
+  baggage: {
     type: Number,
     default: 2,
     required: 'Number of baggages cannot be blank'
   },
   user: {
-    type: Schema.ObjectId,
-    ref: 'User'
-  },
-  userInfo: {
-    type: Object,
-    default: null
+    type: String
   },
   accepted: {
     type: Boolean,
     default: false
   }
+});
+
+RequestSchema.pre('save', function (next) {
+  this.created = new Date;
+  next();
 });
 
 mongoose.model('Request', RequestSchema);
