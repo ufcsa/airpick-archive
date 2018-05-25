@@ -26,6 +26,7 @@ modules/users/client/img/profile/uploads
 config/env/local.js
 config/env/local-*.js
 *.pem
+Reference/
 
 # Compiled less and sass files
 # ============================
