@@ -74,7 +74,7 @@ exports.list = function (req, res) {
         requests: []
       };
       requests.forEach(function (rqst) {
-        getUserInfo(rqst.user).then(function (userInfo) {
+        User.findOne({ username: rqst.user }).then(function (userInfo) {
           var entry = {
             request: rqst,
             userInfo: {
@@ -93,11 +93,38 @@ exports.list = function (req, res) {
       });
     }
   });
+};
 
-  function getUserInfo(un) {
-    // lookup User's information
-    return User.findOne({ username: un });
+exports.listAccepted = function (req, res) {
+  var requests = req.requests;
+  if (!requests) {
+    return res.status(422).send({
+      message: 'query fails'
+    });
   }
+  var counter = 0;
+  var result = {
+    requests: []
+  };
+  requests.forEach(function (rqst) {
+    User.findOne({ username: rqst.user }).then(function (userInfo) {
+      var entry = {
+        request: rqst,
+        userInfo: {
+          firstName: userInfo.firstName,
+          displayName: userInfo.displayName,
+          gender: userInfo.gender,
+          email: userInfo.email,
+          username: userInfo.username
+        }
+      };
+      counter = counter + 1;
+      result.requests.push(entry);
+      if (counter === requests.length) {
+        res.json(result);
+      }
+    });
+  });
 };
 
 /**
@@ -129,6 +156,22 @@ exports.requestUserId = function (req, res, next, un) {
       req.request = null;
     } else {
       req.request = request;
+    }
+    next();
+  });
+};
+
+/**
+ * Find accepted requests middleware
+ */
+exports.getAccepted = function (req, res, next, volunteer) {
+  Request.find({ volunteer: volunteer }).exec(function (err, request) {
+    if (err) {
+      return next(err);
+    } else if (!request) {
+      req.requests = null;
+    } else {
+      req.requests = request;
     }
     next();
   });

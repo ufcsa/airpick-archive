@@ -13,13 +13,13 @@
       list: {
         method: 'GET'
       },
+      accepted: {
+        method: 'GET',
+        url: '/api/requests/:volunteer'
+      },
       accept: {
         method: 'POST',
         url: '/api/request/accept'
-      },
-      accepted: {
-        method: 'GET',
-        url: '/api/request/accept/:volunteer'
       },
       view: {
         method: 'GET',

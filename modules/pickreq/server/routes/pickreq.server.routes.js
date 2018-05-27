@@ -10,6 +10,9 @@ module.exports = function (app) {
   app.route('/api/requests')
     .get(requests.list);
 
+  app.route('/api/requests/:volunteer')
+    .get(requests.listAccepted);
+
   app.route('/api/request/accept')
     .post(requests.accept);
 
@@ -20,4 +23,5 @@ module.exports = function (app) {
 
   // Finish by binding the article middleware
   app.param('username', requests.requestUserId);
+  app.param('volunteer', requests.getAccepted);
 };
