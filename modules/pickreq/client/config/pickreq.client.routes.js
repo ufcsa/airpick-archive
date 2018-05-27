@@ -32,13 +32,30 @@
         data: {
           roles: ['user', 'admin']
         }
+      })
+      .state('acceptedreqs', {
+        url: '/accepted',
+        templateUrl: '/modules/pickreq/client/views/accepted.client.view.html',
+        controller: 'PickreqController',
+        controllerAs: 'vm',
+        resolve: {
+          requestsResolve: empty
+        },
+        data: {
+          roles: ['user', 'admin']
+        }
       });
   }
 
   getRequests.$inject = ['PickreqService'];
+  getAcceptedRequests.$inject = ['PickreqService'];
 
   function getRequests(PickreqService) {
     return PickreqService.list({}).$promise;
+  }
+
+  function getAcceptedRequests(PickreqService) {
+    return PickreqService.listAccepted({}).$promise;
   }
 
   function empty() {

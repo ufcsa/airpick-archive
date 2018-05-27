@@ -17,10 +17,11 @@
       });
     }
     vm.userHasRequest = false;
-    var username = Authentication.user.username;
 
     // If user is not signed in then redirect back home
     if (!Authentication.user) { $state.go('home'); }
+    var username = Authentication.user.username;
+    vm.user = Authentication.user;
 
     function findMyRequest() {
       PickreqService.viewMyRequest(username)
@@ -69,8 +70,20 @@
 
     }
 
+    function acceptRequest(r_id) {
+      var packet = {
+        request_id: r_id,
+        user: username
+      };
+      PickreqService.acceptRequest(packet)
+        .then(function (response) {
+          $state.go($state.current, {}, { reload: true });
+        });
+    }
+
     vm.init = findMyRequest;
     vm.addRequest = addRequest;
+    vm.acceptRequest = acceptRequest;
     vm.init();
   }
 }());

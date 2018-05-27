@@ -45,9 +45,9 @@ var RequestSchema = new Schema({
     type: String,
     required: 'username of requester cannot be blank'
   },
-  accepted: {
-    type: Boolean,
-    default: false
+  volunteer: {
+    type: String,
+    default: ''
   }
 });
 

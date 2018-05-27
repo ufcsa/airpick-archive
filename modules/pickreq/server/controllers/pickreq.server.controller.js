@@ -60,7 +60,7 @@ exports.read = function (req, res) {
 };
 
 /**
- * List of pickup requests TODO: aggregation & get user info
+ * List of pickup requests
  */
 exports.list = function (req, res) {
   Request.find({}).sort('arrivalTime').exec(function (err, requests) {
@@ -87,7 +87,6 @@ exports.list = function (req, res) {
           counter = counter + 1;
           result.requests.push(entry);
           if (counter === requests.length) {
-            console.log(result);
             res.json(result);
           }
         });
@@ -99,6 +98,22 @@ exports.list = function (req, res) {
     // lookup User's information
     return User.findOne({ username: un });
   }
+};
+
+/**
+ * Update the request with the volunteer's username
+ */
+exports.accept = function (req, res) {
+  console.log('got request accpt: ' + req.body.request_id);
+  console.log('got request accpt: ' + req.body.user);
+  Request.update({ _id: req.body.request_id },
+    { volunteer: req.body.user }, { multi: false }, function (err) {
+      if (err) {
+        console.log('Accept request fails!');
+      } else {
+        res.json('Success');
+      }
+    });
 };
 
 /**

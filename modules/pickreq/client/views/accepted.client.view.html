@@ -1,9 +1,10 @@
 <!-- The requests view -->
 <section class="container">
   <div class="page-header">
-    <h1>Airport Pickup Requests</h1>
-    <p>This page lists pick-up requests that need to be accepted by our volunteers.
-      To accept one, simply click on the 'Accept' button next to the request.</p>
+    <h1>Accepted Pickup Requests</h1>
+    <p>Thank you, {{vm.user.firstName}}! Here is the list of requests you accepted.
+      We strongly suggest adding the new student as a WeChat friend to keep updated
+      for any possible changes.</p>
   </div>
   <div class="row">
     <div class="tableWrapper">
@@ -20,7 +21,7 @@
       <tr ng-repeat="rqst in vm.requests" ng-if="!rqst.request.volunteer">
         <td><div style="float:left">
           <a class="btn btn-altered btn-space" ng-click="vm.acceptRequest(rqst.request._id)"
-            ng-disabled="vm.user.username === rqst.userInfo.username">Accept</a>
+            ng-disabled="vm.username === rqst.userInfo.username">Accept</a>
         </div></td>
         <td>{{rqst.userInfo.displayName}}</td>
         <td>{{rqst.request.arrivalTime}}</td>

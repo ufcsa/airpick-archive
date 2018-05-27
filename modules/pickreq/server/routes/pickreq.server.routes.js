@@ -10,7 +10,10 @@ module.exports = function (app) {
   app.route('/api/requests')
     .get(requests.list);
 
-  app.route('/api/requests/:username')
+  app.route('/api/request/accept')
+    .post(requests.accept);
+
+  app.route('/api/request/:username')
     .get(requests.read)
     .post(requests.create)
     .put(requests.update);

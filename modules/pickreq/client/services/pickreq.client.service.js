@@ -13,17 +13,25 @@
       list: {
         method: 'GET'
       },
+      accept: {
+        method: 'POST',
+        url: '/api/request/accept'
+      },
+      accepted: {
+        method: 'GET',
+        url: '/api/request/accept/:volunteer'
+      },
       view: {
         method: 'GET',
-        url: '/api/requests/:user'
+        url: '/api/request/:user'
       },
       create: {
         method: 'POST',
-        url: '/api/requests/:user'
+        url: '/api/request/:user'
       },
       update: {
         method: 'PUT',
-        url: '/api/requests/:user'
+        url: '/api/request/:user'
       }
     });
 
@@ -41,6 +49,16 @@
       viewMyRequest: function (user) {
         return this.view({
           user: user
+        }).$promise;
+      },
+      acceptRequest: function (details) {
+        return this.accept(
+          details
+        ).$promise;
+      },
+      listAccepted: function (volunteer) {
+        return this.accepted({
+          volunteer: volunteer
         }).$promise;
       }
     });
