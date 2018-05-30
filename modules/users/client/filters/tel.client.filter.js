@@ -3,7 +3,7 @@
 
   angular
     .module('users')
-    .filter('tel', tel);
+    .filter('tel', filter);
 
   filter.$inject = [/*Example: '$state', '$window' */];
 
