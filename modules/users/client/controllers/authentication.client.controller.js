@@ -3,11 +3,13 @@
 
   angular
     .module('users')
+    .filter()
     .controller('AuthenticationController', AuthenticationController);
 
-  AuthenticationController.$inject = ['$scope', '$state', 'UsersService', '$location', '$window', 'Authentication', 'PasswordValidator', 'Notification'];
+  AuthenticationController.$inject = ['$scope', '$filter','$state', 'UsersService', '$location', '$window', 'Authentication', 'PasswordValidator', 'Notification'];
 
-  function AuthenticationController($scope, $state, UsersService, $location, $window, Authentication, PasswordValidator, Notification) {
+
+  function AuthenticationController($scope, $filter, $state, UsersService, $location, $window, Authentication, PasswordValidator, Notification) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -16,6 +18,9 @@
     vm.signin = signin;
     vm.callOauthProvider = callOauthProvider;
     vm.usernameRegex = /^(?=[\w.-]+$)(?!.*[._-]{2})(?!\.)(?!.*\.$).{3,34}$/;
+    vm.phoneVal;
+
+
 
     // Get an eventual error defined in the URL query string:
     if ($location.search().err) {
@@ -89,4 +94,6 @@
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Signin Error!', delay: 6000 });
     }
   }
+
+
 }());

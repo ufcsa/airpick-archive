@@ -1,24 +1,25 @@
 <div>
+  <scipt src="controllers/signupphone.js"></script>
   <h3 class="col-xs-12 text-center">Sign up using your email</h3>
   <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
     <form name="vm.userForm" ng-submit="vm.signup(vm.userForm.$valid)" class="signin" novalidate autocomplete="off">
       <fieldset>
         <div class="form-group" show-errors>
-          <label for="firstName">Name</label>
-          <input type="text" id="firstName" name="firstName" class="form-control" ng-model="vm.credentials.firstName" placeholder="Name" required autofocus>
+          <label for="firstName">First Name <span style="color:red; margin: auto">*</span></label>
+          <input type="text" id="firstName" name="firstName" class="form-control" ng-model="vm.credentials.firstName" placeholder="First Name" required autofocus>
           <div ng-messages="vm.userForm.firstName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Name is required.</p>
+            <p class="help-block error-text" ng-message="required">First Name is required.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label for="lastName">Last Name</label>
+          <label for="lastName">Last Name <span style="color:red; margin: auto">*</span></label>
           <input type="text" id="lastName" name="lastName" class="form-control" ng-model="vm.credentials.lastName" placeholder="Last Name" required>
           <div ng-messages="vm.userForm.lastName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Last name is required.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label for="email">Email</label>
+          <label for="email">Email <span style="color:red; margin: auto">*</span></label>
           <input type="email" id="email" name="email" class="form-control" ng-model="vm.credentials.email" placeholder="Email" lowercase required>
           <div ng-messages="vm.userForm.email.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Email address is required.</p>
@@ -33,10 +34,17 @@
             <p class="help-block error-text" ng-message="pattern">Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.</p>
           </div>
         </div>
+<!-- 电话号码 -->
+        <div class="form-group" show-errors>
+          <label for="phone">US Phone number</label>
+          <input class="form-control" type='text' name="phone" id="phone" ng-model="vm.phoneVal" phone-input placeholder="US Phone"/>
+        </div>
+
+
 
         <div class="form-group" show-errors>
           <label for="password">Password</label>
-            <input type="password" id="password" name="password" class="form-control" ng-model="vm.credentials.password" placeholder="Password" uib-popover="{{vm.getPopoverMsg()}}" popover-trigger="outsideClick" password-validator required>
+          <input type="password" id="password" name="password" class="form-control" ng-model="vm.credentials.password" placeholder="Password" uib-popover="{{vm.getPopoverMsg()}}" popover-trigger="outsideClick" password-validator required>
           <div ng-messages="vm.userForm.password.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Password is required.</p>
             <div ng-repeat="passwordError in passwordErrors">
