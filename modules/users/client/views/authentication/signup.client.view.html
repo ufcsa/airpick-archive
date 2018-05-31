@@ -1,5 +1,4 @@
 <div>
-  <scipt src="controllers/signupphone.js"></script>
   <h3 class="col-xs-12 text-center">Sign up using your email</h3>
   <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
     <form name="vm.userForm" ng-submit="vm.signup(vm.userForm.$valid)" class="signin" novalidate autocomplete="off">
@@ -27,7 +26,7 @@
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label for="username">Username</label>
+          <label for="username">Username <span style="color:red; margin: auto">*</span></label>
           <input type="text" id="username" name="username" class="form-control" ng-model="vm.credentials.username" ng-pattern="vm.usernameRegex" placeholder="Username" lowercase required>
           <div ng-messages="vm.userForm.username.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Username is required.</p>
@@ -43,7 +42,7 @@
 
 
         <div class="form-group" show-errors>
-          <label for="password">Password</label>
+          <label for="password">Password <span style="color:red; margin: auto">*</span></label>
           <input type="password" id="password" name="password" class="form-control" ng-model="vm.credentials.password" placeholder="Password" uib-popover="{{vm.getPopoverMsg()}}" popover-trigger="outsideClick" password-validator required>
           <div ng-messages="vm.userForm.password.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Password is required.</p>
@@ -60,7 +59,7 @@
         </div>
 
         <div class="form-group" show-errors>
-          <label for="gender">Gender</label>
+          <label for="gender">Gender <span style="color:red; margin: auto">*</span></label>
           &nbsp; &nbsp;
           <div class='form-group'>
             <input type="radio" id="radioButton" name="gender" ng-model="vm.credentials.gender" Value="male"> &nbsp;Male</input>

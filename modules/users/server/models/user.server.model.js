@@ -101,7 +101,7 @@ var UserSchema = new Schema({
     trim: true
   },
   phone: {
-    type: Number
+    type: String
 
   },
   password: {

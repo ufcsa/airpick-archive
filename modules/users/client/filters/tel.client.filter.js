@@ -3,11 +3,11 @@
 
   angular
     .module('users')
-    .filter('tel', filter);
+    .filter('tel', tel);
 
-  filter.$inject = [/*Example: '$state', '$window' */];
+  tel.$inject = [/*Example: '$state', '$window' */];
 
-  function filter(/*Example: $state, $window */) {
+  function tel(/*Example: $state, $window */) {
     return function (tel) {
       // Phone input filter directive logic
       // ...
