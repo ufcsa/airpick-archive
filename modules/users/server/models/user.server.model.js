@@ -48,13 +48,13 @@ var validateUsername = function (username) {
   );
 };
 
-//gender choice validation
-//@author: Yinghan Ma
+// gender choice validation
+// @author: Yinghan Ma
 var validateGender = function (gender) {
   var butMale = document.getElementByID('male').checked;
   var butFemale = document.getElementByID('female').checked;
 
-  if (butMale == false && butFemale == false) {
+  if (butMale === false && butFemale === false) {
     return false;
   } else {
     return true;

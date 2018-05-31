@@ -1,4 +1,5 @@
 .content {
+  margin-bottom:50px;
   margin-top: 50px;
 }
 .undecorated-link:hover {
@@ -40,4 +41,79 @@ a:hover .header-profile-image {
 }
 .has-error .help-inline.error-text {
   display: inline;
+}
+
+.collapsible {
+	background: rgba(250,70,22,0.5);
+	border: none;
+	color: #0021A5;
+	cursor: pointer;
+	font-family: 'Microsoft YaHei';
+	font-size: 20px;
+	font-weight: bold;
+	outline: none;
+	padding: 18px;
+	text-align: left;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	transition: background-color 0.3s linear;
+	width: 100%;
+}
+
+.collapsible:hover, .small-collapsible:hover, .single-step:hover {
+	background: rgba(250,70,22,0.9);
+	opacity: 1;
+}
+
+.detail {
+	background: rgba(250,70,22,0.5);
+	display: none;
+	overflow: hidden;
+	padding: 0 18px;
+}
+
+.single-step {
+	background: rgba(250,70,22,0.5);
+	border: solid;
+	border-color: #0021A5;
+	border-width: 2px;
+	color: #0021A5;
+	cursor: auto;
+	font-family: 'Microsoft YaHei';
+	font-size: 18px;
+	font-weight: 800;
+	outline: none;
+	padding: 20px;
+	text-align: left;
+	text-shadow: -1px 0 rgba(255,255,255,0.5), 0 1px rgba(255,255,255,0.5), 1px 0 rgba(255,255,255,0.5), 0 -1px rgba(255,255,255,0.5);
+	transition: background-color 0.3s linear;
+	width: 100%;
+}
+
+.tutorial_pic {
+	display: block;
+	height: 70%;
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+	max-height:500px;
+	max-width:500px;
+}
+
+.bottom {
+	font-family:'Microsoft YaHei';
+	font-weight:900;
+	text-align:center;
+}
+
+.background {
+	background-image: url("/modules/core/client/img/background/UF.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.intro {
+	color: #0021A5;
+	margin-bottom:150px;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
