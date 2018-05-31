@@ -3,7 +3,6 @@
 
   angular
     .module('users')
-    .filter()
     .controller('AuthenticationController', AuthenticationController);
 
   AuthenticationController.$inject = ['$scope', '$filter','$state', 'UsersService', '$location', '$window', 'Authentication', 'PasswordValidator', 'Notification'];
