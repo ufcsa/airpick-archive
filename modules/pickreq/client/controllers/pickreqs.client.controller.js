@@ -13,7 +13,9 @@
     if (requests) {
       vm.requests = requests.requests;
       vm.requests.forEach(function (rqst) {
-        rqst.request.arrivalTime = moment(rqst.request.arrivalTime).tz('America/New_York').format();
+        let arrivalTime = rqst.request.arrivalTime;
+        arrivalTime = moment(arrivalTime).tz('America/New_York').format();
+        rqst.request.timeObj = new Date(arrivalTime);
       });
     }
     vm.userHasRequest = false;
@@ -27,16 +29,16 @@
       PickreqService.viewMyRequest(username)
         .then(function (response) {
           vm.request = response;
-          vm.request.arrivalTime = moment(vm.request.arrivalTime).tz('America/New_York').format();
-          // vm.request = response.data;
-          if (vm.request.user != null && vm.request.user !== 'undefined') {
-            vm.userHasRequest = true;
+          let arrivalTime = vm.request.arrivalTime;
+          if (arrivalTime) {
+            arrivalTime = moment(arrivalTime).tz('America/New_York').format();
+            vm.request.arrivalTime = new Date(arrivalTime).toString().substr(0, 24);
+            // vm.request = response.data;
+            if (vm.request.user != null && vm.request.user !== 'undefined') {
+              vm.userHasRequest = true;
+            }
           }
         });
-    }
-
-    function listRequests() {
-      vm.requests = PickreqService.list();
     }
 
     function addRequest(isValid) {
@@ -45,9 +47,7 @@
         return false;
       }
       var req = vm.request;
-
-      req.arrivalTimeStr = new Date(req.arrivalTime + '00-04:00');
-
+      req.arrivalTime = new Date(vm.datepicker + ':00-04:00');
       if (vm.userHasRequest) {
         PickreqService.updateRequest(username, req)
           .then(function (response) {
@@ -87,3 +87,12 @@
     vm.init();
   }
 }());
+
+/**
+ * Helper functions
+ */
+function convertStrToDate(dateStr) {
+  let date = new Date(dateStr);
+  console.log(date.getFullYear());
+  return date;
+}

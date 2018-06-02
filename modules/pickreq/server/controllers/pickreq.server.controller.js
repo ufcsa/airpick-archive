@@ -73,24 +73,28 @@ exports.list = function (req, res) {
       var result = {
         requests: []
       };
-      requests.forEach(function (rqst) {
-        User.findOne({ username: rqst.user }).then(function (userInfo) {
-          var entry = {
-            request: rqst,
-            userInfo: {
-              displayName: userInfo.displayName,
-              gender: userInfo.gender,
-              email: userInfo.email,
-              username: userInfo.username
+      if (requests == null || requests.length === 0) {
+        res.json(result);
+      } else {
+        requests.forEach(function (rqst) {
+          User.findOne({ username: rqst.user }).then(function (userInfo) {
+            var entry = {
+              request: rqst,
+              userInfo: {
+                displayName: userInfo.displayName,
+                gender: userInfo.gender,
+                email: userInfo.email,
+                username: userInfo.username
+              }
+            };
+            counter = counter + 1;
+            result.requests.push(entry);
+            if (counter === requests.length) {
+              res.json(result);
             }
-          };
-          counter = counter + 1;
-          result.requests.push(entry);
-          if (counter === requests.length) {
-            res.json(result);
-          }
+          });
         });
-      });
+      }
     }
   });
 };

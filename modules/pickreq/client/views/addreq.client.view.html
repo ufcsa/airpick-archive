@@ -15,17 +15,17 @@
         </div>
         <div class="form-group" show-errors>
           <label for="arrivalTime">Time of Arrival</label>
-          <input type="text" id="arrivalTime" name="arrivalTime" class="form-control" ng-model="vm.request.arrivalTime" placeholder="YYYY-MM-DDTHH:MM" required>
+          <input type="text" id="arrivalTime" name="arrivalTime" class="form-control" ng-model="vm.request.arrivalTime" disabled>
           <div ng-messages="vm.requestForm.arrivalTime.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Time of Arrival is required.</p>
           </div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="bag">Number of bags/backpacks</label>
-          <input type="text" id="bag" name="bag" class="form-control" ng-model="vm.request.bag" placeholder="1" required>
-          <div ng-messages="vm.requestForm.bag.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Number of bags/backpacks is required.</p>
-          </div>
+        <div class="input-group" moment-picker="vm.datepicker" format="YYYY-MM-DDTHH:mm">
+          <span class="input-group-addon">
+            <i class="glyphicon glyphicon-calendar"></i>
+          </span>
+          <input class="form-control" placeholder="Select a new date" ng-model="vm.datepicker"
+             ng-model-options="{ updateOn: 'blur' }">
         </div>
         <div class="form-group" show-errors>
           <label for="carryon">Number of carry-ons</label>

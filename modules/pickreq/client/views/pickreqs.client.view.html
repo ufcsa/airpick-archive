@@ -4,6 +4,8 @@
     <h1>Airport Pickup Requests</h1>
     <p>This page lists pick-up requests that need to be accepted by our volunteers.
       To accept one, simply click on the 'Accept' button next to the request.</p>
+    <p><span>Note:</span> once you clicked 'Accept', the student who sent the request
+      will receive an email notification with your contact information.</p>
   </div>
   <div class="row">
     <div class="tableWrapper">
@@ -13,19 +15,19 @@
         <th>Name</th>
         <th>Pick-up Date</th>
         <th>Airport/Address</th>
-        <th>bag</th>
         <th>carryon</th>
         <th>baggage</th>
       </tr>
       <tr ng-repeat="rqst in vm.requests" ng-if="!rqst.request.volunteer">
         <td><div style="float:left">
           <a class="btn btn-altered btn-space" ng-click="vm.acceptRequest(rqst.request._id)"
-            ng-disabled="vm.user.username === rqst.userInfo.username">Accept</a>
+            ng-hide="vm.user.username === rqst.userInfo.username">Accept</a>
+          <a class="btn btn-altered btn-space" ng-click="" ng-disabled="true"
+            ng-show="vm.user.username === rqst.userInfo.username">Accept</a>
         </div></td>
         <td>{{rqst.userInfo.displayName}}</td>
-        <td>{{rqst.request.arrivalTime}}</td>
+        <td>{{rqst.request.timeObj.toString().substr(0,24)}}</td>
         <td>{{rqst.request.airport}}</td>
-        <td>{{rqst.request.bag}}</td>
         <td>{{rqst.request.carryon}}</td>
         <td>{{rqst.request.baggage}}</td>
       </tr>
