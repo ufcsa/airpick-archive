@@ -70,10 +70,11 @@
 
     }
 
-    function acceptRequest(r_id) {
+    function acceptRequest(rqst) {
       var packet = {
-        request_id: r_id,
-        user: username
+        userEmail: rqst.userInfo.email,
+        userFirstName: rqst.userInfo.firstName,
+        volunteer: Authentication.user
       };
       PickreqService.acceptRequest(packet)
         .then(function (response) {

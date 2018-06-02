@@ -27,10 +27,12 @@
         });
     }
 
-    function cancelRequest(r_id) {
+    function cancelRequest(rqst) {
       var packet = {
-        request_id: r_id,
-        user: ''
+        request_id: rqst.request.r_id,
+        volunteer: {
+          username: ''
+        }
       };
       PickreqService.acceptRequest(packet) // reuse this method for canceling
         .then(function (response) {
