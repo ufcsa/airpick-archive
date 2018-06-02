@@ -44,7 +44,7 @@ a:hover .header-profile-image {
 }
 
 .collapsible {
-	background: rgba(250,70,22,0.5);
+	background: rgba(250,70,22,1);
 	cursor: pointer;
 	padding: 18px;
 	width: 80%;
@@ -63,12 +63,12 @@ a:hover .header-profile-image {
 }
 
 .collapsible:hover, .small-collapsible:hover, .single-step:hover {
-	background: rgba(250,70,22,0.9);
+	background: rgba(250,70,22,0.8);
 	opacity: 1;
 }
 
 .detail {
-	padding: 0 18px;
+	padding: 0 0px;
 	overflow: hidden;
 	background: rgba(250,70,22,0.5);
 	display: none;
@@ -108,6 +108,7 @@ a:hover .header-profile-image {
 
 .background {
 	background-image: url("/modules/core/client/img/background/UF.jpg");
+	background-image: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.4) 100%), url(/modules/core/client/img/background/UF.jpg);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-attachment: fixed;
@@ -121,5 +122,5 @@ a:hover .header-profile-image {
 .intro {
 	color: #0021A5;
 	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
-	margin-bottom:150px;
+	margin-bottom:50px;
 }
