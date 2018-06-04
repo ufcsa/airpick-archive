@@ -1,6 +1,6 @@
 <section class="row">
-  <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
-    <form name="vm.userForm" ng-submit="vm.updateUserProfile(vm.userForm.$valid)" class="signin" novalidate autocomplete="off">
+  <div class="col-xs-offset-1 col-xs-10 col-md-offset-3 col-md-4">
+    <form name="vm.userForm" ng-submit="vm.updateUserProfile(vm.userForm.$valid)" class="signin" novalidate autocomplete="on">
       <fieldset>
         <div class="form-group" show-errors>
           <label for="firstName">First Name</label>
@@ -32,6 +32,12 @@
             <p class="help-block error-text" ng-message="required">Username is required.</p>
           </div>
         </div> -->
+
+        <div class="form-group" show-errors>
+          <label for="phone">US Phone Number</label>
+          <input type="phone" id="phone" name="phone" class="form-control" ng-model="vm.user.phone" placeholder="US Phone Number" phone-input>
+        </div>
+        
         <div class="text-center form-group">
           <button type="submit" class="btn btn-primary">Save Profile</button>
         </div>
