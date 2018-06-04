@@ -18,7 +18,7 @@
     vm.callOauthProvider = callOauthProvider;
     vm.usernameRegex = /^(?=[\w.-]+$)(?!.*[._-]{2})(?!\.)(?!.*\.$).{3,34}$/;
     vm.phoneVal;
-
+    vm.wechatid;
 
 
     // Get an eventual error defined in the URL query string:
