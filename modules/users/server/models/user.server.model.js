@@ -117,13 +117,13 @@ var UserSchema = new Schema({
   gender: {
     type: String,
     default: '',
-    required: 'Please choose your gender',
-    validate: [validateGender, 'Please choose your gender!']
+    //required: 'Please choose your gender',
+    //validate: [validateGender, 'Please choose your gender!']
   },
-  identity: {
-    type: String,
-    required: 'Please choose your identity'
-  },
+  // identity: {
+  //   type: String,
+    
+  // },
   salt: {
     type: String
   },
