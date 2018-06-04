@@ -44,7 +44,7 @@ a:hover .header-profile-image {
 }
 
 .collapsible {
-	background: rgba(250,70,22,1);
+	background: rgba(250,70,22,0.9);
 	cursor: pointer;
 	padding: 18px;
 	width: 80%;
