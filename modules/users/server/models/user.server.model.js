@@ -40,19 +40,19 @@ var validateLocalStrategyEmail = function (email) {
  * - not begin or end with "."
  */
 
-// var validateUsername = function (username) {
-//   var usernameRegex = /^(?=[\w.-]+$)(?!.*[._-]{2})(?!\.)(?!.*\.$).{3,34}$/;
-//   return (
-//     this.provider !== 'local' ||
-//     (username && usernameRegex.test(username) && config.illegalUsernames.indexOf(username) < 0)
-//   );
-// };
+var validateUsername = function (username) {
+  var usernameRegex = /^(?=[\w.-]+$)(?!.*[._-]{2})(?!\.)(?!.*\.$).{3,34}$/;
+  return (
+    this.provider !== 'local' ||
+    (username && usernameRegex.test(username) && config.illegalUsernames.indexOf(username) < 0)
+  );
+};
 
 // gender choice validation
 // @author: Yinghan Ma
 var validateGender = function (gender) {
-  var butMale = document.getElementByID('male').checked;
-  var butFemale = document.getElementByID('female').checked;
+  var butMale = gender.document.getElementByID('male').checked;
+  var butFemale = gender.document.getElementByID('female').checked;
 
   if (butMale === false && butFemale === false) {
     return false;
@@ -92,14 +92,14 @@ var UserSchema = new Schema({
     default: '',
     validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
   },
-  // username: {
-  //   type: String,
-  //   unique: 'Username already exists',
-  //   required: 'Please fill in a username',
-  //   validate: [validateUsername, 'Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.'],
-  //   lowercase: true,
-  //   trim: true
-  // },
+  username: {
+    type: String,
+    unique: 'Username already exists',
+    required: 'Please fill in a username',
+    validate: [validateUsername, 'Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.'],
+    lowercase: true,
+    trim: true
+  },
   phone: {
     type: String,
     default: ''
@@ -117,8 +117,13 @@ var UserSchema = new Schema({
   gender: {
     type: String,
     default: '',
-    required: 'Please choose your gender'
+    //required: 'Please choose your gender',
+    //validate: [validateGender, 'Please choose your gender!']
   },
+  // identity: {
+  //   type: String,
+    
+  // },
   salt: {
     type: String
   },
