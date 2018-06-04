@@ -102,11 +102,11 @@ var UserSchema = new Schema({
   // },
   phone: {
     type: String,
-
+    default: ''
   },
   wechatid: {
     type: String,
-    //unique: 'This WeChat ID has already been linked to an account'
+    // unique: 'This WeChat ID has already been linked to an account'
     unique: 'This WeChat ID has already linked to an account',
     required: 'Please fill in your WeChat ID!'
   },
