@@ -17,5 +17,9 @@
       title: 'Add Your Request',
       state: 'addreq'
     });
+    menuService.addMenuItem('topbar', {
+      title: 'Requests Accepted',
+      state: 'acceptedreqs'
+    });
   }
 }());

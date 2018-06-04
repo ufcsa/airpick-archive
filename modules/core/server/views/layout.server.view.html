@@ -41,7 +41,7 @@
 <body class="ng-cloak">
   <header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
   <section class="content">
-    <section class="container">
+    <section class="container"  style="width: 100%; padding: 0px">
       {{{block "content"}}}
     </section>
   </section>
@@ -68,17 +68,17 @@
 
   <!--Application JavaScript Files-->
     {{#each jsFiles}}<script type="text/javascript" src="/{{this}}"></script>{{/each}}
-  
+
   <!--owasp config sync-->
   <script type="text/javascript">
     var sharedConfig = {{{ sharedConfig }}};
     owaspPasswordStrengthTest.config(sharedConfig.owasp);
   </script>
 
-  {{#if livereload}}
-  <!--Livereload script rendered -->
+  <!--{{#if livereload}}
+  Livereload script rendered
   <script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
-  {{/if}}
+  {{/if}}-->
 </body>
 
 </html>
