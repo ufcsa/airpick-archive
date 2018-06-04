@@ -25,14 +25,14 @@
             <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
           </div>
         </div>
-        <!-- <div class="form-group" show-errors>
+        <div class="form-group" show-errors>
           <label for="username">Username <span style="color:red; margin: auto">*</span></label>
           <input type="text" id="username" name="username" class="form-control" ng-model="vm.credentials.username" ng-pattern="vm.usernameRegex" placeholder="Username" lowercase required>
           <div ng-messages="vm.userForm.username.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Username is required.</p>
             <p class="help-block error-text" ng-message="pattern">Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.</p>
           </div>
-        </div> -->
+        </div>
 <!-- 电话号码 -->
         <div class="form-group" show-errors>
           <label for="phone">US Phone number</label>
@@ -42,7 +42,7 @@
 <!-- wechat id -->
         <div class="form-group" show-errors>
           <label for="wechatid">WeChat ID <span style="color:red; margin: auto">*</span></label>
-          <input type="text" id="wechatid" name="wechatid" class="form-control" ng-model="vm.credentials.wechatid" placeholder="WeChat ID">
+          <input type="text" id="wechatid" name="wechatid" class="form-control" ng-model="vm.credentials.wechatid" placeholder="WeChat ID" required>
           <div ng-messages="vm.userForm.wechatid.$error" role="alert">
             <p class="help-block error-text" ng-message="required">WeChat ID is required.</p>
           </div>
@@ -71,12 +71,25 @@
           <label for="gender">Gender <span style="color:red; margin: auto">*</span></label>
           &nbsp; &nbsp;
           <div class='form-group'>
-            <input type="radio" id="radioButton" name="gender" ng-model="vm.credentials.gender" Value="male"> &nbsp;Male</input>
+            <input type="radio" id="radioButton" name="gender" ng-model="vm.credentials.gender" Value="male" required> &nbsp;Male</input>
             &nbsp;
-            <input type="radio" id="radio" name="gender" ng-model="vm.credentials.gender" Value="female"> &nbsp;Female</input>
+            <input type="radio" id="radio" name="gender" ng-model="vm.credentials.gender" Value="female" required> &nbsp;Female</input>
           </div>
           <div ng-messages="vm.userForm.gender.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Gender is required.</p>
+          </div>
+        </div>
+
+        <div class="form-group" show-errors>
+          <label for="identity">Identity <span style="color:red; margin: auto">*</span></label>
+          &nbsp; &nbsp;
+          <div class='form-group'>
+            <input type="radio" id="radioButton" name="identity" ng-model="vm.credentials.identity" Value="Student" required> &nbsp;New Student</input>
+            &nbsp;
+            <input type="radio" id="radio" name="identity" ng-model="vm.credentials.identity" Value="Volunteer" required> &nbsp;Volunteer</input>
+          </div>
+          <div ng-messages="vm.userForm.identity.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Your identity is required.</p>
           </div>
         </div>
 
