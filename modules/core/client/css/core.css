@@ -1,6 +1,6 @@
 .content {
-  margin-bottom:50px;
   margin-top: 50px;
+  margin-bottom:50px;
 }
 .undecorated-link:hover {
   text-decoration: none;
@@ -45,76 +45,84 @@ a:hover .header-profile-image {
 
 .collapsible {
 	background: rgba(250,70,22,0.5);
-	border: none;
-	color: #0021A5;
 	cursor: pointer;
-	font-family: 'Microsoft YaHei';
+	padding: 18px;
+	width: 80%;
+	margin-left:10%;
+	margin-right:10%;
+	border: none;
+	text-align: left;
+	outline: none;
 	font-size: 20px;
 	font-weight: bold;
-	outline: none;
-	padding: 18px;
-	text-align: left;
-	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	font-family: 'Microsoft YaHei';
+	cursor: pointer;
 	transition: background-color 0.3s linear;
-	width: 100%;
+	color: #0021A5;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .collapsible:hover, .small-collapsible:hover, .single-step:hover {
-	background: rgba(250,70,22,0.9);
+	background: rgba(250,70,22,0.8);
 	opacity: 1;
 }
 
 .detail {
-	background: rgba(250,70,22,0.5);
-	display: none;
+	padding: 0 0px;
 	overflow: hidden;
-	padding: 0 18px;
+	background: rgba(250,70,22,0);
+	display: none;
 }
 
 .single-step {
 	background: rgba(250,70,22,0.5);
+	padding: 20px;
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
 	border: solid;
 	border-color: #0021A5;
 	border-width: 2px;
-	color: #0021A5;
-	cursor: auto;
-	font-family: 'Microsoft YaHei';
+	text-align: justify;
+	outline: none;
 	font-size: 18px;
 	font-weight: 800;
-	outline: none;
-	padding: 20px;
-	text-align: left;
-	text-shadow: -1px 0 rgba(255,255,255,0.5), 0 1px rgba(255,255,255,0.5), 1px 0 rgba(255,255,255,0.5), 0 -1px rgba(255,255,255,0.5);
+	font-family: 'Microsoft YaHei';
+	cursor: auto;
 	transition: background-color 0.3s linear;
-	width: 100%;
+	color: #0021A5;
+	text-shadow: -1px 0 rgba(255,255,255,0.5), 0 1px rgba(255,255,255,0.5), 1px 0 rgba(255,255,255,0.5), 0 -1px rgba(255,255,255,0.5);
 }
 
 .tutorial_pic {
-	display: block;
+	width: 70%;
 	height: 70%;
+	display: block;
 	margin-left: auto;
 	margin-right: auto;
-	width: 70%;
-	max-height:500px;
-	max-width:500px;
 }
 
 .bottom {
-	font-family:'Microsoft YaHei';
-	font-weight:900;
 	text-align:center;
+	font-weight:900;
+	font-family:'Microsoft YaHei';
 }
 
 .background {
 	background-image: url("/modules/core/client/img/background/UF.jpg");
-	height: 100%;
-	background-position: center;
+	background-image: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.4) 100%), url(/modules/core/client/img/background/UF.jpg);
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	background-size: 100% auto ;padding: 0;
+	display: block;
+	margin: 0 auto;
+	max-height: 100%;
+	max-width: 100%;
 }
 
 .intro {
 	color: #0021A5;
-	margin-bottom:150px;
 	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	margin-bottom:150px;
 }
