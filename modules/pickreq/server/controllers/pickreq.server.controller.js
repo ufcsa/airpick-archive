@@ -14,7 +14,7 @@ var path = require('path'),
    */
 exports.create = function (req, res) {
   var request = new Request(req.body);
-  request.user = req.user;
+  request.user = req.username;
 
   request.save(function (err) {
     if (err) {
@@ -33,8 +33,11 @@ exports.create = function (req, res) {
 exports.update = function (req, res) {
   var request = req.request;
 
-  request.title = req.body.title;
-  request.content = req.body.content;
+  request.airport = req.body.airport;
+  request.arrivalTime = req.body.arrivalTime;
+  request.bag = req.body.bag;
+  request.carryon = req.body.carryon;
+  request.baggage = req.body.baggage;
 
   request.save(function (err) {
     if (err) {
@@ -48,41 +51,109 @@ exports.update = function (req, res) {
 };
 
 /**
- * Show the current requests
+ * Show the current user's request
  */
 exports.read = function (req, res) {
   // convert mongoose document to JSON
-  var request = req.request ? req.request.toJSON() : {};
-
+  var request = req.request ? req.request : {};
   res.json(request);
 };
 
 /**
- * List of pickup requests TODO: aggregation & get user info
+ * List of pickup requests
  */
 exports.list = function (req, res) {
-  Request.findById().sort('-arrivalTime').exec(function (err, requests) {
+  Request.find({}).sort('arrivalTime').exec(function (err, requests) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(requests);
+      var counter = 0;
+      var result = {
+        requests: []
+      };
+      if (requests == null || requests.length === 0) {
+        res.json(result);
+      } else {
+        requests.forEach(function (rqst) {
+          User.findOne({ username: rqst.user }).then(function (userInfo) {
+            var entry = {
+              request: rqst,
+              userInfo: {
+                displayName: userInfo.displayName,
+                gender: userInfo.gender,
+                email: userInfo.email,
+                username: userInfo.username
+              }
+            };
+            counter = counter + 1;
+            result.requests.push(entry);
+            if (counter === requests.length) {
+              res.json(result);
+            }
+          });
+        });
+      }
     }
   });
+};
+
+exports.listAccepted = function (req, res) {
+  var requests = req.requests;
+  if (!requests) {
+    return res.status(422).send({
+      message: 'query fails'
+    });
+  }
+  var counter = 0;
+  var result = {
+    requests: []
+  };
+  requests.forEach(function (rqst) {
+    User.findOne({ username: rqst.user }).then(function (userInfo) {
+      var entry = {
+        request: rqst,
+        userInfo: {
+          firstName: userInfo.firstName,
+          displayName: userInfo.displayName,
+          gender: userInfo.gender,
+          email: userInfo.email,
+          username: userInfo.username
+        }
+      };
+      counter = counter + 1;
+      result.requests.push(entry);
+      if (counter === requests.length) {
+        res.json(result);
+      }
+    });
+  });
+};
+
+/**
+ * Update the request with the volunteer's username
+ */
+exports.accept = function (req, res) {
+  console.log('got request accpt: ' + req.body.request_id);
+  console.log('got request accpt: ' + req.body.user);
+  Request.update({ _id: req.body.request_id },
+    { volunteer: req.body.user }, { multi: false }, function (err) {
+      if (err) {
+        console.log('Accept request fails!');
+      } else {
+        res.json('Success');
+      }
+    });
 };
 
 /**
  * Request middleware
  */
-exports.requestUserId = function (req, res, next, id) {
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Pickup request is invalid'
-    });
-  }
+exports.requestUserId = function (req, res, next, un) {
+  req.username = un;
 
-  Request.findById(id).exec(function (err, request) {
+  Request.findOne({ user: un }).exec(function (err, request) {
     if (err) {
       return next(err);
     } else if (!request) {
@@ -94,15 +165,17 @@ exports.requestUserId = function (req, res, next, id) {
   });
 };
 
-exports.getUserInfo = function (req, res, next) {
-  // Add a field for User's information
-  User.find({ user: req.body.user }).exec(function (err, user) {
+/**
+ * Find accepted requests middleware
+ */
+exports.getAccepted = function (req, res, next, volunteer) {
+  Request.find({ volunteer: volunteer }).exec(function (err, request) {
     if (err) {
       return next(err);
-    } else if (!user) {
-      req.userInfo = null;
+    } else if (!request) {
+      req.requests = null;
     } else {
-      req.userInfo = user;
+      req.requests = request;
     }
     next();
   });
