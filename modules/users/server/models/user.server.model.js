@@ -40,13 +40,13 @@ var validateLocalStrategyEmail = function (email) {
  * - not begin or end with "."
  */
 
-var validateUsername = function (username) {
-  var usernameRegex = /^(?=[\w.-]+$)(?!.*[._-]{2})(?!\.)(?!.*\.$).{3,34}$/;
-  return (
-    this.provider !== 'local' ||
-    (username && usernameRegex.test(username) && config.illegalUsernames.indexOf(username) < 0)
-  );
-};
+// var validateUsername = function (username) {
+//   var usernameRegex = /^(?=[\w.-]+$)(?!.*[._-]{2})(?!\.)(?!.*\.$).{3,34}$/;
+//   return (
+//     this.provider !== 'local' ||
+//     (username && usernameRegex.test(username) && config.illegalUsernames.indexOf(username) < 0)
+//   );
+// };
 
 // gender choice validation
 // @author: Yinghan Ma
@@ -92,13 +92,23 @@ var UserSchema = new Schema({
     default: '',
     validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
   },
-  username: {
+  // username: {
+  //   type: String,
+  //   unique: 'Username already exists',
+  //   required: 'Please fill in a username',
+  //   validate: [validateUsername, 'Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.'],
+  //   lowercase: true,
+  //   trim: true
+  // },
+  phone: {
     type: String,
-    unique: 'Username already exists',
-    required: 'Please fill in a username',
-    validate: [validateUsername, 'Please enter a valid username: 3+ characters long, non restricted word, characters "_-.", no consecutive dots, does not begin or end with dots, letters a-z and numbers 0-9.'],
-    lowercase: true,
-    trim: true
+
+  },
+  wechatid: {
+    type: String,
+    //unique: 'This WeChat ID has already been linked to an account'
+    unique: 'This WeChat ID has already linked to an account',
+    required: 'Please fill in your WeChat ID!'
   },
   password: {
     type: String,
