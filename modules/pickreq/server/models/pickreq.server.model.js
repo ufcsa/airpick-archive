@@ -26,11 +26,6 @@ var RequestSchema = new Schema({
     type: Date,
     required: 'Arrival Time cannot be blank'
   },
-  bag: {
-    type: Number,
-    default: 1,
-    required: 'Number of bags cannot be blank'
-  },
   carryon: {
     type: Number,
     default: 0,
@@ -48,6 +43,10 @@ var RequestSchema = new Schema({
   volunteer: {
     type: String,
     default: ''
+  },
+  published: {
+    type: Boolean,
+    default: true
   }
 });
 
