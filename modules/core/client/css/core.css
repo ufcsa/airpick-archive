@@ -107,7 +107,6 @@ a:hover .header-profile-image {
 }
 
 .background {
-	background-image: url("/modules/core/client/img/background/UF.jpg");
 	background-image: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.4) 100%), url(/modules/core/client/img/background/UF.jpg);
 	background-repeat: no-repeat;
 	background-position: center;
@@ -120,7 +119,7 @@ a:hover .header-profile-image {
 }
 
 .intro {
-	color: #0021A5;
-	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	color: #000000;
 	margin-bottom:150px;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
