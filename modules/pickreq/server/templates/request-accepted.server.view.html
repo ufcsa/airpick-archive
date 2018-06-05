@@ -6,13 +6,13 @@
 </head>
 
 <body>
-  <p>Dear {{userInfo.displayName}},</p>
+  <p>Dear {{userInfo.firstName}},</p>
   <br />
-  <p>
+  <strong>
     Congratulations! A volunteer has accepted your airport pick-up request: <br />
     Arrival airport/address: {{request.airport}} <br />
     Arrival time: {{request.arrivalTime}} <br />
-  </p>
+  </strong>
   <p>
     Please get in touch with him/her and coordinate about your trip details and possible changes.
     The following is the contact information of the volunteer:
@@ -30,6 +30,8 @@
   <p>Thank you for using our service! Have a safe and nice trip to UF!</p>
   <p>The {{appName}} Support Team</p>
   <p>University of Florida - Chinese Student Association</p>
+  <br />
+  <p>This is an automated email. Please do not reply this email.</p>
 </body>
 
 </html>

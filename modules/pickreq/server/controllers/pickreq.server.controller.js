@@ -103,6 +103,7 @@ exports.list = function (req, res) {
                 firstName: userInfo.firstName,
                 displayName: userInfo.displayName,
                 email: userInfo.email,
+                gender: userInfo.gender,
                 wechatid: userInfo.wechatid,
                 username: userInfo.username
               }
@@ -135,9 +136,9 @@ exports.listAccepted = function (req, res) {
       var entry = {
         request: rqst,
         userInfo: {
+          firstName: userInfo.firstName,
           displayName: userInfo.displayName,
           email: userInfo.email,
-          gender: userInfo.gender,
           phone: userInfo.phone,
           username: userInfo.username,
           wechatid: userInfo.wechatid
@@ -174,7 +175,7 @@ exports.accept = function (req, res, next) {
     function (done) {
       var templateOptions = {
         request: req.body.request,
-        user: req.body.userInfo,
+        userInfo: req.body.userInfo,
         appName: config.app.title,
         volunteer: req.body.volunteer
       };
@@ -192,14 +193,11 @@ exports.accept = function (req, res, next) {
     },
     // send email to user regarding pickup
     function (emailHTML, done) {
-      console.log('Ready to send email!');
       if (req.body.volunteer.username) {
-        console.log('An accepted email should be sent to user.');
         let recipient = req.body.userInfo.email;
         let subject = 'Your request is accepted!';
         sendEmail(recipient, subject, emailHTML);
       } else {
-        console.log('A canceling email should be sent to user.');
         let recipient = req.body.userInfo.email;
         let subject = 'Your request is canceled by the volunteer!';
         sendEmail(recipient, subject, emailHTML);

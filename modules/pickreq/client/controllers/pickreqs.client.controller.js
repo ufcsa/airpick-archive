@@ -22,8 +22,9 @@
 
     // If user is not signed in then redirect back home
     if (!Authentication.user) { $state.go('home'); }
-    var username = Authentication.user.username;
     vm.user = Authentication.user;
+    var username = vm.user.username;
+
 
     function findMyRequest() {
       console.log(Authentication.user);
@@ -72,12 +73,13 @@
     }
 
     function acceptRequest(rqst) {
+      let usr = vm.user;
       var packet = {
         request: rqst.request,
         userInfo: rqst.userInfo,
-        volunteer: Authentication.user
+        volunteer: usr
       };
-      console.log(packet);
+      console.log('Accept:' + JSON.stringify(packet));
       PickreqService.acceptRequest(packet)
         .then(function (response) {
           $state.go($state.current, {}, { reload: true });
@@ -90,12 +92,3 @@
     vm.init();
   }
 }());
-
-/**
- * Helper functions
- */
-function convertStrToDate(dateStr) {
-  let date = new Date(dateStr);
-  console.log(date.getFullYear());
-  return date;
-}

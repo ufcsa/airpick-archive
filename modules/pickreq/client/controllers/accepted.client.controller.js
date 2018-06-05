@@ -12,8 +12,9 @@
 
     // If user is not signed in then redirect back home
     if (!Authentication.user) { $state.go('home'); }
-    var username = Authentication.user.username;
     vm.user = Authentication.user;
+    var username = vm.user.username;
+
 
     function findMyAccepted() {
       PickreqService.listAccepted(username)
@@ -28,10 +29,11 @@
     }
 
     function cancelRequest(rqst) {
+      let usr = Object.assign({}, vm.user);
       var packet = {
         request: rqst.request,
         userInfo: rqst.userInfo,
-        volunteer: Authentication.user
+        volunteer: usr
       };
       packet.volunteer.username = '';
       PickreqService.acceptRequest(packet) // reuse this method for canceling
