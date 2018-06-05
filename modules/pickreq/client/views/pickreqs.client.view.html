@@ -20,7 +20,7 @@
       </tr>
       <tr ng-repeat="rqst in vm.requests" ng-if="!rqst.request.volunteer">
         <td><div style="float:left">
-          <a class="btn btn-altered btn-space" ng-click="vm.acceptRequest(rqst.request._id)"
+          <a class="btn btn-altered btn-space" ng-click="vm.acceptRequest(rqst)"
             ng-hide="vm.user.username === rqst.userInfo.username">Accept</a>
           <a class="btn btn-altered btn-space" ng-click="" ng-disabled="true"
             ng-show="vm.user.username === rqst.userInfo.username">Accept</a>

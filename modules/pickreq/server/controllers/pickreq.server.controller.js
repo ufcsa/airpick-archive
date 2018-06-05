@@ -18,7 +18,7 @@ function sendEmail(recipient, subject, body) {
     from: config.mailer.from,
     to: recipient,
     subject: subject,
-    text: body
+    html: body
   };
   smtpTransport.sendMail(mailOptions, function (error, info) {
     if (error) {
@@ -100,9 +100,10 @@ exports.list = function (req, res) {
             var entry = {
               request: rqst,
               userInfo: {
+                firstName: userInfo.firstName,
                 displayName: userInfo.displayName,
-                gender: userInfo.gender,
                 email: userInfo.email,
+                wechatid: userInfo.wechatid,
                 username: userInfo.username
               }
             };
@@ -134,11 +135,12 @@ exports.listAccepted = function (req, res) {
       var entry = {
         request: rqst,
         userInfo: {
-          firstName: userInfo.firstName,
           displayName: userInfo.displayName,
-          gender: userInfo.gender,
           email: userInfo.email,
-          username: userInfo.username
+          gender: userInfo.gender,
+          phone: userInfo.phone,
+          username: userInfo.username,
+          wechatid: userInfo.wechatid
         }
       };
       counter = counter + 1;
@@ -153,12 +155,12 @@ exports.listAccepted = function (req, res) {
 /**
  * Update the request with the volunteer's username
  */
-exports.accept = function (req, res) {
+exports.accept = function (req, res, next) {
   async.waterfall([
     // update the request status with volunteer information
     function (done) {
-      Request.update({ _id: req.body.request_id },
-        { volunteer: req.body.user }, { multi: false }, function (err) {
+      Request.update({ _id: req.body.request._id },
+        { volunteer: req.body.volunteer.username }, { multi: false }, function (err) {
           if (err) {
             console.log('Accept request fails!');
             return res.status(422).send({
@@ -169,41 +171,49 @@ exports.accept = function (req, res) {
           }
         });
     },
-    // lookup
-    function () {
-
-    }
-  ]);
-
-  Request.findOne({ _id: req.body.rqst.request._id }).exec(function (err, request) {
-    request.volunteer = req.body.volunteer.username;
-    request.save(function (err) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
+    function (done) {
+      var templateOptions = {
+        request: req.body.request,
+        user: req.body.userInfo,
+        appName: config.app.title,
+        volunteer: req.body.volunteer
+      };
+      if (req.body.volunteer.username) {
+        res.render(path.resolve('modules/pickreq/server/templates/request-accepted'),
+          templateOptions, function (err, emailHTML) {
+            done(err, emailHTML);
+          });
       } else {
-        if (req.body.volunteer.username) {
-          let toStudent = req.body.volunteer.email;
-          let toVolunteer = req.body.student.email;
-          let subToStudent = 'Your airport pick-up request is accepted!';
-          let subToVolunteer = 'You just accepted one airport pick-up request!';
-          let bodyToStudent = 'Thank you for using our service.';
-          let bodyToVolunteer = 'Thank you for your service.';
-          sendEmail(toVolunteer, subToVolunteer, bodyToVolunteer);
-        }
-        res.json('Success');
+        res.render(path.resolve('modules/pickreq/server/templates/request-canceled'),
+          templateOptions, function (err, emailHTML) {
+            done(err, emailHTML);
+          });
       }
-    });
+    },
+    // send email to user regarding pickup
+    function (emailHTML, done) {
+      console.log('Ready to send email!');
+      if (req.body.volunteer.username) {
+        console.log('An accepted email should be sent to user.');
+        let recipient = req.body.userInfo.email;
+        let subject = 'Your request is accepted!';
+        sendEmail(recipient, subject, emailHTML);
+      } else {
+        console.log('A canceling email should be sent to user.');
+        let recipient = req.body.userInfo.email;
+        let subject = 'Your request is canceled by the volunteer!';
+        sendEmail(recipient, subject, emailHTML);
+      }
+      res.send({
+        message: 'Success!'
+      });
+      done(null);
+    }
+  ], function (err) {
+    if (err) {
+      return next(err);
+    }
   });
-};
-
-exports.prepareBody = function (request) {
-
-};
-
-exports.preStudentEmail = function (student) {
-  let message = 'Dear ' + student.firstName + ',\n';
 };
 
 /**

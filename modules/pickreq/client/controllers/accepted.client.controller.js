@@ -29,11 +29,11 @@
 
     function cancelRequest(rqst) {
       var packet = {
-        request_id: rqst.request.r_id,
-        volunteer: {
-          username: ''
-        }
+        request: rqst.request,
+        userInfo: rqst.userInfo,
+        volunteer: Authentication.user
       };
+      packet.volunteer.username = '';
       PickreqService.acceptRequest(packet) // reuse this method for canceling
         .then(function (response) {
           $state.go($state.current, {}, { reload: true });

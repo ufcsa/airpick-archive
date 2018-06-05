@@ -26,6 +26,7 @@
     vm.user = Authentication.user;
 
     function findMyRequest() {
+      console.log(Authentication.user);
       PickreqService.viewMyRequest(username)
         .then(function (response) {
           vm.request = response;
@@ -72,10 +73,11 @@
 
     function acceptRequest(rqst) {
       var packet = {
-        userEmail: rqst.userInfo.email,
-        userFirstName: rqst.userInfo.firstName,
+        request: rqst.request,
+        userInfo: rqst.userInfo,
         volunteer: Authentication.user
       };
+      console.log(packet);
       PickreqService.acceptRequest(packet)
         .then(function (response) {
           $state.go($state.current, {}, { reload: true });
