@@ -9,10 +9,10 @@ var validator = require('validator'),
 /**
  * This is a hit cron job that keeps itself awake at Heroku
  */
-var hitService = new CronJob('0 */1 * * * *', function () {
+var hitService = new CronJob('0 */5 * * * *', function () {
   let options = {
     host: 'www.uflcsa.org',
-    path: '/'
+    path: '/empty'
   };
   http.get(options, function (res) {
     console.log('Just hit myself: ' + res.statusCode);
