@@ -43,6 +43,9 @@ var RequestSchema = new Schema({
   volunteer: {
     type: String,
     default: ''
+  },
+  published: {
+    type: Boolean
   }
 });
 

@@ -49,7 +49,9 @@
         return false;
       }
       var req = vm.request;
-      req.arrivalTime = new Date(vm.datepicker + ':00-04:00');
+      if (vm.datepicker && vm.datepicker.toString().length > 15) {
+        req.arrivalTime = new Date(vm.datepicker + ':00-04:00');
+      }
       if (vm.userHasRequest) {
         PickreqService.updateRequest(username, req)
           .then(function (response) {

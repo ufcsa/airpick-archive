@@ -57,6 +57,7 @@ exports.update = function (req, res) {
   request.arrivalTime = req.body.arrivalTime;
   request.carryon = req.body.carryon;
   request.baggage = req.body.baggage;
+  request.published = req.body.published;
 
   request.save(function (err) {
     if (err) {

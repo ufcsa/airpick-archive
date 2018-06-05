@@ -6,6 +6,12 @@
   <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
     <form name="vm.requestForm" ng-submit="vm.addRequest(vm.requestForm.$valid)" autocomplete="off">
       <fieldset>
+        <div class="text-center form-group">
+          <div class="btn-group">
+            <label class="btn btn-primary" ng-model="vm.request.published" uib-btn-radio="true" uib-uncheckable="vm.request">Publish</label>
+            <label class="btn btn-primary" ng-model="vm.request.published" uib-btn-radio="false">Unpublish</label>
+          </div>
+        </div>
         <div class="form-group" show-errors>
           <label for="airport">Airport or Pickup address</label>
           <input type="text" id="airport" name="airport" class="form-control" ng-model="vm.request.airport" placeholder="Airport Name" required autofocus>
