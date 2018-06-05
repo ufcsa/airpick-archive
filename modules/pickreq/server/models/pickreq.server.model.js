@@ -45,7 +45,8 @@ var RequestSchema = new Schema({
     default: ''
   },
   published: {
-    type: Boolean
+    type: Boolean,
+    default: true
   }
 });
 
