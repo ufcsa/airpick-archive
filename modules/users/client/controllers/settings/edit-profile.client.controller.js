@@ -9,11 +9,9 @@
 
   function EditProfileController($scope, $http, $location, UsersService, Authentication, Notification) {
     var vm = this;
-    
+
     vm.user = Authentication.user;
     vm.updateUserProfile = updateUserProfile;
-
-
 
     // Update a user profile
     function updateUserProfile(isValid) {
