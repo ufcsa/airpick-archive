@@ -2,7 +2,22 @@
 
 var validator = require('validator'),
   path = require('path'),
+  http = require('http'),
+  CronJob = require('cron').CronJob,
   config = require(path.resolve('./config/config'));
+
+/**
+ * This is a hit cron job that keeps itself awake at Heroku
+ */
+var hitService = new CronJob('0 */1 * * * *', function () {
+  let options = {
+    host: 'www.uflcsa.org',
+    path: '/'
+  };
+  http.get(options, function (res) {
+    console.log('Just hit myself: ' + res.statusCode);
+  });
+}, null, true, 'America/Los_Angeles');
 
 /**
  * Render the main application page
@@ -14,6 +29,8 @@ exports.renderIndex = function (req, res) {
       displayName: validator.escape(req.user.displayName),
       provider: validator.escape(req.user.provider),
       username: validator.escape(req.user.username),
+      wechatid: validator.escape(req.user.wechatid),
+      phone: validator.escape(req.user.phone),
       created: req.user.created.toString(),
       roles: req.user.roles,
       profileImageURL: req.user.profileImageURL,
