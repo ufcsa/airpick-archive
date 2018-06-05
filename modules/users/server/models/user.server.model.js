@@ -102,7 +102,7 @@ var UserSchema = new Schema({
   },
   phone: {
     type: String,
-
+    default: ''
   },
   wechatid: {
     type: String,
