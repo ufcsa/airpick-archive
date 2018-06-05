@@ -1,3 +1,5 @@
+
+
 .content {
   margin-top: 50px;
   margin-bottom:50px;
@@ -44,7 +46,7 @@ a:hover .header-profile-image {
 }
 
 .collapsible {
-	background: rgba(250,70,22,0.9);
+	background: rgba(250,70,22,0.5);
 	cursor: pointer;
 	padding: 18px;
 	width: 80%;
@@ -57,25 +59,25 @@ a:hover .header-profile-image {
 	font-weight: bold;
 	font-family: 'Microsoft YaHei';
 	cursor: pointer;
-	transition: background-color 0.3s linear;
+	transition: background-color .6s linear;
 	color: #0021A5;
 	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .collapsible:hover, .small-collapsible:hover, .single-step:hover {
-	background: rgba(250,70,22,0.8);
+	background: rgba(21,243,21,0.9);
 	opacity: 1;
 }
 
 .detail {
 	padding: 0 0px;
 	overflow: hidden;
-	background: rgba(250,70,22,0.5);
+	background: rgba(250,70,22,0);
 	display: none;
 }
 
 .single-step {
-	background: rgba(250,70,22,0.5);
+	background: rgba(250,70,22,0);
 	padding: 20px;
 	width: 100%;
 	border: solid;
@@ -120,6 +122,7 @@ a:hover .header-profile-image {
 
 .intro {
 	color: #000000;
+	font-family: 'Microsoft YaHei';
 	margin-bottom:150px;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
