@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title></title>
+</head>
+
+<body>
+  <p>Dear {{userInfo.firstName}},</p>
+  <br />
+  <p>
+    We are sorry to let you know that the volunteer who accepted your request for the trip below
+    can no longer make it. Don't worry, we will send you another email once your request
+    is accepted again. <br />
+  </p>
+  <strong>
+    Arrival airport/address: {{request.airport}} <br />
+    Arrival time: {{request.arrivalTime}} <br />
+  </strong>
+  <br />
+  <strong>If you no longer need to be picked up for this request,
+    please login and un-publish your request.</strong>
+  <br />
+  <br />
+  <p>Thank you for using our service!</p>
+  <p>The {{appName}} Support Team</p>
+  <p>University of Florida - Chinese Student Association</p>
+  <br />
+  <p>This is an automated email. Please do not reply this email.</p>
+</body>
+
+</html>
