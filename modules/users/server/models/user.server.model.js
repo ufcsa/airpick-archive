@@ -51,8 +51,8 @@ var validateUsername = function (username) {
 // gender choice validation
 // @author: Yinghan Ma
 var validateGender = function (gender) {
-  var butMale = document.getElementByID('male').checked;
-  var butFemale = document.getElementByID('female').checked;
+  var butMale = gender.document.getElementByID('male').checked;
+  var butFemale = gender.document.getElementByID('female').checked;
 
   if (butMale === false && butFemale === false) {
     return false;
@@ -100,6 +100,16 @@ var UserSchema = new Schema({
     lowercase: true,
     trim: true
   },
+  phone: {
+    type: String,
+    default: ''
+  },
+  wechatid: {
+    type: String,
+    // unique: 'This WeChat ID has already been linked to an account'
+    unique: 'This WeChat ID has already linked to an account',
+    required: 'Please fill in your WeChat ID!'
+  },
   password: {
     type: String,
     default: ''
@@ -107,8 +117,13 @@ var UserSchema = new Schema({
   gender: {
     type: String,
     default: '',
-    required: 'Please choose your gender'
+    //required: 'Please choose your gender',
+    //validate: [validateGender, 'Please choose your gender!']
   },
+  // identity: {
+  //   type: String,
+    
+  // },
   salt: {
     type: String
   },
