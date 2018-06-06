@@ -4,6 +4,7 @@ var validator = require('validator'),
   path = require('path'),
   config = require(path.resolve('./config/config'));
 
+
 /**
  * Render the main application page
  */
@@ -14,6 +15,8 @@ exports.renderIndex = function (req, res) {
       displayName: validator.escape(req.user.displayName),
       provider: validator.escape(req.user.provider),
       username: validator.escape(req.user.username),
+      wechatid: validator.escape(req.user.wechatid),
+      phone: validator.escape(req.user.phone),
       created: req.user.created.toString(),
       roles: req.user.roles,
       profileImageURL: req.user.profileImageURL,

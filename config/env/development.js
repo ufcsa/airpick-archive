@@ -22,13 +22,24 @@ module.exports = {
     }
   },
   app: {
-    title: defaultEnvConfig.app.title + ' - Development Environment'
+    title: defaultEnvConfig.app.title + ' - Development'
   },
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'APP_ID',
     clientSecret: process.env.FACEBOOK_SECRET || 'APP_SECRET',
     callbackURL: '/api/auth/facebook/callback'
   },
+  mailer: {
+    from: process.env.MAILER_FROM || 'ufcsainfo@gmail.com',
+    options: {
+      service: process.env.MAILER_SERVICE_PROVIDER || 'gmail',
+      auth: {
+        user: process.env.MAILER_EMAIL_ID || 'ufcsainfo@gmail.com',
+        pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
+      }
+    }
+  },
+  livereload: true,
   twitter: {
     username: '@TWITTER_USERNAME',
     clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',
@@ -56,17 +67,6 @@ module.exports = {
     callbackURL: '/api/auth/paypal/callback',
     sandbox: true
   },
-  mailer: {
-    from: process.env.MAILER_FROM || 'MAILER_FROM',
-    options: {
-      service: process.env.MAILER_SERVICE_PROVIDER || 'MAILER_SERVICE_PROVIDER',
-      auth: {
-        user: process.env.MAILER_EMAIL_ID || 'MAILER_EMAIL_ID',
-        pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
-      }
-    }
-  },
-  livereload: true,
   seedDB: {
     seed: process.env.MONGO_SEED === 'true',
     options: {

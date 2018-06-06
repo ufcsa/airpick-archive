@@ -22,10 +22,12 @@
 
     // If user is not signed in then redirect back home
     if (!Authentication.user) { $state.go('home'); }
-    var username = Authentication.user.username;
     vm.user = Authentication.user;
+    var username = vm.user.username;
+
 
     function findMyRequest() {
+      console.log(Authentication.user);
       PickreqService.viewMyRequest(username)
         .then(function (response) {
           vm.request = response;
@@ -47,7 +49,9 @@
         return false;
       }
       var req = vm.request;
-      req.arrivalTime = new Date(vm.datepicker + ':00-04:00');
+      if (vm.datepicker && vm.datepicker.toString().length > 15) {
+        req.arrivalTime = new Date(vm.datepicker + ':00-04:00');
+      }
       if (vm.userHasRequest) {
         PickreqService.updateRequest(username, req)
           .then(function (response) {
@@ -70,11 +74,14 @@
 
     }
 
-    function acceptRequest(r_id) {
+    function acceptRequest(rqst) {
+      let usr = vm.user;
       var packet = {
-        request_id: r_id,
-        user: username
+        request: rqst.request,
+        userInfo: rqst.userInfo,
+        volunteer: usr
       };
+      console.log('Accept:' + JSON.stringify(packet));
       PickreqService.acceptRequest(packet)
         .then(function (response) {
           $state.go($state.current, {}, { reload: true });
@@ -87,12 +94,3 @@
     vm.init();
   }
 }());
-
-/**
- * Helper functions
- */
-function convertStrToDate(dateStr) {
-  let date = new Date(dateStr);
-  console.log(date.getFullYear());
-  return date;
-}

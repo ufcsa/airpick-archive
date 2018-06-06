@@ -14,16 +14,18 @@
         <th>Name</th>
         <th>Pick-up Date</th>
         <th>Airport/Address</th>
+        <th>WeChatId</th>
         <th>carryon</th>
         <th>baggage</th>
       </tr>
       <tr ng-repeat="rqst in vm.requests">
         <td><div style="float:left">
-          <a class="btn btn-altered btn-space" ng-click="vm.cancelRequest(rqst.request._id)">Cancel</a>
+          <a class="btn btn-altered btn-space" ng-click="vm.cancelRequest(rqst)">Cancel</a>
         </div></td>
         <td>{{rqst.userInfo.displayName}}</td>
         <td>{{rqst.request.arrivalTime}}</td>
         <td>{{rqst.request.airport}}</td>
+        <td>{{rqst.userInfo.wechatid}}</td>
         <td>{{rqst.request.carryon}}</td>
         <td>{{rqst.request.baggage}}</td>
       </tr>

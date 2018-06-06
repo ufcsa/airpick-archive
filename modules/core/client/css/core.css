@@ -78,11 +78,13 @@ a:hover .header-profile-image {
 .single-step {
 	background: rgba(250,70,22,0);
 	padding: 20px;
-	width: 100%;
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
 	border: solid;
 	border-color: #0021A5;
 	border-width: 2px;
-	text-align: left;
+	text-align: justify;
 	outline: none;
 	font-size: 18px;
 	font-weight: 800;
