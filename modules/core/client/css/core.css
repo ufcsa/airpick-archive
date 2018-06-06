@@ -2,7 +2,7 @@
 
 .content {
   margin-top: 50px;
-  margin-bottom:50px;
+  margin-bottom:0px;
 }
 .undecorated-link:hover {
   text-decoration: none;
@@ -61,7 +61,6 @@ a:hover .header-profile-image {
 	cursor: pointer;
 	transition: background-color .6s linear;
 	color: #0021A5;
-	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .collapsible:hover, .small-collapsible:hover, .single-step:hover {
@@ -104,6 +103,7 @@ a:hover .header-profile-image {
 
 .bottom {
 	text-align:center;
+	font-size:11px;
 	font-weight:900;
 	font-family:'Microsoft YaHei';
 }
@@ -120,9 +120,15 @@ a:hover .header-profile-image {
 	max-width: 100%;
 }
 
-.intro {
-	color: #000000;
-	font-family: 'Microsoft YaHei';
-	margin-bottom:150px;
-	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+h1 {
+	color: #FA4616;
+	text-shadow: -1px 0 #FA4616, 0 1px #FA4616, 1px 0 #FA4616, 0 -1px #FA4616;
+	font-family: 'Lobster', cursive;
+	font-size:55px;
+}
+
+h2 {
+	color: #0021A5;
+	text-shadow: -1px 0 #0021A5, 0 1px #0021A5, 1px 0 #0021A5, 0 -1px #0021A5;
+	font-size:20px;
 }
