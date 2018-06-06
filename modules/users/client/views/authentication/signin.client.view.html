@@ -6,6 +6,7 @@
           <uib-alert type="danger" ng-show="vm.error" class="text-center text-danger">
             <span ng-bind="vm.error"></span>
           </uib-alert>
+          <h3 class="col-md-12 text-center">Login</h3>
           <label for="usernameOrEmail">Email Address</label>
           <input type="text" id="usernameOrEmail" name="usernameOrEmail" class="form-control" ng-model="vm.credentials.usernameOrEmail" placeholder="Username or Email" required autofocus>
           <div ng-messages="vm.userForm.usernameOrEmail.$error" role="alert">
