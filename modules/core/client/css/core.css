@@ -45,6 +45,11 @@ a:hover .header-profile-image {
   display: inline;
 }
 
+.collapsible.active {
+	background: rgba(250,250,22,0.7);   /* 屎黄色 */
+	opacity: 1;
+}
+
 .collapsible {
 	background: rgba(250,70,22,0.5);
 	cursor: pointer;
@@ -64,7 +69,7 @@ a:hover .header-profile-image {
 }
 
 .collapsible:hover, .small-collapsible:hover, .single-step:hover {
-	background: rgba(21,243,21,0.9);
+	background: rgba(21,243,21,1);
 	opacity: 1;
 }
 

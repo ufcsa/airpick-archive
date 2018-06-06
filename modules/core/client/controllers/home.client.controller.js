@@ -15,12 +15,10 @@
         var detail = this.nextElementSibling;
         if (detail.style.display === 'block') {
           detail.style.display = 'none';
-          this.style.background = 'rgba(250,70,22,0.5)';
-          detail.style.background = 'rgba(250,70,22,0)';
+          this.classList.remove("active");
         } else {
           detail.style.display = 'block';
-          this.style.background = 'rgba(250,70,22,0.7)';
-          detail.style.background = 'rgba(250,70,22,0)';
+          this.classList.add("active");
         }
       });
     }
