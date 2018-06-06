@@ -102,11 +102,11 @@ var UserSchema = new Schema({
   },
   phone: {
     type: String,
-
+    default: ''
   },
   wechatid: {
     type: String,
-    //unique: 'This WeChat ID has already been linked to an account'
+    // unique: 'This WeChat ID has already been linked to an account'
     unique: 'This WeChat ID has already linked to an account',
     required: 'Please fill in your WeChat ID!'
   },
@@ -116,13 +116,12 @@ var UserSchema = new Schema({
   },
   gender: {
     type: String,
-    default: '',
-    //required: 'Please choose your gender',
-    //validate: [validateGender, 'Please choose your gender!']
+    default: ''
+    // required: 'Please choose your gender',
+    // validate: [validateGender, 'Please choose your gender!']
   },
   // identity: {
   //   type: String,
-    
   // },
   salt: {
     type: String
