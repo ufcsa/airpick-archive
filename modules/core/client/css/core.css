@@ -1,6 +1,8 @@
+
+
 .content {
   margin-top: 50px;
-  margin-bottom:50px;
+  margin-bottom:0px;
 }
 .undecorated-link:hover {
   text-decoration: none;
@@ -43,6 +45,11 @@ a:hover .header-profile-image {
   display: inline;
 }
 
+.collapsible.active {
+	background: rgba(250,250,22,0.7);   /* 屎黄色 */
+	opacity: 1;
+}
+
 .collapsible {
 	background: rgba(250,70,22,0.5);
 	cursor: pointer;
@@ -57,13 +64,12 @@ a:hover .header-profile-image {
 	font-weight: bold;
 	font-family: 'Microsoft YaHei';
 	cursor: pointer;
-	transition: background-color 0.3s linear;
+	transition: background-color .6s linear;
 	color: #0021A5;
-	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
 }
 
 .collapsible:hover, .small-collapsible:hover, .single-step:hover {
-	background: rgba(250,70,22,0.8);
+	background: rgba(21,243,21,1);
 	opacity: 1;
 }
 
@@ -75,7 +81,7 @@ a:hover .header-profile-image {
 }
 
 .single-step {
-	background: rgba(250,70,22,0.5);
+	background: rgba(250,70,22,0);
 	padding: 20px;
 	width: 80%;
 	margin-left: 10%;
@@ -104,12 +110,12 @@ a:hover .header-profile-image {
 
 .bottom {
 	text-align:center;
+	font-size:11px;
 	font-weight:900;
 	font-family:'Microsoft YaHei';
 }
 
 .background {
-	background-image: url("/modules/core/client/img/background/UF.jpg");
 	background-image: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.4) 100%), url(/modules/core/client/img/background/UF.jpg);
 	background-repeat: no-repeat;
 	background-position: center;
@@ -121,8 +127,15 @@ a:hover .header-profile-image {
 	max-width: 100%;
 }
 
-.intro {
+h1 {
+	color: #FA4616;
+	text-shadow: -1px 0 #FA4616, 0 1px #FA4616, 1px 0 #FA4616, 0 -1px #FA4616;
+	font-family: 'Lobster', cursive;
+	font-size:55px;
+}
+
+h2 {
 	color: #0021A5;
-	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
-	margin-bottom:150px;
+	text-shadow: 0.35px 0 #0021A5, 0 0.35px #0021A5, -0.35px 0 #0021A5, 0 -0.35px #0021A5;
+	font-size:25px;
 }

@@ -6,6 +6,7 @@ var validator = require('validator'),
   CronJob = require('cron').CronJob,
   config = require(path.resolve('./config/config'));
 
+
 /**
  * This is a hit cron job that keeps itself awake at Heroku
  */
