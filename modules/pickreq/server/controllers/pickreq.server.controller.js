@@ -175,6 +175,7 @@ exports.accept = function (req, res, next) {
           }
         });
     },
+    // send email to user regarding pickup
     function (done) {
       var templateOptions = {
         request: req.body.request,
@@ -183,7 +184,7 @@ exports.accept = function (req, res, next) {
         volunteer: req.body.volunteer
       };
       let raw_time = templateOptions.request.arrivalTime;
-      raw_time = moment(raw_time).tz('America/New_York').toString().substr(0, 24);
+      raw_time = moment(raw_time).tz('America/New_York').format().toString().substr(0, 24);
       templateOptions.request.arrivalTime = raw_time;
       if (req.body.volunteer.username) {
         let counter = 0;
@@ -235,7 +236,6 @@ exports.accept = function (req, res, next) {
           });
       }
     },
-    // send email to user regarding pickup
     function (done) {
       res.send({
         message: 'Success!'

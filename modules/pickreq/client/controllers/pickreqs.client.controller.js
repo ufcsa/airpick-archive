@@ -15,7 +15,7 @@
       vm.requests.forEach(function (rqst) {
         let arrivalTime = rqst.request.arrivalTime;
         arrivalTime = moment(arrivalTime).tz('America/New_York').format();
-        rqst.request.timeObj = new Date(arrivalTime);
+        rqst.request.timeObj = new Date(arrivalTime).toString().substr(0,24);
       });
     }
     vm.userHasRequest = false;
@@ -33,7 +33,7 @@
           let arrivalTime = vm.request.arrivalTime;
           if (arrivalTime) {
             arrivalTime = moment(arrivalTime).tz('America/New_York').format();
-            vm.request.arrivalTime = new Date(arrivalTime).toString().substr(0, 24);
+            vm.request.timeObj = new Date(arrivalTime).toString().substr(0, 24);
             // vm.request = response.data;
             if (vm.request.user != null && vm.request.user !== 'undefined') {
               vm.userHasRequest = true;
@@ -49,7 +49,14 @@
       }
       var req = vm.request;
       if (vm.datepicker && vm.datepicker.toString().length > 15) {
-        req.arrivalTime = new Date(vm.datepicker + ':00-04:00');
+        let newDate = new Date(vm.datepicker + ':00-04:00');
+        req.arrivalTime = newDate;
+        let now = new Date();
+        if (newDate <= now) {
+          Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });
+          return false;
+        }
+        req.timeObj = newDate;
       }
       if (vm.userHasRequest) {
         PickreqService.updateRequest(username, req)
