@@ -105,6 +105,7 @@ exports.list = function (req, res) {
                 displayName: userInfo.displayName,
                 email: userInfo.email,
                 gender: userInfo.gender,
+                phone: userInfo.phone,
                 wechatid: userInfo.wechatid,
                 username: userInfo.username
               }
@@ -181,28 +182,57 @@ exports.accept = function (req, res, next) {
         volunteer: req.body.volunteer
       };
       if (req.body.volunteer.username) {
+        let counter = 0;
         res.render(path.resolve('modules/pickreq/server/templates/request-accepted'),
           templateOptions, function (err, emailHTML) {
-            done(err, emailHTML);
+            if (err) {
+              console.log('Error preparing req-accepted email templates!');
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            }
+            let recipient = req.body.userInfo.email;
+            let subject = 'Your request is accepted';
+            counter = counter + 1;
+            sendEmail(recipient, subject, emailHTML);
+            if (counter === 2) {
+              done(err);
+            }
+          });
+        res.render(path.resolve('modules/pickreq/server/templates/thank-you-accepting'),
+          templateOptions, function (err, emailHTML) {
+            if (err) {
+              console.log('Error preparing thank-you-accepted email templates!' + err);
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            }
+            let recipient = req.body.volunteer.email;
+            let subject = 'You just accepted a pick-up request';
+            sendEmail(recipient, subject, emailHTML);
+            counter = counter + 1;
+            if (counter === 2) {
+              done(err);
+            }
           });
       } else {
         res.render(path.resolve('modules/pickreq/server/templates/request-canceled'),
           templateOptions, function (err, emailHTML) {
-            done(err, emailHTML);
+            if (err) {
+              console.log('Error preparing canceled email templates!');
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            }
+            let recipient = req.body.userInfo.email;
+            let subject = 'Your request is canceled by the volunteer';
+            sendEmail(recipient, subject, emailHTML);
+            done(err);
           });
       }
     },
     // send email to user regarding pickup
-    function (emailHTML, done) {
-      if (req.body.volunteer.username) {
-        let recipient = req.body.userInfo.email;
-        let subject = 'Your request is accepted!';
-        sendEmail(recipient, subject, emailHTML);
-      } else {
-        let recipient = req.body.userInfo.email;
-        let subject = 'Your request is canceled by the volunteer!';
-        sendEmail(recipient, subject, emailHTML);
-      }
+    function (done) {
       res.send({
         message: 'Success!'
       });

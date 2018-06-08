@@ -27,7 +27,6 @@
 
 
     function findMyRequest() {
-      console.log(Authentication.user);
       PickreqService.viewMyRequest(username)
         .then(function (response) {
           vm.request = response;
@@ -81,7 +80,6 @@
         userInfo: rqst.userInfo,
         volunteer: usr
       };
-      console.log('Accept:' + JSON.stringify(packet));
       PickreqService.acceptRequest(packet)
         .then(function (response) {
           $state.go($state.current, {}, { reload: true });
