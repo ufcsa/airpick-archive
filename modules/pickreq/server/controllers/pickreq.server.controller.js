@@ -6,6 +6,7 @@
 var path = require('path'),
   config = require(path.resolve('./config/config')),
   mongoose = require('mongoose'),
+  moment = require('moment-timezone'),
   Request = mongoose.model('Request'),
   nodemailer = require('nodemailer'),
   async = require('async'),
@@ -160,7 +161,7 @@ exports.listAccepted = function (req, res) {
  */
 exports.accept = function (req, res, next) {
   async.waterfall([
-    // update the request status with volunteer information
+    // update the request status with volunteer information TODO: add record for volunteer Medal count, and admin page for aggregation
     function (done) {
       Request.update({ _id: req.body.request._id },
         { volunteer: req.body.volunteer.username }, { multi: false }, function (err) {
@@ -181,6 +182,9 @@ exports.accept = function (req, res, next) {
         appName: config.app.title,
         volunteer: req.body.volunteer
       };
+      let raw_time = templateOptions.request.arrivalTime;
+      raw_time = moment(raw_time).tz('America/New_York').toString().substr(0, 24);
+      templateOptions.request.arrivalTime = raw_time;
       if (req.body.volunteer.username) {
         let counter = 0;
         res.render(path.resolve('modules/pickreq/server/templates/request-accepted'),
