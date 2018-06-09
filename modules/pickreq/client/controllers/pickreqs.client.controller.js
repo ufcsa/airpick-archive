@@ -49,14 +49,22 @@
       }
       var req = vm.request;
       if (vm.datepicker && vm.datepicker.toString().length > 15) {
-        let newDate = new Date(vm.datepicker + ':00-04:00');
         req.arrivalTime = newDate;
+        let newDate = new Date(vm.datepicker + ':00-04:00');
         let now = new Date();
         if (newDate <= now) {
           Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });
           return false;
         }
         req.timeObj = newDate;
+      } else {
+        let timeObj = moment(req.arrivalTime).tz('America/New_York').format();
+        timeObj = new Date(timeObj);
+        let now = new Date();
+        if (timeObj <= now) {
+          Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });
+          return false;
+        }
       }
       if (vm.userHasRequest) {
         PickreqService.updateRequest(username, req)

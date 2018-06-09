@@ -3,7 +3,8 @@
 /**
  * Module dependencies
  */
-var requests = require('../controllers/pickreq.server.controller');
+var requests = require('../controllers/pickreq.server.controller')
+  cronJobs = require('../controllers/cronjobs.server.controller');
 
 module.exports = function (app) {
   // Articles collection routes
