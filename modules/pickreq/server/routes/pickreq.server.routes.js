@@ -22,7 +22,11 @@ module.exports = function (app) {
     .post(requests.create)
     .put(requests.update);
 
+  app.route('/api/requests/completed/:user')
+    .get(completed.listCompleted);
+
   // Finish by binding the article middleware
   app.param('username', requests.requestUserId);
   app.param('volunteer', requests.getAccepted);
+  app.param('user', completed.getCompleted);
 };

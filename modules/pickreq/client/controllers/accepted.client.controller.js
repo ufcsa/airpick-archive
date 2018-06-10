@@ -15,7 +15,6 @@
     vm.user = Authentication.user;
     var username = vm.user.username;
 
-
     function findMyAccepted() {
       PickreqService.listAccepted(username)
         .then(function (response) {

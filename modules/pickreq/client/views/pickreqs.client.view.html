@@ -9,29 +9,29 @@
   </div>
   <div class="row">
     <div class="tableWrapper">
-    <table class="table table-hover">
-      <tr>
-        <th>Accept</th>
-        <th>Name</th>
-        <th>Pick-up Date</th>
-        <th>Airport/Address</th>
-        <th>carryon</th>
-        <th>baggage</th>
-      </tr>
-      <tr ng-repeat="rqst in vm.requests" ng-if="rqst.request.published && !rqst.request.volunteer">
-        <td><div style="float:left">
-          <a class="btn btn-altered btn-space" ng-click="vm.acceptRequest(rqst)"
-            ng-hide="vm.user.username === rqst.userInfo.username">Accept</a>
-          <a class="btn btn-altered btn-space" ng-click="" ng-disabled="true"
-            ng-show="vm.user.username === rqst.userInfo.username">Accept</a>
-        </div></td>
-        <td>{{rqst.userInfo.displayName}}</td>
-        <td>{{rqst.request.timeObj}}</td>
-        <td>{{rqst.request.airport}}</td>
-        <td>{{rqst.request.carryon}}</td>
-        <td>{{rqst.request.baggage}}</td>
-      </tr>
-    </table>
-  </div>
+      <table class="table table-hover">
+        <tr>
+          <th>Accept</th>
+          <th>Name</th>
+          <th>Pick-up Date</th>
+          <th>Airport/Address</th>
+          <th>carryon</th>
+          <th>baggage</th>
+        </tr>
+        <tr ng-repeat="rqst in vm.requests" ng-if="rqst.request.published && !rqst.request.volunteer">
+          <td><div style="float:left">
+            <a class="btn btn-altered btn-space" ng-click="vm.acceptRequest(rqst)"
+              ng-hide="vm.user.username === rqst.userInfo.username">Accept</a>
+            <a class="btn btn-altered btn-space" ng-click="" ng-disabled="true"
+              ng-show="vm.user.username === rqst.userInfo.username">Accept</a>
+          </div></td>
+          <td>{{rqst.userInfo.displayName}}</td>
+          <td>{{rqst.request.timeObj}}</td>
+          <td>{{rqst.request.airport}}</td>
+          <td>{{rqst.request.carryon}}</td>
+          <td>{{rqst.request.baggage}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </section>

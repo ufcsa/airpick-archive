@@ -8,28 +8,28 @@
   </div>
   <div class="row">
     <div class="tableWrapper">
-    <table class="table table-hover">
-      <tr>
-        <th>Cancel</th>
-        <th>Name</th>
-        <th>Pick-up Date</th>
-        <th>Airport/Address</th>
-        <th>WeChatId</th>
-        <th>carryon</th>
-        <th>baggage</th>
-      </tr>
-      <tr ng-repeat="rqst in vm.requests">
-        <td><div style="float:left">
-          <a class="btn btn-altered btn-space" ng-click="vm.cancelRequest(rqst)">Cancel</a>
-        </div></td>
-        <td>{{rqst.userInfo.displayName}}</td>
-        <td>{{rqst.request.timeObj}}</td>
-        <td>{{rqst.request.airport}}</td>
-        <td>{{rqst.userInfo.wechatid}}</td>
-        <td>{{rqst.request.carryon}}</td>
-        <td>{{rqst.request.baggage}}</td>
-      </tr>
-    </table>
-  </div>
+      <table class="table table-hover">
+        <tr>
+          <th>Cancel</th>
+          <th>Name</th>
+          <th>Pick-up Date</th>
+          <th>Airport/Address</th>
+          <th>WeChatId</th>
+          <th>carryon</th>
+          <th>baggage</th>
+        </tr>
+        <tr ng-repeat="rqst in vm.requests">
+          <td><div style="float:left">
+            <a class="btn btn-altered btn-space" ng-click="vm.cancelRequest(rqst)">Cancel</a>
+          </div></td>
+          <td>{{rqst.userInfo.displayName}}</td>
+          <td>{{rqst.request.timeObj}}</td>
+          <td>{{rqst.request.airport}}</td>
+          <td>{{rqst.userInfo.wechatid}}</td>
+          <td>{{rqst.request.carryon}}</td>
+          <td>{{rqst.request.baggage}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </section>
