@@ -21,5 +21,9 @@
       title: 'Requests Accepted',
       state: 'acceptedreqs'
     });
+    menuService.addMenuItem('topbar', {
+      title: 'Completed Trips',
+      state: 'completed'
+    });
   }
 }());

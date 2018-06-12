@@ -6,6 +6,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Request = mongoose.model('Request'),
   Completed = mongoose.model('Completed'),
+  async = require('async'),
   User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
@@ -14,12 +15,15 @@ var path = require('path'),
  * setting: run every 10 minutes
  */
 var recycleService = new CronJob('0 */10 * * * *', function () {
-  Request.find({ "arrivalTime": { $lt: new Date() } })
+  console.log('Running a clean-up job for passed pick-up requests...');
+  Request.find({ 'arrivalTime': { $lt: new Date() } })
     .exec(function (err, requests) {
       if (err) {
         console.log(errorHandler.getErrorMessage(err));
       }
+      let counter = 0;
       requests.forEach(function (rqst) {
+        if (!rqst.volunteer) { return false; }
         let cmp_rcrd = new Completed();
         cmp_rcrd.airport = rqst.airport;
         cmp_rcrd.arrivalTime = rqst.arrivalTime;
@@ -38,7 +42,9 @@ var recycleService = new CronJob('0 */10 * * * *', function () {
             }
           }
         );
+        counter = counter + 1;
       });
+      console.log('Clean-up finished. ' + counter + ' job(s) got cleaned up.');
     });
 }, null, true, 'America/Los_Angeles');
 
@@ -60,48 +66,56 @@ exports.listCompleted = function (req, res) {
 
 exports.getCompleted = function (req, res, next, user) {
   let counter = 0;
-  // First, find requests that are done by me as volunteer.
-  Completed.find({ "volunteer": user}).exec(function (err, requests) {
-    if (err) {
-      console.log(errorHandler.getErrorMessage(err));
-    }
-    req.vlntrByMe = [];
-    requests.forEach(function (rqst) {
-      User.findOne({ "username": rqst.user }).exec(function (err, request) {
+  async.waterfall([
+    // First, find requests that are done by me as volunteer.
+    function (done) {
+      Completed.find({ 'volunteer': user }).exec(function (err, requests) {
         if (err) {
           console.log(errorHandler.getErrorMessage(err));
+          done();
         }
-        let obj = {};
-        obj.request = rqst;
-        obj.userInfo = request;
-        req.vlntrByMe.push(obj);
+        counter = counter + requests.length;
+        if (counter === 0) { done(); }
+        req.vlntrByMe = [];
+        requests.forEach(function (rqst) {
+          User.findOne({ 'username': rqst.user }).exec(function (err, request) {
+            if (err) {
+              console.log(errorHandler.getErrorMessage(err));
+            }
+            let obj = {};
+            obj.request = rqst;
+            obj.userInfo = request;
+            req.vlntrByMe.push(obj);
+            counter = counter - 1;
+            if (counter === 0) { done(); }
+          });
+        });
       });
-    });
-    counter = counter + 1;
-    if (counter === 2) {
-      next();
-    }
-  });
-  // Then, find requests that I requested and completed.
-  Completed.find({ "user": user}).exec(function (err, requests) {
-    if (err) {
-      console.log(errorHandler.getErrorMessage(err));
-    }
-    req.myTrips = [];
-    requests.forEach(function (rqst) {
-      User.findOne({ "username": rqst.volunteer }).exec(function (err, request) {
+    },
+    // Then, find requests that I requested and completed.
+    function () {
+      Completed.find({ 'user': user }).exec(function (err, requests) {
         if (err) {
           console.log(errorHandler.getErrorMessage(err));
+          next();
         }
-        let obj = {};
-        obj.request = rqst;
-        obj.volunteer = request;
-        req.myTrips.push(obj);
+        counter = counter + requests.length;
+        console.log(counter);
+        req.myTrips = [];
+        requests.forEach(function (rqst) {
+          User.findOne({ 'username': rqst.volunteer }).exec(function (err, request) {
+            if (err) {
+              console.log(errorHandler.getErrorMessage(err));
+            }
+            let obj = {};
+            obj.request = rqst;
+            obj.volunteer = request;
+            req.myTrips.push(obj);
+            counter = counter - 1;
+            if (counter === 0) { next(); }
+          });
+        });
       });
-    });
-    counter = counter + 1;
-    if (counter === 2) {
-      next();
     }
-  });
+  ]);
 };

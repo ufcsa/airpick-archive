@@ -2,7 +2,7 @@
 <section class="container">
   <div class="page-header">
     <h1>Accepted Pickup Requests</h1>
-    <p>Thank you, {{vm.user.firstName}}! <br />Here is the list of requests you accepted.
+    <p>Thank you for being a volunteer, {{vm.user.firstName}}! <br />Here is the list of requests you accepted.
       We strongly suggest adding the new student as a WeChat friend to communicate
       about any possible changes.</p>
   </div>
@@ -20,7 +20,9 @@
         </tr>
         <tr ng-repeat="rqst in vm.requests">
           <td><div style="float:left">
-            <a class="btn btn-altered btn-space" ng-click="vm.cancelRequest(rqst)">Cancel</a>
+            <button class="btn btn-altered btn-danger" type="button"
+            ng-click="vm.cancelRequest(rqst)"
+            style="padding: 2px 6px">Cancel</button>
           </div></td>
           <td>{{rqst.userInfo.displayName}}</td>
           <td>{{rqst.request.timeObj}}</td>

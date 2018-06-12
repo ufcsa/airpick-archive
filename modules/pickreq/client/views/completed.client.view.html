@@ -2,36 +2,47 @@
 <section class="container">
   <div class="page-header">
     <h1>Completed Pickup Trips</h1>
-    <p>Here are the trips completed.</p>
   </div>
   <div class="row">
-    <div class="tableWrapper">
-      <table class="table table-hover">
-        <tr>
-          <tr>Student</th>
-          <th>Pick-up Date</th>
-          <th>Airport/Address</th>
-        </tr>
-        <tr ng-repeat="rqst in vm.vlntrByMe">
-          <td>{{rqst.userInfo.displayName}}</td>
-          <td>{{rqst.request.timeObj}}</td>
-          <td>{{rqst.request.airport}}</td>
-        </tr>
-      </table>
+    <div class="col col-lg-6">
+      <div class="tableWrapper">
+        <table class="table table-hover">
+          <caption style="text-align: center; color: #000; font-size: 18px">
+            You as the volunteer
+            <span class="glyphicon glyphicon-heart" style="color: #f91d1d"></span><br />
+          </caption>
+          <tr>
+            <th>Student</th>
+            <th>Pick-up Date</th>
+            <th>Airport/Address</th>
+          </tr>
+          <tr ng-repeat="rqst in vm.vlntrByMe">
+            <td>{{rqst.userInfo.displayName}}</td>
+            <td>{{rqst.request.timeObj}}</td>
+            <td>{{rqst.request.airport}}</td>
+          </tr>
+        </table>
+      </div>
     </div>
-    <div class="tableWrapper">
-      <table class="table table-hover">
-        <tr>
-          <tr>Volunteer</th>
-          <th>Pick-up Date</th>
-          <th>Airport/Address</th>
-        </tr>
-        <tr ng-repeat="rqst in vm.myTrips">
-          <td>{{rqst.volunteer.displayName}}</td>
-          <td>{{rqst.request.timeObj}}</td>
-          <td>{{rqst.request.airport}}</td>
-        </tr>
-      </table>
+    <div class="col col-lg-6">
+      <div class="tableWrapper">
+        <table class="table table-hover">
+          <caption style="text-align: center; color: #000; font-size: 18px">
+            You as the requester
+            <span class="glyphicon glyphicon-plane" style="color: #003ffe"></span><br />
+          </caption>
+          <tr>
+            <th>Volunteer</th>
+            <th>Pick-up Date</th>
+            <th>Airport/Address</th>
+          </tr>
+          <tr ng-repeat="rqst in vm.myTrips">
+            <td>{{rqst.volunteer.displayName}}</td>
+            <td>{{rqst.request.timeObj}}</td>
+            <td>{{rqst.request.airport}}</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </section>
