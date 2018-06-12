@@ -19,17 +19,17 @@
       PickreqService.listCompleted(username)
         .then(function (response) {
           if (response) {
-            vm.myTrips = response.requests.myTrips; 
+            vm.myTrips = response.requests.myTrips;
             vm.vlntrByMe = response.requests.vlntrByMe;
             vm.myTrips.forEach(function (rqst) {
               let time = moment(rqst.request.arrivalTime)
                 .tz('America/New_York').format();
-              rqst.request.timeObj = new Date(time).toString().substr(0,24);
+              rqst.request.timeObj = new Date(time).toString().substr(0, 24);
             });
             vm.vlntrByMe.forEach(function (rqst) {
               let time = moment(rqst.request.arrivalTime)
                 .tz('America/New_York').format();
-              rqst.request.timeObj = new Date(time).toString().substr(0,24);
+              rqst.request.timeObj = new Date(time).toString().substr(0, 24);
             });
           }
         });

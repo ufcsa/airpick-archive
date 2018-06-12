@@ -15,7 +15,7 @@
       vm.requests.forEach(function (rqst) {
         let arrivalTime = rqst.request.arrivalTime;
         arrivalTime = moment(arrivalTime).tz('America/New_York').format();
-        rqst.request.timeObj = new Date(arrivalTime).toString().substr(0,24);
+        rqst.request.timeObj = new Date(arrivalTime).toString().substr(0, 24);
       });
     }
     vm.userHasRequest = false;
@@ -49,8 +49,8 @@
       }
       var req = vm.request;
       if (vm.datepicker && vm.datepicker.toString().length > 15) {
-        req.arrivalTime = newDate;
         let newDate = new Date(vm.datepicker + ':00-04:00');
+        req.arrivalTime = newDate;
         let now = new Date();
         if (newDate <= now) {
           Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });

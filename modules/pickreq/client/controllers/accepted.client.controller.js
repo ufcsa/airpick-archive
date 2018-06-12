@@ -23,7 +23,7 @@
             vm.requests.forEach(function (rqst) {
               let time = moment(rqst.request.arrivalTime)
                 .tz('America/New_York').format();
-              rqst.request.timeObj = new Date(time).toString().substr(0,24);
+              rqst.request.timeObj = new Date(time).toString().substr(0, 24);
             });
           }
         });
