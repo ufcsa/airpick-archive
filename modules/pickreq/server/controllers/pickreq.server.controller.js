@@ -184,7 +184,8 @@ exports.accept = function (req, res, next) {
         volunteer: req.body.volunteer
       };
       let raw_time = templateOptions.request.arrivalTime;
-      raw_time = moment(raw_time).tz('America/New_York').format().toString().substr(0, 24);
+      raw_time = moment(raw_time).tz('America/New_York').format();
+      raw_time = new Date(raw_time).toString().substr(0, 24);
       templateOptions.request.arrivalTime = raw_time;
       if (req.body.volunteer.username) {
         let counter = 0;
