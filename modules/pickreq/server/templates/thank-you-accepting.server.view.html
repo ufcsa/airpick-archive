@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title></title>
+</head>
+
+<body>
+  <p>Dear {{volunteer.firstName}},</p>
+  <br />
+  <p>
+    Thank you for accepting a pick-up request! <br />
+    The following is the information regarding the student's request. We strongly suggest that
+    add the student as a WeChat friend to keep up with any changes of flight schedule.  <br />
+    If for any reason that you cannot make it, please cancel your acceptance so other volunteers
+    can accept it. You can do this at the web app's "Requests Accepted" tab.
+  </p>
+  <br />
+  <strong>
+    Arrival airport/address: {{request.airport}} <br />
+    Arrival time: {{request.arrivalTime}} <br />
+    Name: {{userInfo.displayName}} <br />
+    WeChat Id: {{userInfo.wechatid}} <br />
+    Email: {{userInfo.email}} <br />
+    Phone: {{userInfo.phone}} <br />
+  </strong>
+  <br />
+  <br />
+  <p>Thank you for being a volunteer!</p>
+  <p>The {{appName}} Support Team</p>
+  <p>University of Florida - Chinese Student Association</p>
+  <br />
+  <p>This is an automated email. Please do not reply this email.</p>
+</body>
+
+</html>

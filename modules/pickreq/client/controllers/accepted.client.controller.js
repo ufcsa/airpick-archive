@@ -15,14 +15,15 @@
     vm.user = Authentication.user;
     var username = vm.user.username;
 
-
     function findMyAccepted() {
       PickreqService.listAccepted(username)
         .then(function (response) {
           if (response) {
             vm.requests = response.requests;
             vm.requests.forEach(function (rqst) {
-              rqst.request.arrivalTime = moment(rqst.request.arrivalTime).tz('America/New_York').format();
+              let time = moment(rqst.request.arrivalTime)
+                .tz('America/New_York').format();
+              rqst.request.timeObj = new Date(time).toString().substr(0, 24);
             });
           }
         });

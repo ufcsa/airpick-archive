@@ -32,6 +32,10 @@
       update: {
         method: 'PUT',
         url: '/api/request/:user'
+      },
+      completed: {
+        method: 'GET',
+        url: '/api/requests/completed/:user'
       }
     });
 
@@ -59,6 +63,11 @@
       listAccepted: function (volunteer) {
         return this.accepted({
           volunteer: volunteer
+        }).$promise;
+      },
+      listCompleted: function (user) {
+        return this.completed({
+          user: user
         }).$promise;
       }
     });

@@ -49,6 +49,7 @@ _site/
 *.swp
 logs/
 build/
+notes.md
 
 # Sublime editor
 # ==============
