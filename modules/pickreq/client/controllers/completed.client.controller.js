@@ -23,13 +23,13 @@
             vm.vlntrByMe = response.requests.vlntrByMe;
             vm.myTrips.forEach(function (rqst) {
               let time = moment(rqst.request.arrivalTime)
-                .tz('America/New_York').format();
-              rqst.request.timeObj = new Date(time).toString().substr(0, 24);
+                .tz('America/New_York').format('ddd, MMM Do YYYY hh:mm A');
+              rqst.request.timeObj = time;
             });
             vm.vlntrByMe.forEach(function (rqst) {
               let time = moment(rqst.request.arrivalTime)
-                .tz('America/New_York').format();
-              rqst.request.timeObj = new Date(time).toString().substr(0, 24);
+                .tz('America/New_York').format('ddd, MMM Do YYYY hh:mm A');
+              rqst.request.timeObj = time;
             });
           }
         });
