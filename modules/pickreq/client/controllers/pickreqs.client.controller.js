@@ -48,7 +48,7 @@
       }
       var req = vm.request;
       if (vm.datepicker && vm.datepicker.toString().length > 15) {
-        req.arrivalTime = vm.datepicker + ':00-04:00';
+        req.arrivalTime = moment(vm.datepicker).tz('America/New_York').format();
         let newDate = new Date(req.arrivalTime);
         let now = new Date();
         if (newDate <= now) {
