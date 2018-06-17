@@ -14,7 +14,7 @@
       vm.requests = requests.requests;
       vm.requests.forEach(function (rqst) {
         let arrivalTime = rqst.request.arrivalTime;
-        arrivalTime = moment(arrivalTime).tz('America/New_York').format('ddd, MMM Do YYYY hh:mm A');
+        arrivalTime = moment(arrivalTime).format('ddd, MMM Do YYYY HH:mm');
         rqst.request.timeObj = arrivalTime;
       });
     }
@@ -32,7 +32,7 @@
           vm.request = response;
           let arrivalTime = vm.request.arrivalTime;
           if (arrivalTime) {
-            arrivalTime = moment(arrivalTime).tz('America/New_York').format('ddd, MMM Do YYYY hh:mm A');
+            arrivalTime = moment(arrivalTime).format('ddd, MMM Do YYYY HH:mm');
             vm.request.timeObj = arrivalTime;
             if (vm.request.user != null && vm.request.user !== 'undefined') {
               vm.userHasRequest = true;
@@ -48,14 +48,14 @@
       }
       var req = vm.request;
       if (vm.datepicker && vm.datepicker.toString().length > 15) {
-        req.arrivalTime = moment(vm.datepicker).tz('America/New_York').format();
+        req.arrivalTime = moment(vm.datepicker).format();
         let newDate = new Date(req.arrivalTime);
         let now = new Date();
         if (newDate <= now) {
           Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });
           return false;
         }
-        newDate = moment(req.arrivalTime).tz('America/New_York').format('ddd, MMM Do YYYY hh:mm A');
+        newDate = moment(req.arrivalTime).format('ddd, MMM Do YYYY HH:mm');
         req.timeObj = newDate;
       } else {
         let timeObj = new Date(req.arrivalTime);
