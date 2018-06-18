@@ -41,6 +41,15 @@
         data: {
           roles: ['user', 'admin']
         }
+      })
+      .state('completed', {
+        url: '/completed',
+        templateUrl: '/modules/pickreq/client/views/completed.client.view.html',
+        controller: 'CompletedController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['user', 'admin']
+        }
       });
   }
 

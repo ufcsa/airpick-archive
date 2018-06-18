@@ -1,3 +1,7 @@
+/**
+ * author: Yinghan Ma
+ */
+
 (function () {
   'use strict';
 

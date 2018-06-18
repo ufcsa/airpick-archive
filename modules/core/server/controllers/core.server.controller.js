@@ -4,6 +4,18 @@ var validator = require('validator'),
   path = require('path'),  config = require(path.resolve('./config/config'));
 
 
+/**
+ * This is a hit cron job that keeps itself awake at Heroku
+ */
+var hitService = new CronJob('0 */15 * * * *', function () {
+  let options = {
+    host: 'www.uflcsa.org',
+    path: '/empty'
+  };
+  http.get(options, function (res) {
+    console.log('Just hit myself: ' + res.statusCode);
+  });
+}, null, true, 'America/Los_Angeles');
 
 /**
  * Render the main application page

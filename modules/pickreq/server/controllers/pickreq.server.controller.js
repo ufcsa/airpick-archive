@@ -6,13 +6,24 @@
 var path = require('path'),
   config = require(path.resolve('./config/config')),
   mongoose = require('mongoose'),
+  moment = require('moment-timezone'),
   Request = mongoose.model('Request'),
   nodemailer = require('nodemailer'),
+  xoauth2 = require('xoauth2'),
   async = require('async'),
   User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
-var smtpTransport = nodemailer.createTransport(config.mailer.options);
+var generator = xoauth2.createXOAuth2Generator(config.mailer.options.xoauth2);
+generator.on('token', function (token) {
+  console.log('New token for %s: %s', token.user, token.accessToken);
+});
+var mailerOptions = {
+  service: config.mailer.options.service,
+  auth: config.mailer.options.xoauth2
+};
+mailerOptions.auth.type = 'OAuth2';
+var smtpTransport = nodemailer.createTransport(mailerOptions);
 function sendEmail(recipient, subject, body) {
   let mailOptions = {
     from: config.mailer.from,
@@ -105,6 +116,7 @@ exports.list = function (req, res) {
                 displayName: userInfo.displayName,
                 email: userInfo.email,
                 gender: userInfo.gender,
+                phone: userInfo.phone,
                 wechatid: userInfo.wechatid,
                 username: userInfo.username
               }
@@ -159,7 +171,7 @@ exports.listAccepted = function (req, res) {
  */
 exports.accept = function (req, res, next) {
   async.waterfall([
-    // update the request status with volunteer information
+    // update the request status with volunteer information TODO: add record for volunteer Medal count, and admin page for aggregation
     function (done) {
       Request.update({ _id: req.body.request._id },
         { volunteer: req.body.volunteer.username }, { multi: false }, function (err) {
@@ -173,6 +185,7 @@ exports.accept = function (req, res, next) {
           }
         });
     },
+    // send email to user regarding pickup
     function (done) {
       var templateOptions = {
         request: req.body.request,
@@ -180,29 +193,61 @@ exports.accept = function (req, res, next) {
         appName: config.app.title,
         volunteer: req.body.volunteer
       };
+      let raw_time = templateOptions.request.arrivalTime;
+      raw_time = moment(raw_time).tz('America/New_York').format();
+      raw_time = new Date(raw_time).toString().substr(0, 24);
+      templateOptions.request.arrivalTime = raw_time;
       if (req.body.volunteer.username) {
+        let counter = 0;
         res.render(path.resolve('modules/pickreq/server/templates/request-accepted'),
           templateOptions, function (err, emailHTML) {
-            done(err, emailHTML);
+            if (err) {
+              console.log('Error preparing req-accepted email templates!');
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            }
+            let recipient = req.body.userInfo.email;
+            let subject = 'Your request is accepted';
+            counter = counter + 1;
+            sendEmail(recipient, subject, emailHTML);
+            if (counter === 2) {
+              done(err);
+            }
+          });
+        res.render(path.resolve('modules/pickreq/server/templates/thank-you-accepting'),
+          templateOptions, function (err, emailHTML) {
+            if (err) {
+              console.log('Error preparing thank-you-accepted email templates!' + err);
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            }
+            let recipient = req.body.volunteer.email;
+            let subject = 'You just accepted a pick-up request';
+            sendEmail(recipient, subject, emailHTML);
+            counter = counter + 1;
+            if (counter === 2) {
+              done(err);
+            }
           });
       } else {
         res.render(path.resolve('modules/pickreq/server/templates/request-canceled'),
           templateOptions, function (err, emailHTML) {
-            done(err, emailHTML);
+            if (err) {
+              console.log('Error preparing canceled email templates!');
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            }
+            let recipient = req.body.userInfo.email;
+            let subject = 'Your request is canceled by the volunteer';
+            sendEmail(recipient, subject, emailHTML);
+            done(err);
           });
       }
     },
-    // send email to user regarding pickup
-    function (emailHTML, done) {
-      if (req.body.volunteer.username) {
-        let recipient = req.body.userInfo.email;
-        let subject = 'Your request is accepted!';
-        sendEmail(recipient, subject, emailHTML);
-      } else {
-        let recipient = req.body.userInfo.email;
-        let subject = 'Your request is canceled by the volunteer!';
-        sendEmail(recipient, subject, emailHTML);
-      }
+    function (done) {
       res.send({
         message: 'Success!'
       });
@@ -227,6 +272,7 @@ exports.requestUserId = function (req, res, next, un) {
       req.request = null;
     } else {
       req.request = request;
+      // TODO: add search for volunteer info?
     }
     next();
   });
