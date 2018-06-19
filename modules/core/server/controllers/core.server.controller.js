@@ -1,9 +1,12 @@
 'use strict';
 
 var validator = require('validator'),
-  path = require('path'),  config = require(path.resolve('./config/config'));
+  path = require('path'),
+  http = require('http'),
+  CronJob = require('cron').CronJob,
+  config = require(path.resolve('./config/config'));
 
- 
+
 /**
  * This is a hit cron job that keeps itself awake at Heroku
  */
