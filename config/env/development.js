@@ -36,10 +36,10 @@ module.exports = {
       service: process.env.MAILER_SERVICE_PROVIDER || 'gmail',
       xoauth2: {
         user: process.env.MAILER_EMAIL_ID || 'ufcsainfo@gmail.com',
-        clientId: '894020034873-e9p3sv0chc6o3olemiabtr433p1a4lli.apps.googleusercontent.com',
-        clientSecret: process.env.MAILER_CLIENT_SECRET || 'bPTpkWuVYwzkm6-heo5tIEjM',
-        refreshToken: '1/FJZIWo4zpFqQtu62SoMGJwS8mX0id-rLg0TarJwRBo0',
-        accessToken: 'ya29.GlvcBfFdRbMzokCBN6VXCDu_Un5oe6C_FE7UJzrRQyv8rzkD4orRIV1JxyFORvkyDOljsW9sZkysvk_FNQJTMGcboEETrwBRoT6ymRzy-9eOnrAHvJovyJCjEDPy'
+        clientId: '894020034873-j6dn3jm3ncs713j6uc38a0cnshhnf7r0.apps.googleusercontent.com',
+        clientSecret: process.env.MAILER_CLIENT_SECRET || 'YgF6WAqgMAie9N1dB9eYmj6c',
+        refreshToken: '1/Qq2MLijidNM43C8icjP8ZEDKEwjbRpwB2tqiUFEcPIiWShMQC9gqLz819-F_3umc',
+        accessToken: 'ya29.GlvgBcsTGfGn3tvDGDD4NJojAYPTdJvZsqfK04WJAHOzbhnV935TQeehqQKQcx-toRZB4flV16zVl0qqfPvd9sZmGSYr4eHiCJ4tDyfvAGnCvn8cNuEmXXRYtOrI'
       }
     }
   },
