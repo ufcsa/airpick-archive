@@ -14,8 +14,8 @@
       vm.requests = requests.requests;
       vm.requests.forEach(function (rqst) {
         let arrivalTime = rqst.request.arrivalTime;
-        arrivalTime = moment(arrivalTime).tz('America/New_York').format();
-        rqst.request.timeObj = new Date(arrivalTime).toString().substr(0, 24);
+        arrivalTime = moment(arrivalTime).format('ddd, MMM Do YYYY HH:mm');
+        rqst.request.timeObj = arrivalTime;
       });
     }
     vm.userHasRequest = false;
@@ -32,9 +32,8 @@
           vm.request = response;
           let arrivalTime = vm.request.arrivalTime;
           if (arrivalTime) {
-            arrivalTime = moment(arrivalTime).tz('America/New_York').format();
-            vm.request.timeObj = new Date(arrivalTime).toString().substr(0, 24);
-            // vm.request = response.data;
+            arrivalTime = moment(arrivalTime).format('ddd, MMM Do YYYY HH:mm');
+            vm.request.timeObj = arrivalTime;
             if (vm.request.user != null && vm.request.user !== 'undefined') {
               vm.userHasRequest = true;
             }
@@ -49,17 +48,17 @@
       }
       var req = vm.request;
       if (vm.datepicker && vm.datepicker.toString().length > 15) {
-        let newDate = new Date(vm.datepicker + ':00-04:00');
-        req.arrivalTime = newDate;
+        req.arrivalTime = moment(vm.datepicker).format();
+        let newDate = new Date(req.arrivalTime);
         let now = new Date();
         if (newDate <= now) {
           Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });
           return false;
         }
+        newDate = moment(req.arrivalTime).format('ddd, MMM Do YYYY HH:mm');
         req.timeObj = newDate;
       } else {
-        let timeObj = moment(req.arrivalTime).tz('America/New_York').format();
-        timeObj = new Date(timeObj);
+        let timeObj = new Date(req.arrivalTime);
         let now = new Date();
         if (timeObj <= now) {
           Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });

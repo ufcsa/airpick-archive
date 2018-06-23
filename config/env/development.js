@@ -1,6 +1,7 @@
 'use strict';
 
-var defaultEnvConfig = require('./default');
+var defaultEnvConfig = require('./default'),
+  xoauth2 = require('xoauth2');
 
 module.exports = {
   db: {
@@ -33,9 +34,12 @@ module.exports = {
     from: process.env.MAILER_FROM || 'ufcsainfo@gmail.com',
     options: {
       service: process.env.MAILER_SERVICE_PROVIDER || 'gmail',
-      auth: {
+      xoauth2: {
         user: process.env.MAILER_EMAIL_ID || 'ufcsainfo@gmail.com',
-        pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
+        clientId: '894020034873-e9p3sv0chc6o3olemiabtr433p1a4lli.apps.googleusercontent.com',
+        clientSecret: process.env.MAILER_CLIENT_SECRET || 'bPTpkWuVYwzkm6-heo5tIEjM',
+        refreshToken: '1/FJZIWo4zpFqQtu62SoMGJwS8mX0id-rLg0TarJwRBo0',
+        accessToken: 'ya29.GlvcBfFdRbMzokCBN6VXCDu_Un5oe6C_FE7UJzrRQyv8rzkD4orRIV1JxyFORvkyDOljsW9sZkysvk_FNQJTMGcboEETrwBRoT6ymRzy-9eOnrAHvJovyJCjEDPy'
       }
     }
   },

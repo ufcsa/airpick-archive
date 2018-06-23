@@ -9,11 +9,21 @@ var path = require('path'),
   moment = require('moment-timezone'),
   Request = mongoose.model('Request'),
   nodemailer = require('nodemailer'),
+  xoauth2 = require('xoauth2'),
   async = require('async'),
   User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
-var smtpTransport = nodemailer.createTransport(config.mailer.options);
+var generator = xoauth2.createXOAuth2Generator(config.mailer.options.xoauth2);
+generator.on('token', function (token) {
+  console.log('New token for %s: %s', token.user, token.accessToken);
+});
+var mailerOptions = {
+  service: config.mailer.options.service,
+  auth: config.mailer.options.xoauth2
+};
+mailerOptions.auth.type = 'OAuth2';
+var smtpTransport = nodemailer.createTransport(mailerOptions);
 function sendEmail(recipient, subject, body) {
   let mailOptions = {
     from: config.mailer.from,
@@ -184,7 +194,8 @@ exports.accept = function (req, res, next) {
         volunteer: req.body.volunteer
       };
       let raw_time = templateOptions.request.arrivalTime;
-      raw_time = moment(raw_time).tz('America/New_York').format().toString().substr(0, 24);
+      raw_time = moment(raw_time).tz('America/New_York').format();
+      raw_time = new Date(raw_time).toString().substr(0, 24);
       templateOptions.request.arrivalTime = raw_time;
       if (req.body.volunteer.username) {
         let counter = 0;
@@ -261,6 +272,7 @@ exports.requestUserId = function (req, res, next, un) {
       req.request = null;
     } else {
       req.request = request;
+      // TODO: add search for volunteer info?
     }
     next();
   });

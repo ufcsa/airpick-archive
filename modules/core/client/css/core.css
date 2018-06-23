@@ -1,4 +1,4 @@
-
+﻿
 
 .content {
   margin-top: 50px;
@@ -46,7 +46,7 @@ a:hover .header-profile-image {
 }
 
 .collapsible.active {
-	background: rgba(250,250,22,0.7);   /* 屎黄色 */
+	background: rgba(250,250,22,0.7);   /* 灞庨粍鑹?*/
 	opacity: 1;
 }
 
@@ -101,8 +101,10 @@ a:hover .header-profile-image {
 }
 
 .tutorial_pic {
-	width: 70%;
+	max-height:700px;
+	max-width: 500px;
 	height: 70%;
+	width: 70%;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -120,11 +122,23 @@ a:hover .header-profile-image {
 	background-repeat: no-repeat;
 	background-position: center;
 	background-attachment: fixed;
-	background-size: 100% auto ;padding: 0;
+	background-size: auto 100% ;
+	padding: 0;
 	display: block;
 	margin: 0 auto;
 	max-height: 100%;
 	max-width: 100%;
+}
+
+.main_body {
+	background-image: url(/modules/core/client/img/background/main.jpg);
+	background-repeat: repeat;
+	padding: 0;
+}
+
+.body_detail{
+	padding-top: 5em;
+	padding-bottom: 5em;
 }
 
 h1 {
