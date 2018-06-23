@@ -100,7 +100,7 @@ exports.getCompleted = function (req, res, next, user) {
           next();
         }
         counter = counter + requests.length;
-        console.log(counter);
+        if (counter === 0) { next(); }
         req.myTrips = [];
         requests.forEach(function (rqst) {
           User.findOne({ 'username': rqst.volunteer }).exec(function (err, request) {
