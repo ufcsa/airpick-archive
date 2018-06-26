@@ -27,9 +27,11 @@
 
 
     function findMyRequest() {
+      console.log(moment.tz.guess());
       PickreqService.viewMyRequest(username)
         .then(function (response) {
-          vm.request = response;
+          vm.request = response.request;
+          vm.volunteer = response.volunteer;
           let arrivalTime = vm.request.arrivalTime;
           if (arrivalTime) {
             arrivalTime = moment(arrivalTime).format('ddd, MMM Do YYYY HH:mm');
