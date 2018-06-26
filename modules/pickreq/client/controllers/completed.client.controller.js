@@ -9,7 +9,7 @@
 
   function CompletedController($scope, $state, PickreqService, Authentication, Notification) {
     var vm = this;
-    moment.tz.setDefault("America/New_York");
+    moment.tz.setDefault('America/New_York');
 
     // If user is not signed in then redirect back home
     if (!Authentication.user) { $state.go('home'); }
