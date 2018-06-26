@@ -157,6 +157,9 @@ var UserSchema = new Schema({
   },
   resetPasswordExpires: {
     type: Date
+  },
+  volunteer: {
+    type: String
   }
 });
 
