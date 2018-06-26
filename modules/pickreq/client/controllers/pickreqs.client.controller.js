@@ -9,6 +9,7 @@
 
   function PickreqController($scope, $state, requests, PickreqService, Authentication, Notification) {
     var vm = this;
+    moment.tz.setDefault("America/New_York");
 
     if (requests) {
       vm.requests = requests.requests;
