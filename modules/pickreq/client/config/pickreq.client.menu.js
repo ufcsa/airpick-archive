@@ -14,7 +14,7 @@
       state: 'pickreqs'
     });
     menuService.addMenuItem('topbar', {
-      title: 'Add Your Request',
+      title: 'View Your Request',
       state: 'addreq'
     });
     menuService.addMenuItem('topbar', {

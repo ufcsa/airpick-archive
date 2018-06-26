@@ -4,11 +4,11 @@
   angular
     .module('pickreq')
     .controller('PickreqController', PickreqController);
-
   PickreqController.$inject = ['$scope', '$state', 'requestsResolve', 'PickreqService', 'Authentication', 'Notification'];
 
   function PickreqController($scope, $state, requests, PickreqService, Authentication, Notification) {
     var vm = this;
+    moment.tz.setDefault('America/New_York');
 
     if (requests) {
       vm.requests = requests.requests;
@@ -29,7 +29,8 @@
     function findMyRequest() {
       PickreqService.viewMyRequest(username)
         .then(function (response) {
-          vm.request = response;
+          vm.request = response.request;
+          vm.volunteer = response.volunteer;
           let arrivalTime = vm.request.arrivalTime;
           if (arrivalTime) {
             arrivalTime = moment(arrivalTime).format('ddd, MMM Do YYYY HH:mm');

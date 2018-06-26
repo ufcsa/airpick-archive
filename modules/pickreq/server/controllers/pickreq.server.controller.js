@@ -86,7 +86,10 @@ exports.update = function (req, res) {
  */
 exports.read = function (req, res) {
   // convert mongoose document to JSON
-  var request = req.request ? req.request : {};
+  var request = {
+    request: req.request,
+    volunteer: req.volunteer
+  };
   res.json(request);
 };
 
@@ -194,8 +197,7 @@ exports.accept = function (req, res, next) {
         volunteer: req.body.volunteer
       };
       let raw_time = templateOptions.request.arrivalTime;
-      raw_time = moment(raw_time).tz('America/New_York').format();
-      raw_time = new Date(raw_time).toString().substr(0, 24);
+      raw_time = moment(raw_time).tz('America/New_York').format('ddd, MMM Do YYYY hh:mm A');
       templateOptions.request.arrivalTime = raw_time;
       if (req.body.volunteer.username) {
         let counter = 0;
@@ -270,11 +272,24 @@ exports.requestUserId = function (req, res, next, un) {
       return next(err);
     } else if (!request) {
       req.request = null;
+      next();
     } else {
       req.request = request;
-      // TODO: add search for volunteer info?
+      let volunteer = request.volunteer;
+      if (volunteer) {
+        User.findOne({ username: volunteer }).exec(function (err, userInfo) {
+          if (err) {
+            return next(err);
+          } else if (userInfo) {
+            req.volunteer = userInfo;
+            console.log(req.volunteer);
+            next();
+          }
+        });
+      } else {
+        next();
+      }
     }
-    next();
   });
 };
 
