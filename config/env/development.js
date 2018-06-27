@@ -36,10 +36,10 @@ module.exports = {
       service: process.env.MAILER_SERVICE_PROVIDER || 'gmail',
       xoauth2: {
         user: process.env.MAILER_EMAIL_ID || 'ufcsainfo@gmail.com',
-        clientId: '894020034873-j6dn3jm3ncs713j6uc38a0cnshhnf7r0.apps.googleusercontent.com',
-        clientSecret: process.env.MAILER_CLIENT_SECRET || 'YgF6WAqgMAie9N1dB9eYmj6c',
-        refreshToken: '1/Qq2MLijidNM43C8icjP8ZEDKEwjbRpwB2tqiUFEcPIiWShMQC9gqLz819-F_3umc',
-        accessToken: 'ya29.GlvgBcsTGfGn3tvDGDD4NJojAYPTdJvZsqfK04WJAHOzbhnV935TQeehqQKQcx-toRZB4flV16zVl0qqfPvd9sZmGSYr4eHiCJ4tDyfvAGnCvn8cNuEmXXRYtOrI'
+        clientId: process.env.CLIENT_ID || 'clientid',
+        clientSecret: process.env.MAILER_CLIENT_SECRET || 'clientsecret',
+        refreshToken: process.env.REF_TOKEN || 'refreshToken',
+        accessToken: process.env.ACC_TOKEN || 'accessToken'
       }
     }
   },
