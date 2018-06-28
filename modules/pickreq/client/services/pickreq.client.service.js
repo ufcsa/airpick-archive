@@ -25,10 +25,6 @@
         method: 'GET',
         url: '/api/request/:user'
       },
-      create: {
-        method: 'POST',
-        url: '/api/request/:user'
-      },
       update: {
         method: 'PUT',
         url: '/api/request/:user'
@@ -40,11 +36,6 @@
     });
 
     angular.extend(Request, {
-      createRequest: function (user, details) {
-        return this.create({
-          user: user
-        }, details).$promise;
-      },
       updateRequest: function (user, details) {
         return this.update({
           user: user
