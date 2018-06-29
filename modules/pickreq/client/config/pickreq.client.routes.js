@@ -21,6 +21,18 @@
           roles: ['user', 'admin']
         }
       })
+      .state('roomreqs', {
+        url: '/roomreqs',
+        templateUrl: '/modules/pickreq/client/views/roomreqs.client.view.html',
+        controller: 'RoomreqController',
+        controllerAs: 'vm',
+        resolve: {
+          requestsResolve: getRmRequests
+        },
+        data: {
+          roles: ['user', 'admin']
+        }
+      })
       .state('addreq', {
         url: '/addreq',
         templateUrl: '/modules/pickreq/client/views/addreq.client.view.html',
@@ -57,6 +69,12 @@
 
   function getRequests(PickreqService) {
     return PickreqService.list({}).$promise;
+  }
+
+  getRmRequests.$inject = ['PickreqService'];
+
+  function getRmRequests(PickreqService) {
+    return PickreqService.listRm({}).$promise;
   }
 
   function empty() {

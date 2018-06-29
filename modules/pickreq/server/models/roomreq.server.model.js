@@ -35,7 +35,7 @@ var RoomreqSchema = new Schema({
   },
   location: {
     type: String,
-    default: ''
+    default: 'None'
   },
   published: {
     type: Boolean,
