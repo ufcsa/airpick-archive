@@ -19,7 +19,6 @@ module.exports = function (app) {
 
   app.route('/api/request/:username')
     .get(requests.read)
-    .post(requests.create)
     .put(requests.update);
 
   app.route('/api/requests/completed/:user')

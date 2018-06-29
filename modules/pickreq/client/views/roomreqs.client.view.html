@@ -1,0 +1,40 @@
+<!-- The requests view -->
+<section class="container">
+  <div class="page-header">
+    <h1>Temporary Stay Requests</h1>
+    <p>This page lists temporary stay requests that need to be accepted by our volunteers.
+      To accept one, simply click on the 'Accept' button next to the request.</p><br />
+    <p><span class="label label-danger" style="font-size: 18px">Note:</span>
+      once you clicked 'Accept', the student who sent the request
+      will receive an email notification with your contact information.</p>
+  </div>
+  <div class="row">
+    <div class="tableWrapper">
+      <table class="table table-hover">
+        <tr>
+          <th>Accept</th>
+          <th>Name</th>
+          <th>Arrive Date/Time</th>
+          <th>Leaving Date/Time</th>
+          <th>Pickup Location</th>
+          <th>Gender</th>
+        </tr>
+        <tr ng-repeat="rqst in vm.requests" ng-if="rqst.request.published && !rqst.request.volunteer">
+          <td><div style="float:left">
+            <button class="btn btn-altered btn-success" ng-click="vm.acceptRequest(rqst)"
+              ng-hide="vm.user.username === rqst.userInfo.username"
+              style="padding: 2px 6px">Accept</button>
+            <button class="btn btn-altered btn-space" ng-click="" ng-disabled="true"
+              ng-show="vm.user.username === rqst.userInfo.username"
+              style="padding: 2px 6px">Accept</button>
+          </div></td>
+          <td>{{rqst.userInfo.displayName}}</td>
+          <td>{{rqst.request.timeObj}}</td>
+          <td>{{rqst.request.airport}}</td>
+          <td>{{rqst.request.carryon}}</td>
+          <td>{{rqst.request.baggage}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</section>

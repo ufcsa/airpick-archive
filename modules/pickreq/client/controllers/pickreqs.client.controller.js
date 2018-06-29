@@ -29,14 +29,27 @@
         .then(function (response) {
           vm.request = response.request;
           vm.volunteer = response.volunteer;
+          if (!vm.request) {
+            vm.request = {};
+          }
+          if (vm.request.hasOwnProperty('arrivalTime')) {
+            let arrivalTime = vm.request.arrivalTime;
+            vm.request.timeObj = formatDateTime(arrivalTime);
+          }
+
           vm.requestRm = response.requestRm;
           vm.volunteer = response.volunteerRm;
-          let arrivalTime = vm.request.arrivalTime;
-          let startDate = vm.requestRm.startDate;
-          let leaveDate = vm.requestRm.leaveTime;
-          vm.request.timeObj = formatDateTime(arrivalTime);
-          vm.requestRm.startDateObj = formatDate(startDate);
-          vm.requestRm.leaveDateObj = formatDate(leaveDate);
+          if (!vm.requestRm) {
+            vm.requestRm = {};
+          } else if (vm.requestRm.published) {
+            vm.needRoom = true;
+          }
+          if (vm.requestRm.hasOwnProperty('startDate')) {
+            let startDate = vm.requestRm.startDate;
+            let leaveDate = vm.requestRm.leaveDate;
+            vm.requestRm.startDateObj = formatDate(startDate);
+            vm.requestRm.leaveDateObj = formatDate(leaveDate);
+          }
         });
     }
 
@@ -49,7 +62,8 @@
       let reqrm = vm.requestRm;
       let request = {
         request: req,
-        requestRm: reqrm
+        requestRm: reqrm,
+        update: true
       };
 
       if (vm.datepicker && vm.datepicker.toString().length > 14) {
@@ -80,6 +94,7 @@
         let time1 = new Date(reqrm.startDate);
         let time2 = new Date(reqrm.leaveDate);
         if (time1 >= time2) {
+          Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Leave date must be after start date!', delay: 6000 });
           return false;
         }
         reqrm.leaveDateObj = moment(reqrm.leaveDate).format('ddd, MMM Do YYYY');

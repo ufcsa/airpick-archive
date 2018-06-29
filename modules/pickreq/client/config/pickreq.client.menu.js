@@ -25,5 +25,6 @@
       title: 'Completed Trips',
       state: 'completed'
     });
+    // TODO combine some tabs
   }
 }());

@@ -4,41 +4,16 @@
  * Module dependencies
  */
 var path = require('path'),
+  _ = require('lodash'),
   config = require(path.resolve('./config/config')),
   mongoose = require('mongoose'),
   moment = require('moment-timezone'),
+  mailer = require(path.resolve('./modules/pickreq/server/controllers/mail.server.controller')),
   Request = mongoose.model('Request'),
-  nodemailer = require('nodemailer'),
-  xoauth2 = require('xoauth2'),
+  Roomreq = mongoose.model('Roomreq'),
   async = require('async'),
   User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
-
-var generator = xoauth2.createXOAuth2Generator(config.mailer.options.xoauth2);
-generator.on('token', function (token) {
-  console.log('New token for %s: %s', token.user, token.accessToken);
-});
-var mailerOptions = {
-  service: config.mailer.options.service,
-  auth: config.mailer.options.xoauth2
-};
-mailerOptions.auth.type = 'OAuth2';
-var smtpTransport = nodemailer.createTransport(mailerOptions);
-function sendEmail(recipient, subject, body) {
-  let mailOptions = {
-    from: config.mailer.from,
-    to: recipient,
-    subject: subject,
-    html: body
-  };
-  smtpTransport.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
-  });
-}
 
 /**
  * Create a pickup request
@@ -62,23 +37,50 @@ exports.create = function (req, res) {
  * Update the request
  */
 exports.update = function (req, res) {
-  var request = req.request;
+  let counter = 0,
+    limit = 0;
 
-  request.airport = req.body.airport;
-  request.arrivalTime = req.body.arrivalTime;
-  request.carryon = req.body.carryon;
-  request.baggage = req.body.baggage;
-  request.published = req.body.published;
-
-  request.save(function (err) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
+  if (_.has(req.body, 'request') && req.body.request !== '') {
+    limit = limit + 1;
+    Request.findOneAndUpdate({ user: req.username }, req.body.request,
+      { upsert: true }, function (err, doc) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          counter = counter + 1;
+          if (counter === limit && !res.headerSent) {
+            try {
+              res.json('Success');
+            } catch (err) { console.log('Send conflict!'); }
+          }
+        }
       });
-    } else {
-      res.json(request);
-    }
-  });
+  }
+
+  if (_.has(req.body, 'requestRm') && req.body.requestRm !== '') {
+    limit = limit + 1;
+    Roomreq.findOneAndUpdate({ user: req.username }, req.body.requestRm,
+      { upsert: true }, function (err, doc) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          counter = counter + 1;
+          if (counter === limit && !res.headerSent) {
+            try {
+              res.json('Success');
+            } catch (err) { console.log('Send conflict!'); }
+          }
+        }
+      });
+  }
+
+  if (limit === 0 && !res.headerSent) {
+    res.json('Success');
+  }
 };
 
 /**
@@ -88,7 +90,9 @@ exports.read = function (req, res) {
   // convert mongoose document to JSON
   var request = {
     request: req.request,
-    volunteer: req.volunteer
+    volunteer: req.volunteer,
+    requestRm: req.roomReq,
+    volunteerRm: req.roomVlntr
   };
   res.json(request);
 };
@@ -212,7 +216,7 @@ exports.accept = function (req, res, next) {
             let recipient = req.body.userInfo.email;
             let subject = 'Your request is accepted';
             counter = counter + 1;
-            sendEmail(recipient, subject, emailHTML);
+            mailer.sendEmail(recipient, subject, emailHTML);
             if (counter === 2) {
               done(err);
             }
@@ -227,7 +231,7 @@ exports.accept = function (req, res, next) {
             }
             let recipient = req.body.volunteer.email;
             let subject = 'You just accepted a pick-up request';
-            sendEmail(recipient, subject, emailHTML);
+            mailer.sendEmail(recipient, subject, emailHTML);
             counter = counter + 1;
             if (counter === 2) {
               done(err);
@@ -244,7 +248,7 @@ exports.accept = function (req, res, next) {
             }
             let recipient = req.body.userInfo.email;
             let subject = 'Your request is canceled by the volunteer';
-            sendEmail(recipient, subject, emailHTML);
+            mailer.sendEmail(recipient, subject, emailHTML);
             done(err);
           });
       }
@@ -267,30 +271,64 @@ exports.accept = function (req, res, next) {
  */
 exports.requestUserId = function (req, res, next, un) {
   req.username = un;
-  Request.findOne({ user: un }).exec(function (err, request) {
-    if (err) {
-      return next(err);
-    } else if (!request) {
-      req.request = null;
-      next();
-    } else {
-      req.request = request;
-      let volunteer = request.volunteer;
-      if (volunteer) {
-        User.findOne({ username: volunteer }).exec(function (err, userInfo) {
-          if (err) {
-            return next(err);
-          } else if (userInfo) {
-            req.volunteer = userInfo;
-            console.log(req.volunteer);
+  if (_.has(req.body, 'update')) {
+    console.log('An update request');
+    next();
+  }
+  async.waterfall([
+    function (done) {
+      Request.findOne({ user: un }).exec(function (err, request) {
+        if (err) {
+          return next(err);
+        } else if (!request) {
+          req.request = '';
+          done();
+        } else {
+          req.request = request;
+          let volunteer = request.volunteer;
+          if (volunteer) {
+            User.findOne({ username: volunteer }).exec(function (err, userInfo) {
+              if (err) {
+                req.request = '';
+                return done(err);
+              } else if (userInfo) {
+                req.volunteer = userInfo;
+                done();
+              }
+            });
+          } else {
+            done();
+          }
+        }
+      });
+    },
+    function () {
+      Roomreq.findOne({ user: un }).exec(function (err, request) {
+        if (err) {
+          return next(err);
+        } else if (!request) {
+          req.roomReq = '';
+          next();
+        } else {
+          req.roomReq = request;
+          let volunteer = request.volunteer;
+          if (volunteer) {
+            User.findOne({ username: volunteer }).exec(function (err, userInfo) {
+              if (err) {
+                req.roomVlntr = '';
+                return next(err);
+              } else if (userInfo) {
+                req.roomVlntr = userInfo;
+                next();
+              }
+            });
+          } else {
             next();
           }
-        });
-      } else {
-        next();
-      }
+        }
+      });
     }
-  });
+  ]);
 };
 
 /**
