@@ -11,6 +11,9 @@ module.exports = function (app) {
   app.route('/api/requests')
     .get(requests.list);
 
+  app.route('/api/roomreqs')
+    .get(requests.listRm);
+
   app.route('/api/requests/:volunteer')
     .get(requests.listAccepted);
 

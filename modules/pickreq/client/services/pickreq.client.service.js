@@ -13,6 +13,10 @@
       list: {
         method: 'GET'
       },
+      listRm: {
+        method: 'GET',
+        url: '/api/roomreqs'
+      },
       accepted: {
         method: 'GET',
         url: '/api/requests/:volunteer'

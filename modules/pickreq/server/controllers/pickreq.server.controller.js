@@ -174,6 +174,49 @@ exports.listAccepted = function (req, res) {
 };
 
 /**
+ * List of rooming requests
+ */
+exports.listRm = function (req, res) {
+  Roomreq.find({}).sort('startDate').exec(function (err, requests) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      var counter = 0;
+      var result = {
+        requests: []
+      };
+      if (requests == null || requests.length === 0) {
+        res.json(result);
+      } else {
+        requests.forEach(function (rqst) {
+          User.findOne({ username: rqst.user }).then(function (userInfo) {
+            var entry = {
+              request: rqst,
+              userInfo: {
+                firstName: userInfo.firstName,
+                displayName: userInfo.displayName,
+                email: userInfo.email,
+                gender: userInfo.gender,
+                phone: userInfo.phone,
+                wechatid: userInfo.wechatid,
+                username: userInfo.username
+              }
+            };
+            counter = counter + 1;
+            result.requests.push(entry);
+            if (counter === requests.length) {
+              res.json(result);
+            }
+          });
+        });
+      }
+    }
+  });
+}
+
+/**
  * Update the request with the volunteer's username
  */
 exports.accept = function (req, res, next) {
