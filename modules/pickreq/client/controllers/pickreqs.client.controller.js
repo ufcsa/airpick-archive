@@ -9,35 +9,46 @@
   function PickreqController($scope, $state, requests, PickreqService, Authentication, Notification) {
     var vm = this;
     moment.tz.setDefault('America/New_York');
-
-    if (requests) {
-      vm.requests = requests.requests;
-      vm.requests.forEach(function (rqst) {
-        let arrivalTime = rqst.request.arrivalTime;
-        arrivalTime = moment(arrivalTime).format('ddd, MMM Do YYYY HH:mm');
-        rqst.request.timeObj = arrivalTime;
-      });
-    }
-    vm.userHasRequest = false;
+    vm.needRoom = false;
 
     // If user is not signed in then redirect back home
     if (!Authentication.user) { $state.go('home'); }
     vm.user = Authentication.user;
     var username = vm.user.username;
 
+    if (requests) {
+      vm.requests = requests.requests;
+      vm.requests.forEach(function (rqst) {
+        let arrivalTime = rqst.request.arrivalTime;
+        rqst.request.timeObj = formatDateTime(arrivalTime);
+      });
+    }
 
     function findMyRequest() {
       PickreqService.viewMyRequest(username)
         .then(function (response) {
           vm.request = response.request;
           vm.volunteer = response.volunteer;
-          let arrivalTime = vm.request.arrivalTime;
-          if (arrivalTime) {
-            arrivalTime = moment(arrivalTime).format('ddd, MMM Do YYYY HH:mm');
-            vm.request.timeObj = arrivalTime;
-            if (vm.request.user != null && vm.request.user !== 'undefined') {
-              vm.userHasRequest = true;
-            }
+          if (!vm.request) {
+            vm.request = {};
+          }
+          if (vm.request.hasOwnProperty('arrivalTime')) {
+            let arrivalTime = vm.request.arrivalTime;
+            vm.request.timeObj = formatDateTime(arrivalTime);
+          }
+
+          vm.requestRm = response.requestRm;
+          vm.volunteer = response.volunteerRm;
+          if (!vm.requestRm) {
+            vm.requestRm = {};
+          } else if (vm.requestRm.published) {
+            vm.needRoom = true;
+          }
+          if (vm.requestRm.hasOwnProperty('startDate')) {
+            let startDate = vm.requestRm.startDate;
+            let leaveDate = vm.requestRm.leaveDate;
+            vm.requestRm.startDateObj = formatDate(startDate);
+            vm.requestRm.leaveDateObj = formatDate(leaveDate);
           }
         });
     }
@@ -47,45 +58,58 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.requestForm');
         return false;
       }
-      var req = vm.request;
-      if (vm.datepicker && vm.datepicker.toString().length > 15) {
+      let req = vm.request;
+      let reqrm = vm.requestRm;
+      let request = {
+        request: req,
+        requestRm: reqrm,
+        update: true
+      };
+
+      if (vm.datepicker && vm.datepicker.toString().length > 14) {
         req.arrivalTime = moment(vm.datepicker).format();
-        let newDate = new Date(req.arrivalTime);
-        let now = new Date();
-        if (newDate <= now) {
-          Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });
+        if (!verifyFutureDate(req.arrivalTime)) {
           return false;
         }
-        newDate = moment(req.arrivalTime).format('ddd, MMM Do YYYY HH:mm');
-        req.timeObj = newDate;
-      } else {
-        let timeObj = new Date(req.arrivalTime);
-        let now = new Date();
-        if (timeObj <= now) {
-          Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });
-          return false;
-        }
-      }
-      if (vm.userHasRequest) {
-        PickreqService.updateRequest(username, req)
-          .then(function (response) {
-            Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Request is successfully updated!' });
-            $state.go('pickreqs');
-          })
-          .catch(function (response) {
-            Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Request updating failed!', delay: 6000 });
-          });
-      } else {
-        PickreqService.createRequest(username, req)
-          .then(function (response) {
-            Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Request is successfully added!' });
-            $state.go('pickreqs');
-          })
-          .catch(function (response) {
-            Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Request adding failed!', delay: 6000 });
-          });
+        req.timeObj = moment(req.arrivalTime).format('ddd, MMM Do YYYY HH:mm');
+      } else if (!verifyFutureDate(req.arrivalTime)) {
+        return false;
       }
 
+      if (vm.startDate && vm.startDate.toString().length > 7) {
+        reqrm.startDate = moment(vm.startDate).format();
+        if (!verifyFutureDate(reqrm.startDate)) {
+          return false;
+        }
+        reqrm.startDateObj = moment(reqrm.startDate).format('ddd, MMM Do YYYY');
+      } else if (!verifyFutureDate(reqrm.startDate)) {
+        return false;
+      }
+
+      if (vm.leaveDate && vm.leaveDate.toString().length > 7) {
+        reqrm.leaveDate = moment(vm.leaveDate).format();
+        if (!verifyFutureDate(reqrm.leaveDate)) {
+          return false;
+        }
+        let time1 = new Date(reqrm.startDate);
+        let time2 = new Date(reqrm.leaveDate);
+        if (time1 >= time2) {
+          Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Leave date must be after start date!', delay: 6000 });
+          return false;
+        }
+        reqrm.leaveDateObj = moment(reqrm.leaveDate).format('ddd, MMM Do YYYY');
+      } else if (!verifyFutureDate(reqrm.leaveDate)) {
+        return false;
+      }
+
+      PickreqService.updateRequest(username, request)
+        .then(function (response) {
+          Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Request(s) successfully added!' });
+          $state.go('pickreqs');
+        })
+        .catch(function (response) {
+          Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Request(s) adding failed!', delay: 6000 });
+        });
     }
 
     function acceptRequest(rqst) {
@@ -93,7 +117,8 @@
       var packet = {
         request: rqst.request,
         userInfo: rqst.userInfo,
-        volunteer: usr
+        volunteer: usr,
+        isRmReq: false
       };
       PickreqService.acceptRequest(packet)
         .then(function (response) {
@@ -101,9 +126,38 @@
         });
     }
 
+    function verifyFutureDate(dateStr) {
+      let newDate = new Date(dateStr);
+      let now = new Date();
+      if (newDate <= now) {
+        Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Please enter a future date/time!', delay: 6000 });
+        return false;
+      }
+      return true;
+    }
+
+    function formatDateTime(timeStr) {
+      if (timeStr) {
+        return moment(timeStr).format('ddd, MMM Do YYYY HH:mm');
+      }
+      return '';
+    }
+
+    function formatDate(dateStr) {
+      if (dateStr) {
+        return moment(dateStr).format('ddd, MMM Do YYYY');
+      }
+      return '';
+    }
+
+    function toggleRoom() {
+      vm.needRoom = !vm.needRoom;
+    }
+
     vm.init = findMyRequest;
     vm.addRequest = addRequest;
     vm.acceptRequest = acceptRequest;
+    vm.toggleRoom = toggleRoom;
     vm.init();
   }
 }());

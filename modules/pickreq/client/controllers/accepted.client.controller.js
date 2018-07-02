@@ -21,21 +21,31 @@
         .then(function (response) {
           if (response) {
             vm.requests = response.requests;
+            vm.roomreqs = response.roomreqs;
             vm.requests.forEach(function (rqst) {
               let time = moment(rqst.request.arrivalTime)
-                .tz('America/New_York').format('ddd, MMM Do YYYY hh:mm A');
+                .format('ddd, MMM Do YYYY hh:mm A');
               rqst.request.timeObj = time;
+            });
+            vm.roomreqs.forEach(function (rqst) {
+              let time = moment(rqst.request.startDate)
+                .format('ddd, MMM Do YYYY');
+              rqst.request.startDateObj = time;
+              let time2 = moment(rqst.request.leaveDate)
+                .format('ddd, MMM Do YYYY');
+              rqst.request.leaveDateObj = time2;
             });
           }
         });
     }
 
-    function cancelRequest(rqst) {
+    function cancelRequest(rqst, isRmReq = false) {
       let usr = Object.assign({}, vm.user);
       var packet = {
         request: rqst.request,
         userInfo: rqst.userInfo,
-        volunteer: usr
+        volunteer: usr,
+        isRmReq: isRmReq
       };
       packet.volunteer.username = '';
       PickreqService.acceptRequest(packet) // reuse this method for canceling
