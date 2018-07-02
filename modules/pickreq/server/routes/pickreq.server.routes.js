@@ -22,7 +22,7 @@ module.exports = function (app) {
 
   app.route('/api/request/:username')
     .get(requests.read)
-    .put(requests.update);
+    .put(requests.update, requests.updateRm);
 
   app.route('/api/requests/completed/:user')
     .get(completed.listCompleted);

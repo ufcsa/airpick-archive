@@ -16,70 +16,48 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a pickup request
+ * Update the request, as a middleware
  */
-exports.create = function (req, res) {
-  var request = new Request(req.body);
-  request.user = req.username;
-
-  request.save(function (err) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.json(request);
-    }
-  });
-};
-
-/**
- * Update the request
- */
-exports.update = function (req, res) {
-  let counter = 0,
-    limit = 0;
-
+exports.update = function (req, res, next) {
   if (_.has(req.body, 'request') && req.body.request !== '') {
-    limit = limit + 1;
     Request.findOneAndUpdate({ user: req.username }, req.body.request,
       { upsert: true }, function (err, doc) {
         if (err) {
+          console.log(err);
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          counter = counter + 1;
-          if (counter === limit && !res.headerSent) {
-            try {
-              res.json('Success');
-            } catch (err) { console.log('Send conflict!'); }
-          }
+          next();
         }
       });
+  } else {
+    next();
   }
+};
 
+/**
+ * Update the rooming request
+ */
+exports.updateRm = function (req, res) {
   if (_.has(req.body, 'requestRm') && req.body.requestRm !== '') {
-    limit = limit + 1;
     Roomreq.findOneAndUpdate({ user: req.username }, req.body.requestRm,
       { upsert: true }, function (err, doc) {
         if (err) {
+          console.log(err);
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          counter = counter + 1;
-          if (counter === limit && !res.headerSent) {
-            try {
-              res.json('Success');
-            } catch (err) { console.log('Send conflict!'); }
+          if (!res.headersSent) {
+            res.json('Success');
           }
         }
       });
-  }
-
-  if (limit === 0 && !res.headerSent) {
-    res.json('Success');
+  } else {
+    if (!res.headersSent) {
+      res.json('Success');
+    }
   }
 };
 
@@ -141,36 +119,69 @@ exports.list = function (req, res) {
 };
 
 exports.listAccepted = function (req, res) {
-  var requests = req.requests;
-  if (!requests) {
-    return res.status(422).send({
-      message: 'query fails'
-    });
-  }
-  var counter = 0;
+  let limit = req.requests.length + req.roomreqs.length;
   var result = {
-    requests: []
+    requests: [],
+    roomreqs: []
   };
-  requests.forEach(function (rqst) {
-    User.findOne({ username: rqst.user }).then(function (userInfo) {
-      var entry = {
-        request: rqst,
-        userInfo: {
-          firstName: userInfo.firstName,
-          displayName: userInfo.displayName,
-          email: userInfo.email,
-          phone: userInfo.phone,
-          username: userInfo.username,
-          wechatid: userInfo.wechatid
-        }
-      };
-      counter = counter + 1;
-      result.requests.push(entry);
-      if (counter === requests.length) {
+  if (limit === 0) {
+    res.json(result);
+    return null;
+  }
+  async.waterfall([
+    function (done) {
+      let requests = req.requests;
+      limit = requests.length;
+      if (limit === 0) { done(); }
+      let counter = 0;
+      requests.forEach(function (rqst) {
+        User.findOne({ username: rqst.user }).then(function (userInfo) {
+          counter = counter + 1;
+          let entry = {
+            request: rqst,
+            userInfo: {
+              firstName: userInfo.firstName,
+              displayName: userInfo.displayName,
+              email: userInfo.email,
+              phone: userInfo.phone,
+              username: userInfo.username,
+              wechatid: userInfo.wechatid
+            }
+          };
+          result.requests.push(entry);
+          if (counter === limit) { done(); }
+        });
+      });
+    },
+    function () {
+      let roomreqs = req.roomreqs;
+      limit = roomreqs.length;
+      if (limit === 0) {
         res.json(result);
+        return null;
       }
-    });
-  });
+      let counter = 0;
+      roomreqs.forEach(function (rqst) {
+        User.findOne({ username: rqst.user }).then(function (userInfo) {
+          counter = counter + 1;
+          let entry = {
+            request: rqst,
+            userInfo: {
+              firstName: userInfo.firstName,
+              displayName: userInfo.displayName,
+              email: userInfo.email,
+              phone: userInfo.phone,
+              username: userInfo.username,
+              wechatid: userInfo.wechatid,
+              gender: userInfo.gender
+            }
+          };
+          result.roomreqs.push(entry);
+          if (counter === limit) { res.json(result); }
+        });
+      });
+    }
+  ]);
 };
 
 /**
@@ -214,99 +225,109 @@ exports.listRm = function (req, res) {
       }
     }
   });
-}
+};
 
 /**
  * Update the request with the volunteer's username
  */
 exports.accept = function (req, res, next) {
   async.waterfall([
-    // update the request status with volunteer information TODO: add record for volunteer Medal count, and admin page for aggregation
+    // TODO: New feature idea: record for volunteer Medal count
     function (done) {
-      Request.update({ _id: req.body.request._id },
-        { volunteer: req.body.volunteer.username }, { multi: false }, function (err) {
-          if (err) {
-            console.log('Accept request fails!');
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          } else {
-            done();
-          }
-        });
+      if (req.body.isRmReq) {
+        Roomreq.update({ _id: req.body.request._id },
+          { volunteer: req.body.volunteer.username }, { multi: false }, function (err) {
+            if (err) {
+              console.log('Accept request fails!');
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              done();
+            }
+          });
+      } else {
+        Request.update({ _id: req.body.request._id },
+          { volunteer: req.body.volunteer.username }, { multi: false }, function (err) {
+            if (err) {
+              console.log('Accept request fails!');
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              done();
+            }
+          });
+      }
     },
-    // send email to user regarding pickup
+    // prepare template Options
     function (done) {
-      var templateOptions = {
+      let templateOptions = {
         request: req.body.request,
         userInfo: req.body.userInfo,
         appName: config.app.title,
         volunteer: req.body.volunteer
       };
-      let raw_time = templateOptions.request.arrivalTime;
-      raw_time = moment(raw_time).tz('America/New_York').format('ddd, MMM Do YYYY hh:mm A');
-      templateOptions.request.arrivalTime = raw_time;
-      if (req.body.volunteer.username) {
-        let counter = 0;
-        res.render(path.resolve('modules/pickreq/server/templates/request-accepted'),
-          templateOptions, function (err, emailHTML) {
-            if (err) {
-              console.log('Error preparing req-accepted email templates!');
-              return res.status(422).send({
-                message: errorHandler.getErrorMessage(err)
-              });
-            }
-            let recipient = req.body.userInfo.email;
-            let subject = 'Your request is accepted';
-            counter = counter + 1;
-            mailer.sendEmail(recipient, subject, emailHTML);
-            if (counter === 2) {
-              done(err);
-            }
-          });
-        res.render(path.resolve('modules/pickreq/server/templates/thank-you-accepting'),
-          templateOptions, function (err, emailHTML) {
-            if (err) {
-              console.log('Error preparing thank-you-accepted email templates!' + err);
-              return res.status(422).send({
-                message: errorHandler.getErrorMessage(err)
-              });
-            }
-            let recipient = req.body.volunteer.email;
-            let subject = 'You just accepted a pick-up request';
-            mailer.sendEmail(recipient, subject, emailHTML);
-            counter = counter + 1;
-            if (counter === 2) {
-              done(err);
-            }
-          });
+      let pathUser,
+        pathCanc,
+        pathTY;
+      if (req.body.isRmReq) {
+        let raw_time = templateOptions.request.startDate;
+        raw_time = moment(raw_time).tz('America/New_York').format('ddd, MMM Do YYYY');
+        templateOptions.request.startDate = raw_time;
+        let raw_time2 = templateOptions.request.leaveDate;
+        raw_time2 = moment(raw_time2).tz('America/New_York').format('ddd, MMM Do YYYY');
+        templateOptions.request.leaveDate = raw_time2;
+        pathUser = path.resolve('modules/pickreq/server/templates/roomreq-accepted');
+        pathCanc = path.resolve('modules/pickreq/server/templates/roomreq-canceled');
+        pathTY = path.resolve('modules/pickreq/server/templates/thank-you-accepting-rm');
       } else {
-        res.render(path.resolve('modules/pickreq/server/templates/request-canceled'),
-          templateOptions, function (err, emailHTML) {
-            if (err) {
-              console.log('Error preparing canceled email templates!');
-              return res.status(422).send({
-                message: errorHandler.getErrorMessage(err)
-              });
-            }
-            let recipient = req.body.userInfo.email;
-            let subject = 'Your request is canceled by the volunteer';
-            mailer.sendEmail(recipient, subject, emailHTML);
-            done(err);
-          });
+        let raw_time = templateOptions.request.arrivalTime;
+        raw_time = moment(raw_time).tz('America/New_York').format('ddd, MMM Do YYYY');
+        templateOptions.request.arrivalTime = raw_time;
+        pathUser = path.resolve('modules/pickreq/server/templates/request-accepted');
+        pathCanc = path.resolve('modules/pickreq/server/templates/request-canceled');
+        pathTY = path.resolve('modules/pickreq/server/templates/thank-you-accepting');
       }
+      done(null, templateOptions, pathUser, pathCanc, pathTY);
     },
-    function (done) {
+    // send email to user regarding pickup
+    function (templateOptions, pathUser, pathCanc, pathTY, done) {
+      if (req.body.volunteer.username) {
+        res.render(pathUser, templateOptions, function (err, emailHTML) {
+          if (err) {
+            console.log('Error preparing req-accepted email templates!' + err);
+          }
+          let recipient = req.body.userInfo.email;
+          let subject = 'Your request is accepted';
+          mailer.sendEmail(recipient, subject, emailHTML);
+        });
+        res.render(pathTY, templateOptions, function (err, emailHTML) {
+          if (err) {
+            console.log('Error preparing thank-you-accepted email templates!' + err);
+          }
+          let recipient = req.body.volunteer.email;
+          let subject = 'You just accepted a request';
+          mailer.sendEmail(recipient, subject, emailHTML);
+        });
+      } else {
+        res.render(pathCanc, templateOptions, function (err, emailHTML) {
+          if (err) {
+            console.log('Error preparing canceled email templates!');
+          }
+          let recipient = req.body.userInfo.email;
+          let subject = 'Your request is canceled by the volunteer';
+          mailer.sendEmail(recipient, subject, emailHTML);
+        });
+      }
+      done();
+    },
+    function () {
       res.send({
         message: 'Success!'
       });
-      done(null);
     }
-  ], function (err) {
-    if (err) {
-      return next(err);
-    }
-  });
+  ]);
 };
 
 /**
@@ -315,7 +336,7 @@ exports.accept = function (req, res, next) {
 exports.requestUserId = function (req, res, next, un) {
   req.username = un;
   if (_.has(req.body, 'update')) {
-    console.log('An update request');
+    console.log('An update request received. \n');
     next();
   }
   async.waterfall([
@@ -378,14 +399,30 @@ exports.requestUserId = function (req, res, next, un) {
  * Find accepted requests middleware
  */
 exports.getAccepted = function (req, res, next, volunteer) {
-  Request.find({ volunteer: volunteer }).exec(function (err, request) {
-    if (err) {
-      return next(err);
-    } else if (!request) {
-      req.requests = null;
-    } else {
-      req.requests = request;
+  async.waterfall([
+    function (done) {
+      Request.find({ volunteer: volunteer }).exec(function (err, requests) {
+        if (err) {
+          console.log(err);
+        } else if (requests) {
+          req.requests = requests;
+        } else {
+          req.requests = [];
+        }
+        done();
+      });
+    },
+    function () {
+      Roomreq.find({ volunteer: volunteer }).exec(function (err, requests) {
+        if (err) {
+          console.log(err);
+        } else if (requests) {
+          req.roomreqs = requests;
+        } else {
+          req.roomreqs = [];
+        }
+        next();
+      });
     }
-    next();
-  });
+  ]);
 };
