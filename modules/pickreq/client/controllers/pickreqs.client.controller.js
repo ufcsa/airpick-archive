@@ -117,7 +117,8 @@
       var packet = {
         request: rqst.request,
         userInfo: rqst.userInfo,
-        volunteer: usr
+        volunteer: usr,
+        isRmReq: false
       };
       PickreqService.acceptRequest(packet)
         .then(function (response) {

@@ -26,11 +26,27 @@
       });
     }
 
+    function acceptRequest(rqst) {
+      let usr = vm.user;
+      var packet = {
+        request: rqst.request,
+        userInfo: rqst.userInfo,
+        volunteer: usr,
+        isRmReq: true
+      };
+      PickreqService.acceptRequest(packet)
+        .then(function (response) {
+          $state.go($state.current, {}, { reload: true });
+        });
+    }
+
     function formatDate(dateStr) {
       if (dateStr) {
         return moment(dateStr).format('ddd, MMM Do YYYY');
       }
       return '';
     }
+
+    vm.acceptRequest = acceptRequest;
   }
 }());
