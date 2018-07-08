@@ -3,7 +3,18 @@
 
   angular
     .module('pickreq')
-    .controller('PickreqController', PickreqController);
+    .controller('PickreqController', PickreqController)
+    .directive('published', function () {
+      return {
+        'pre': function ($s, $elem, attrs) {
+          if (attrs.published === 'true' || attrs.multipleAttr === true) {
+            $elem.attr('required', true);
+          } else {
+            $elem.attr('required', false);
+          }
+        }
+      };
+    });
   PickreqController.$inject = ['$scope', '$state', 'requestsResolve', 'PickreqService', 'Authentication', 'Notification'];
 
   function PickreqController($scope, $state, requests, PickreqService, Authentication, Notification) {
@@ -38,7 +49,7 @@
           }
 
           vm.requestRm = response.requestRm;
-          vm.volunteer = response.volunteerRm;
+          vm.volunteerRm = response.volunteerRm;
           if (!vm.requestRm) {
             vm.requestRm = {};
           } else if (vm.requestRm.published) {

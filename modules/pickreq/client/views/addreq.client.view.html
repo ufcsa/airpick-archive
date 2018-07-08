@@ -10,33 +10,34 @@
         <div ng-show="vm.needRoom">
           <div class="col-xs-3">
             <div class="text-center form-group">
-              <div ng-show="vm.volunteer">
+              <div ng-show="vm.volunteerRm">
                 <h3 class="text-warning">Congratulations!<br /> A volunteer has accepted your request.</h3>
                 <br />
                 <div class="input-group" >
                   <span class="input-group-addon">Volunteer:</span>
-                  <input class="form-control text-right" ng-model="vm.volunteer.displayName" disabled>
+                  <input class="form-control text-right" ng-model="vm.volunteerRm.displayName" disabled>
                 </div>
                 <div class="input-group" >
                   <span class="input-group-addon">WeChat Id:</span>
-                  <input class="form-control text-right" ng-model="vm.volunteer.wechatid" disabled>
+                  <input class="form-control text-right" ng-model="vm.volunteerRm.wechatid" disabled>
                 </div>
                 <div class="input-group" >
                   <span class="input-group-addon">Email:</span>
-                  <input class="form-control text-right" ng-model="vm.volunteer.email" disabled>
+                  <input class="form-control text-right" ng-model="vm.volunteerRm.email" disabled>
                 </div>
                 <div class="input-group" >
                   <span class="input-group-addon">Phone:</span>
-                  <input class="form-control text-right" ng-model="vm.volunteer.phone" disabled>
+                  <input class="form-control text-right" ng-model="vm.volunteerRm.phone" disabled>
                 </div>
               </div>
-              <div class="form-group" ng-hide="vm.volunteer">
+              <div class="form-group" ng-hide="vm.volunteerRm">
                 <br />
                 <br />
                 <br />
                 <br />
                 <h3 class="text-warning" style="border: 2px solid rgb(251, 109, 19); padding: 5px">
-                  Your volunteer's information will be here when your lodging request is accepted.
+                  Your volunteer's information will be here when your lodging request is accepted. <br /><br />
+                  Note: Start Date and Leave Date are required fields for lodging requests
                 </h3>
               </div>
             </div>

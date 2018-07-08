@@ -19,12 +19,10 @@ var CompletedSchema = new Schema({
   },
   airport: {
     type: String,
-    trim: true,
-    required: 'Airport cannot be blank'
+    trim: true
   },
   arrivalTime: {
-    type: Date,
-    required: 'Arrival Time cannot be blank'
+    type: Date
   },
   user: {
     type: String,
@@ -33,6 +31,13 @@ var CompletedSchema = new Schema({
   volunteer: {
     type: String,
     required: 'volunteer cannot be blank'
+  },
+  leaveDate: {
+    type: Date
+  },
+  isRoomReq: {
+    type: Boolean,
+    default: false
   }
 });
 
