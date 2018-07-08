@@ -5,6 +5,7 @@ var path = require('path'),
   config = require(path.resolve('./config/config')),
   mongoose = require('mongoose'),
   Request = mongoose.model('Request'),
+  Roomreq = mongoose.model('Roomreq'),
   Completed = mongoose.model('Completed'),
   async = require('async'),
   User = mongoose.model('User'),
@@ -16,7 +17,8 @@ var path = require('path'),
  */
 var recycleService = new CronJob('0 */10 * * * *', function () {
   console.log('Running a clean-up job for passed pick-up requests...');
-  Request.find({ 'arrivalTime': { $lt: new Date() } })
+  let now = new Date();
+  Request.find({ 'arrivalTime': { $lt: now } })
     .exec(function (err, requests) {
       if (err) {
         console.log(errorHandler.getErrorMessage(err));
@@ -44,7 +46,38 @@ var recycleService = new CronJob('0 */10 * * * *', function () {
         );
         counter = counter + 1;
       });
-      console.log('Clean-up finished. ' + counter + ' job(s) got cleaned up.');
+      console.log('' + counter + ' pickup request(s) got cleaned up.');
+      Roomreq.find({ 'leaveDate': { $lt: now } })
+        .exec(function (err, roomreqs) {
+          if (err) {
+            console.log(errorHandler.getErrorMessage(err));
+          }
+          counter = 0;
+          roomreqs.forEach(function (rqst) {
+            if (!rqst.volunteer) { return false; }
+            let cmp_rcrd = new Completed();
+            cmp_rcrd.arrivalTime = rqst.startDate;
+            cmp_rcrd.leaveDate = rqst.leaveDate;
+            cmp_rcrd.user = rqst.user;
+            cmp_rcrd.volunteer = rqst.volunteer;
+            cmp_rcrd.isRoomReq = true;
+            cmp_rcrd.save(function (err) {
+              if (err) {
+                console.log(errorHandler.getErrorMessage(err));
+              }
+            });
+            Roomreq.update({ _id: rqst._id },
+              { volunteer: '', published: false }, { multi: false },
+              function (err) {
+                if (err) {
+                  console.log(errorHandler.getErrorMessage(err));
+                }
+              }
+            );
+            counter = counter + 1;
+          });
+          console.log('' + counter + ' lodging request(s) got cleaned up.');
+        });
     });
 }, null, true, 'America/Los_Angeles');
 

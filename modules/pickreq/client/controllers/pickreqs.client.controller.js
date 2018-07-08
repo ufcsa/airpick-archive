@@ -49,7 +49,7 @@
           }
 
           vm.requestRm = response.requestRm;
-          vm.volunteer = response.volunteerRm;
+          vm.volunteerRm = response.volunteerRm;
           if (!vm.requestRm) {
             vm.requestRm = {};
           } else if (vm.requestRm.published) {

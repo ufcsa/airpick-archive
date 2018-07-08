@@ -20,6 +20,9 @@ var path = require('path'),
  */
 exports.update = function (req, res, next) {
   if (_.has(req.body, 'request') && req.body.request !== '') {
+    if (req.body.request.published === false) {
+      req.body.request.volunteer = '';
+    }
     Request.findOneAndUpdate({ user: req.username }, req.body.request,
       { upsert: true }, function (err, doc) {
         if (err) {
@@ -42,6 +45,9 @@ exports.update = function (req, res, next) {
 exports.updateRm = function (req, res) {
   if (_.has(req.body, 'requestRm') && req.body.requestRm !== ''
     && req.body.requestRm.startDate && req.body.requestRm.leaveDate) {
+    if (req.body.requestRm.published === false) {
+      req.body.requestRm.volunteer = '';
+    }
     Roomreq.findOneAndUpdate({ user: req.username }, req.body.requestRm,
       { upsert: true }, function (err, doc) {
         if (err) {
