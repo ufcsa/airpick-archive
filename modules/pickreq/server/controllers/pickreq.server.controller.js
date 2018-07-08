@@ -40,7 +40,8 @@ exports.update = function (req, res, next) {
  * Update the rooming request
  */
 exports.updateRm = function (req, res) {
-  if (_.has(req.body, 'requestRm') && req.body.requestRm !== '') {
+  if (_.has(req.body, 'requestRm') && req.body.requestRm !== ''
+    && req.body.requestRm.startDate && req.body.requestRm.leaveDate) {
     Roomreq.findOneAndUpdate({ user: req.username }, req.body.requestRm,
       { upsert: true }, function (err, doc) {
         if (err) {
