@@ -86,7 +86,7 @@ exports.read = function (req, res) {
  * List of pickup requests
  */
 exports.list = function (req, res) {
-  Request.find({}).sort('arrivalTime').exec(function (err, requests) {
+  Request.find({}).exec(function (err, requests) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
@@ -116,6 +116,7 @@ exports.list = function (req, res) {
             counter = counter + 1;
             result.requests.push(entry);
             if (counter === requests.length) {
+              sortDate(result.requests);
               res.json(result);
             }
           });
@@ -160,7 +161,7 @@ exports.listAccepted = function (req, res) {
         });
       });
     },
-    function () {
+    function (done) {
       let roomreqs = req.roomreqs;
       limit = roomreqs.length;
       if (limit === 0) {
@@ -184,9 +185,13 @@ exports.listAccepted = function (req, res) {
             }
           };
           result.roomreqs.push(entry);
-          if (counter === limit) { res.json(result); }
+          if (counter === limit) { done(); }
         });
       });
+    },
+    function () {
+      sortDate(result.requests);
+      res.json(result);
     }
   ]);
 };
@@ -433,3 +438,12 @@ exports.getAccepted = function (req, res, next, volunteer) {
     }
   ]);
 };
+
+/**
+ * Helper functions
+ */
+function sortDate(dateList) {
+  dateList.sort(function (r1, r2) {
+    return new Date(r1.request.arrivalTime) - new Date(r2.request.arrivalTime);
+  });
+}

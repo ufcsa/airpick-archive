@@ -8,7 +8,7 @@
       <div class="row">
         <!-- Rooming request section -->
         <div ng-show="vm.needRoom">
-          <div class="col-xs-3">
+          <div class="col-xs-12 col-sm-6 col-lg-3">
             <div class="text-center form-group">
               <div ng-show="vm.volunteerRm">
                 <h3 class="text-warning">Congratulations!<br /> A volunteer has accepted your request.</h3>
@@ -42,7 +42,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-3" style="border-left-width: 1px;
+          <div class="col-xs-12 col-sm-6 col-lg-3" style="border-left-width: 1px;
           border-left-style: solid; border-left-color: #ebebeb;">
             <div class="text-center form-group">
               <div class="btn-group">
@@ -87,7 +87,7 @@
           </div>
         </div>
         <!-- Airport pick-up request section -->
-        <div ng-class="vm.needRoom ? 'col-xs-3' : 'col-xs-offset-2 col-xs-4'">
+        <div ng-class="vm.needRoom ? 'col-xs-12 col-sm-6 col-lg-3' : 'col-xs-12 col-sm-offset-2 col-sm-4'">
           <div class="text-center form-group">
             <div class="btn-group">
               <label class="btn btn-primary" ng-model="vm.request.published" uib-btn-radio="true" uib-uncheckable="vm.request">Publish</label>
@@ -130,7 +130,7 @@
             </div>
           </div>
         </div>
-        <div ng-class="vm.needRoom ? 'col-xs-3' : 'col-xs-4'">
+        <div ng-class="vm.needRoom ? 'col-xs-12 col-sm-6 col-lg-3' : 'col-xs-12 col-sm-4'">
           <div class="text-center form-group">
             <div ng-show="vm.volunteer">
               <h3 class="text-info">Congratulations!<br /> A volunteer has accepted your request.</h3>
