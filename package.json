@@ -16,7 +16,7 @@
   },
   "scripts": {
     "update": "npm update && npm prune && npm run bower",
-    "clean": "rm -rf node_modules/ public/lib/",
+    "clean": "rm -rf node_modules/ bower_components/",
     "reinstall": "npm cache clean && npm run clean && npm install",
     "start": "gulp",
     "start:prod": "gulp prod",
