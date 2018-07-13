@@ -15,7 +15,7 @@ var path = require('path'),
  * A cron job that checks Completed requests, then save and un-publish them
  * setting: run every 10 minutes
  */
-var recycleService = new CronJob('0 */10 * * * *', function () {
+var recycleService = new CronJob('0 */15 * * * *', function () {
   console.log('Running a clean-up job for passed pick-up requests...');
   let now = new Date();
   Request.find({ 'arrivalTime': { $lt: now } })

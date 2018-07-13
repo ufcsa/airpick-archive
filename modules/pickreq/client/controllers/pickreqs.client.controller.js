@@ -79,27 +79,27 @@
 
       if (vm.datepicker && vm.datepicker.toString().length > 14) {
         req.arrivalTime = moment(vm.datepicker).format();
-        if (!verifyFutureDate(req.arrivalTime)) {
+        if (req.published && !verifyFutureDate(req.arrivalTime)) {
           return false;
         }
         req.timeObj = moment(req.arrivalTime).format('ddd, MMM Do YYYY HH:mm');
-      } else if (!verifyFutureDate(req.arrivalTime)) {
+      } else if (req.published && !verifyFutureDate(req.arrivalTime)) {
         return false;
       }
 
       if (vm.startDate && vm.startDate.toString().length > 7) {
         reqrm.startDate = moment(vm.startDate).format();
-        if (!verifyFutureDate(reqrm.startDate)) {
+        if (reqrm.published && !verifyFutureDate(reqrm.startDate)) {
           return false;
         }
         reqrm.startDateObj = moment(reqrm.startDate).format('ddd, MMM Do YYYY');
-      } else if (!verifyFutureDate(reqrm.startDate)) {
+      } else if (reqrm.published && !verifyFutureDate(reqrm.startDate)) {
         return false;
       }
 
       if (vm.leaveDate && vm.leaveDate.toString().length > 7) {
         reqrm.leaveDate = moment(vm.leaveDate).format();
-        if (!verifyFutureDate(reqrm.leaveDate)) {
+        if (reqrm.published && !verifyFutureDate(reqrm.leaveDate)) {
           return false;
         }
         let time1 = new Date(reqrm.startDate);
@@ -109,7 +109,7 @@
           return false;
         }
         reqrm.leaveDateObj = moment(reqrm.leaveDate).format('ddd, MMM Do YYYY');
-      } else if (!verifyFutureDate(reqrm.leaveDate)) {
+      } else if (reqrm.published && !verifyFutureDate(reqrm.leaveDate)) {
         return false;
       }
 
