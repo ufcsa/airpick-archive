@@ -1,7 +1,7 @@
 {
   "name": "airpick",
   "description": "Convenient web app provides free service for airport pickup for UF students",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "meanjs-version": "0.6.0",
   "private": false,
   "author": "UF CSA IT: Zhongkai Liu, Yinghan Ma, Shida Yang, and Jason Chen",

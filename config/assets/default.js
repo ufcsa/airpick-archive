@@ -7,30 +7,30 @@ module.exports = {
     lib: {
       css: [
         // bower:css
-        'public/lib/bootstrap/dist/css/bootstrap.css',
-        'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-        'public/lib/moment-picker/dist/angular-moment-picker.min.css',
-        'public/lib/angular-ui-notification/dist/angular-ui-notification.css'
+        'bower_components/lib/bootstrap/dist/css/bootstrap.css',
+        'bower_components/lib/bootstrap/dist/css/bootstrap-theme.css',
+        'bower_components/lib/moment-picker/dist/angular-moment-picker.min.css',
+        'bower_components/lib/angular-ui-notification/dist/angular-ui-notification.css'
         // endbower
       ],
       js: [
         // bower:js
-        'public/lib/angular/angular.js',
-        'public/lib/angular-animate/angular-animate.js',
-        'public/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-        'public/lib/ng-file-upload/ng-file-upload.js',
-        'public/lib/angular-messages/angular-messages.js',
-        'public/lib/angular-mocks/angular-mocks.js',
-        'public/lib/angular-resource/angular-resource.js',
-        'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
-        'public/lib/angular-ui-router/release/angular-ui-router.js',
-        'public/lib/moment/moment.js',
-        'public/lib/moment-picker/dist/angular-moment-picker.min.js',
-        'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
-        'public/moment-timezone-with-data.min.js'
+        'bower_components/lib/angular/angular.js',
+        'bower_components/lib/angular-animate/angular-animate.js',
+        'bower_components/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+        'bower_components/lib/ng-file-upload/ng-file-upload.js',
+        'bower_components/lib/angular-messages/angular-messages.js',
+        'bower_components/lib/angular-mocks/angular-mocks.js',
+        'bower_components/lib/angular-resource/angular-resource.js',
+        'bower_components/lib/angular-ui-notification/dist/angular-ui-notification.js',
+        'bower_components/lib/angular-ui-router/release/angular-ui-router.js',
+        'bower_components/lib/moment/moment.js',
+        'bower_components/lib/moment-picker/dist/angular-moment-picker.min.js',
+        'bower_components/lib/owasp-password-strength-test/owasp-password-strength-test.js',
+        'bower_components/moment-timezone-with-data.min.js'
         // endbower
       ],
-      tests: ['public/lib/angular-mocks/angular-mocks.js']
+      tests: ['bower_components/lib/angular-mocks/angular-mocks.js']
     },
     css: [
       'modules/*/client/{css,less,scss}/*.css'
