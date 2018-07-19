@@ -83,3 +83,6 @@ mongod
 *.ntvs*
 *.njsproj
 *.sln
+
+# Testing account store
+accounts
