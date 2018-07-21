@@ -10,19 +10,20 @@ var mongoose = require('mongoose'),
   chalk = require('chalk');
 
 /**
- * Completed Request Schema
+ * Rooming Request Schema
  */
-var CompletedSchema = new Schema({
+var RoomreqSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
   },
-  airport: {
-    type: String,
-    trim: true
+  startDate: {
+    type: Date,
+    required: 'Start date cannot be blank'
   },
-  arrivalTime: {
-    type: Date
+  leaveDate: {
+    type: Date,
+    required: 'Leave date cannot be blank'
   },
   user: {
     type: String,
@@ -30,20 +31,21 @@ var CompletedSchema = new Schema({
   },
   volunteer: {
     type: String,
-    required: 'volunteer cannot be blank'
+    default: ''
   },
-  leaveDate: {
-    type: Date
+  location: {
+    type: String,
+    default: 'None'
   },
-  isRoomReq: {
+  published: {
     type: Boolean,
-    default: false
+    default: true
   }
 });
 
-CompletedSchema.pre('save', function (next) {
+RoomreqSchema.pre('save', function (next) {
   this.created = new Date;
   next();
 });
 
-mongoose.model('Completed', CompletedSchema);
+mongoose.model('Roomreq', RoomreqSchema);

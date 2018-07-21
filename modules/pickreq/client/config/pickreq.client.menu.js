@@ -9,18 +9,24 @@
 
   function menuConfig(menuService) {
     // Set top bar menu items
-    menuService.addMenuItem('topbar', {
+    menuService.addSubMenuItem('topbar', 'user', {
       title: 'Pickup Requests',
       state: 'pickreqs'
     });
-    menuService.addMenuItem('topbar', {
-      title: 'Add Your Request',
-      state: 'addreq'
+    menuService.addSubMenuItem('topbar', 'user', {
+      title: 'Lodging Requests',
+      state: 'roomreqs'
     });
-    menuService.addMenuItem('topbar', {
+    menuService.addSubMenuItem('topbar', 'user', {
       title: 'Requests Accepted',
       state: 'acceptedreqs'
     });
+
+    menuService.addMenuItem('topbar', {
+      title: 'View Your Request',
+      state: 'addreq'
+    });
+
     menuService.addMenuItem('topbar', {
       title: 'Completed Trips',
       state: 'completed'

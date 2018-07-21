@@ -13,6 +13,10 @@
       list: {
         method: 'GET'
       },
+      listRm: {
+        method: 'GET',
+        url: '/api/roomreqs'
+      },
       accepted: {
         method: 'GET',
         url: '/api/requests/:volunteer'
@@ -23,10 +27,6 @@
       },
       view: {
         method: 'GET',
-        url: '/api/request/:user'
-      },
-      create: {
-        method: 'POST',
         url: '/api/request/:user'
       },
       update: {
@@ -40,11 +40,6 @@
     });
 
     angular.extend(Request, {
-      createRequest: function (user, details) {
-        return this.create({
-          user: user
-        }, details).$promise;
-      },
       updateRequest: function (user, details) {
         return this.update({
           user: user

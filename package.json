@@ -1,10 +1,10 @@
 {
   "name": "airpick",
   "description": "Convenient web app provides free service for airport pickup for UF students",
-  "version": "0.6.0",
+  "version": "1.2.3",
   "meanjs-version": "0.6.0",
   "private": false,
-  "author": "UF CSA IT dedicated",
+  "author": "UF CSA IT: Zhongkai Liu, Yinghan Ma, Shida Yang, and Jason Chen",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "update": "npm update && npm prune && npm run bower",
-    "clean": "rm -rf node_modules/ public/lib/",
+    "clean": "rm -rf node_modules/ bower_components/",
     "reinstall": "npm cache clean && npm run clean && npm install",
     "start": "gulp",
     "start:prod": "gulp prod",
@@ -100,7 +100,8 @@
     "socket.io": "^2.0.3",
     "validator": "~8.0.0",
     "winston": "~2.3.1",
-    "wiredep": "~4.0.0"
+    "wiredep": "~4.0.0",
+    "xoauth2": "^1.2.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.1",

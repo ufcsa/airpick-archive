@@ -11,6 +11,9 @@ module.exports = function (app) {
   app.route('/api/requests')
     .get(requests.list);
 
+  app.route('/api/roomreqs')
+    .get(requests.listRm);
+
   app.route('/api/requests/:volunteer')
     .get(requests.listAccepted);
 
@@ -19,8 +22,7 @@ module.exports = function (app) {
 
   app.route('/api/request/:username')
     .get(requests.read)
-    .post(requests.create)
-    .put(requests.update);
+    .put(requests.update, requests.updateRm);
 
   app.route('/api/requests/completed/:user')
     .get(completed.listCompleted);

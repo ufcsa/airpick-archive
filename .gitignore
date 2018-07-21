@@ -10,7 +10,8 @@ Thumbs.db
 .nodemonignore
 .sass-cache/
 node_modules/
-public/lib/
+bower_components/lib
+public/lib
 app/tests/coverage/
 .bower-*/
 .idea/
@@ -82,3 +83,6 @@ mongod
 *.ntvs*
 *.njsproj
 *.sln
+
+# Testing account store
+accounts

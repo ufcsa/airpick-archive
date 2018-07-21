@@ -1,6 +1,7 @@
 'use strict';
 
-var defaultEnvConfig = require('./default');
+var defaultEnvConfig = require('./default'),
+  xoauth2 = require('xoauth2');
 
 module.exports = {
   db: {
@@ -33,9 +34,12 @@ module.exports = {
     from: process.env.MAILER_FROM || 'ufcsainfo@gmail.com',
     options: {
       service: process.env.MAILER_SERVICE_PROVIDER || 'gmail',
-      auth: {
+      xoauth2: {
         user: process.env.MAILER_EMAIL_ID || 'ufcsainfo@gmail.com',
-        pass: process.env.MAILER_PASSWORD || 'MAILER_PASSWORD'
+        clientId: process.env.CLIENT_ID || 'clientid',
+        clientSecret: process.env.MAILER_CLIENT_SECRET || 'clientsecret',
+        refreshToken: process.env.REF_TOKEN || 'refreshToken',
+        accessToken: process.env.ACC_TOKEN || 'accessToken'
       }
     }
   },

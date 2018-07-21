@@ -14,5 +14,12 @@
       type: 'dropdown',
       roles: ['admin']
     });
+
+    menuService.addMenuItem('topbar', {
+      title: 'Volunteer',
+      state: 'user',
+      type: 'dropdown',
+      roles: ['user']
+    });
   }
 }());

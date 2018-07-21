@@ -1,57 +1,181 @@
 <!-- The add request view -->
 <section class="container">
   <div class="page-header">
-    <h1>Add/Change Your Pickup Request</h1>
+    <h1>Add/Change Your Pickup & Lodging Requests</h1>
   </div>
-  <div class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
-    <form name="vm.requestForm" ng-submit="vm.addRequest(vm.requestForm.$valid)" autocomplete="off">
-      <fieldset>
-        <div class="text-center form-group">
-          <div class="btn-group">
-            <label class="btn btn-primary" ng-model="vm.request.published" uib-btn-radio="true" uib-uncheckable="vm.request">Publish</label>
-            <label class="btn btn-primary" ng-model="vm.request.published" uib-btn-radio="false">Unpublish</label>
+  <form name="vm.requestForm" ng-submit="vm.addRequest(vm.requestForm.$valid)" autocomplete="off">
+    <fieldset>
+      <div class="row">
+        <!-- Rooming request section -->
+        <div ng-show="vm.needRoom">
+          <div class="col-xs-12 col-sm-6 col-lg-3">
+            <div class="text-center form-group">
+              <div ng-show="vm.volunteerRm">
+                <h3 class="text-warning">Congratulations!<br /> A volunteer has accepted your request.</h3>
+                <br />
+                <div class="input-group" >
+                  <span class="input-group-addon">Volunteer:</span>
+                  <input class="form-control text-right" ng-model="vm.volunteerRm.displayName" disabled>
+                </div>
+                <div class="input-group" >
+                  <span class="input-group-addon">WeChat Id:</span>
+                  <input class="form-control text-right" ng-model="vm.volunteerRm.wechatid" disabled>
+                </div>
+                <div class="input-group" >
+                  <span class="input-group-addon">Email:</span>
+                  <input class="form-control text-right" ng-model="vm.volunteerRm.email" disabled>
+                </div>
+                <div class="input-group" >
+                  <span class="input-group-addon">Phone:</span>
+                  <input class="form-control text-right" ng-model="vm.volunteerRm.phone" disabled>
+                </div>
+              </div>
+              <div class="form-group" ng-hide="vm.volunteerRm">
+                <br />
+                <br />
+                <br />
+                <br />
+                <h3 class="text-warning" style="border: 2px solid rgb(251, 109, 19); padding: 5px">
+                  Your volunteer's information will be here when your lodging request is accepted. <br /><br />
+                  Note: Start Date and Leave Date are required fields for lodging requests
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-lg-3" style="border-left-width: 1px;
+          border-left-style: solid; border-left-color: #ebebeb;">
+            <div class="text-center form-group">
+              <div class="btn-group">
+                <label class="btn btn-warning" ng-model="vm.requestRm.published" uib-btn-radio="true" uib-uncheckable="vm.requestRm">Publish</label>
+                <label class="btn btn-warning" ng-model="vm.requestRm.published" uib-btn-radio="false">Unpublish</label>
+              </div>
+            </div>
+            <div class="form-group" show-errors>
+              <label for="startDate">Start Date</label>
+              <input type="text" id="startDate" name="startDate" class="form-control" ng-model="vm.requestRm.startDateObj" disabled>
+              <div ng-messages="vm.requestForm.startDate.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Start date is required.</p>
+              </div>
+            </div>
+            <div class="input-group" moment-picker="vm.startDate" format="YYYY-MM-DD">
+              <span class="input-group-addon">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </span>
+              <input class="form-control" placeholder="Select a new date" ng-model="vm.startDate"
+                 ng-model-options="{ updateOn: 'blur' }">
+            </div>
+            <br />
+            <div class="form-group" show-errors>
+              <label for="leaveDate">Leave Date</label>
+              <input type="text" id="leaveDate" name="leaveDate" class="form-control" ng-model="vm.requestRm.leaveDateObj" disabled>
+              <div ng-messages="vm.requestForm.leaveDate.$error" role="alert">
+                <p class="help-block error-text" ng-message="required">Leave date is required.</p>
+              </div>
+            </div>
+            <div class="input-group" moment-picker="vm.leaveDate" format="YYYY-MM-DD">
+              <span class="input-group-addon">
+                <i class="glyphicon glyphicon-calendar"></i>
+              </span>
+              <input class="form-control" placeholder="Select a new date" ng-model="vm.leaveDate"
+                 ng-model-options="{ updateOn: 'blur' }">
+            </div>
+            <br />
+            <div class="form-group">
+              <label for="location">Pickup Location</label>
+              <input type="text" id="location" name="location" class="form-control" ng-model="vm.requestRm.location" placeholder="None">
+            </div>
           </div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="airport">Airport or Pickup address</label>
-          <input type="text" id="airport" name="airport" class="form-control" ng-model="vm.request.airport" placeholder="Airport Name" required autofocus>
-          <div ng-messages="vm.requestForm.airport.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Airport Name is required.</p>
+        <!-- Airport pick-up request section -->
+        <div ng-class="vm.needRoom ? 'col-xs-12 col-sm-6 col-lg-3' : 'col-xs-12 col-sm-offset-2 col-sm-4'">
+          <div class="text-center form-group">
+            <div class="btn-group">
+              <label class="btn btn-primary" ng-model="vm.request.published" uib-btn-radio="true" uib-uncheckable="vm.request">Publish</label>
+              <label class="btn btn-primary" ng-model="vm.request.published" uib-btn-radio="false">Unpublish</label>
+            </div>
+          </div>
+          <div class="form-group" show-errors>
+            <label for="airport">Airport or Pickup address</label>
+            <input type="text" id="airport" name="airport" class="form-control" ng-model="vm.request.airport" placeholder="Airport Name" required autofocus>
+            <div ng-messages="vm.requestForm.airport.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Airport Name is required.</p>
+            </div>
+          </div>
+          <div class="form-group" show-errors>
+            <label for="arrivalTime">Time of Arrival</label>
+            <input type="text" id="arrivalTime" name="arrivalTime" class="form-control" ng-model="vm.request.timeObj" disabled>
+            <div ng-messages="vm.requestForm.arrivalTime.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Time of Arrival is required.</p>
+            </div>
+          </div>
+          <div class="input-group" moment-picker="vm.datepicker" format="YYYY-MM-DDTHH:mm">
+            <span class="input-group-addon">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </span>
+            <input class="form-control" placeholder="Select a new date" ng-model="vm.datepicker"
+               ng-model-options="{ updateOn: 'blur' }">
+          </div>
+          <div class="form-group" show-errors>
+            <label for="carryon">Number of carry-ons</label>
+            <input type="text" id="carryon" name="carryon" class="form-control" ng-model="vm.request.carryon" placeholder="0" required>
+            <div ng-messages="vm.requestForm.carryon.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Number of carry-ons is required.</p>
+            </div>
+          </div>
+          <div class="form-group" show-errors>
+            <label for="baggage">Number of big baggages</label>
+            <input type="text" id="baggage" name="baggage" class="form-control" ng-model="vm.request.baggage" placeholder="2" required>
+            <div ng-messages="vm.requestForm.baggage.$error" role="alert">
+              <p class="help-block error-text" ng-message="required">Number of baggages is required.</p>
+            </div>
           </div>
         </div>
-        <div class="form-group" show-errors>
-          <label for="arrivalTime">Time of Arrival</label>
-          <input type="text" id="arrivalTime" name="arrivalTime" class="form-control" ng-model="vm.request.timeObj" disabled>
-          <div ng-messages="vm.requestForm.arrivalTime.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Time of Arrival is required.</p>
-          </div>
-        </div>
-        <div class="input-group" moment-picker="vm.datepicker" format="YYYY-MM-DDTHH:mm">
-          <span class="input-group-addon">
-            <i class="glyphicon glyphicon-calendar"></i>
-          </span>
-          <input class="form-control" placeholder="Select a new date" ng-model="vm.datepicker"
-             ng-model-options="{ updateOn: 'blur' }">
-        </div>
-        <div class="form-group" show-errors>
-          <label for="carryon">Number of carry-ons</label>
-          <input type="text" id="carryon" name="carryon" class="form-control" ng-model="vm.request.carryon" placeholder="0" required>
-          <div ng-messages="vm.requestForm.carryon.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Number of carry-ons is required.</p>
-          </div>
-        </div>
-        <div class="form-group" show-errors>
-          <label for="baggage">Number of big baggages</label>
-          <input type="text" id="baggage" name="baggage" class="form-control" ng-model="vm.request.baggage" placeholder="2" required>
-          <div ng-messages="vm.requestForm.baggage.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Number of baggages is required.</p>
+        <div ng-class="vm.needRoom ? 'col-xs-12 col-sm-6 col-lg-3' : 'col-xs-12 col-sm-4'">
+          <div class="text-center form-group">
+            <div ng-show="vm.volunteer">
+              <h3 class="text-info">Congratulations!<br /> A volunteer has accepted your request.</h3>
+              <br />
+              <div class="input-group" >
+                <span class="input-group-addon">Volunteer:</span>
+                <input class="form-control text-right" ng-model="vm.volunteer.displayName" disabled>
+              </div>
+              <div class="input-group" >
+                <span class="input-group-addon">WeChat Id:</span>
+                <input class="form-control text-right" ng-model="vm.volunteer.wechatid" disabled>
+              </div>
+              <div class="input-group" >
+                <span class="input-group-addon">Email:</span>
+                <input class="form-control text-right" ng-model="vm.volunteer.email" disabled>
+              </div>
+              <div class="input-group" >
+                <span class="input-group-addon">Phone:</span>
+                <input class="form-control text-right" ng-model="vm.volunteer.phone" disabled>
+              </div>
+            </div>
+            <div class="form-group" ng-hide="vm.volunteer">
+              <br />
+              <br />
+              <br />
+              <br />
+              <h3 class="text-info" style="border: 2px solid rgb(26, 78, 179); padding: 5px">
+                Your volunteer's information will be here when your airport pick-up request is accepted.
+              </h3>
+            </div>
           </div>
         </div>
 
+      </div>
+      <div class="row">
+        <br />
         <div class="text-center form-group">
-          <button type="submit" class="btn btn-primary">Update My Request</button>
+          <div class="btn-group">
+            <label class="btn btn-warning" ng-click="vm.toggleRoom()" ng-class="vm.needRoom ? 'active' : ''"
+            uib-uncheckable="vm.request">Need Lodging</label>
+          </div>
+          <span style="padding: 0px 5px"></span>
+          <input type="submit" class="btn btn-success" value="Update My Request"></button>
         </div>
-      </fieldset>
-    </form>
-  </div>
+      </div>
+    </fieldset>
+  </form>
 </section>

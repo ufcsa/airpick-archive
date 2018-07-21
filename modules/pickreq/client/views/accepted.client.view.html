@@ -7,9 +7,10 @@
       about any possible changes.</p>
   </div>
   <div class="row">
-    <div class="tableWrapper">
+    <div class="tableWrapper" style="min-height: 200px">
       <table class="table table-hover">
         <tr>
+          <th>Pick-up</th>
           <th>Cancel</th>
           <th>Name</th>
           <th>Pick-up Date</th>
@@ -19,6 +20,7 @@
           <th>baggage</th>
         </tr>
         <tr ng-repeat="rqst in vm.requests">
+          <td></td>
           <td><div style="float:left">
             <button class="btn btn-altered btn-danger" type="button"
             ng-click="vm.cancelRequest(rqst)"
@@ -30,6 +32,34 @@
           <td>{{rqst.userInfo.wechatid}}</td>
           <td>{{rqst.request.carryon}}</td>
           <td>{{rqst.request.baggage}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="tableWrapper" style="min-height: 200px">
+      <table class="table table-hover">
+        <tr>
+          <th>Lodging</th>
+          <th>Cancel</th>
+          <th>Name</th>
+          <th>Start Date</th>
+          <th>Leave Date</th>
+          <th>WeChatId</th>
+          <th>Pickup Location</th>
+          <th>Gender</th>
+        </tr>
+        <tr ng-repeat="rqst in vm.roomreqs">
+          <td></td>
+          <td><div style="float:left">
+            <button class="btn btn-altered btn-danger" type="button"
+            ng-click="vm.cancelRequest(rqst, true)"
+            style="padding: 2px 6px">Cancel</button>
+          </div></td>
+          <td>{{rqst.userInfo.displayName}}</td>
+          <td>{{rqst.request.startDateObj}}</td>
+          <td>{{rqst.request.leaveDateObj}}</td>
+          <td>{{rqst.userInfo.wechatid}}</td>
+          <td>{{rqst.request.location}}</td>
+          <td>{{rqst.userInfo.gender}}</td>
         </tr>
       </table>
     </div>
