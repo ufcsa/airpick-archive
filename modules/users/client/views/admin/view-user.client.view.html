@@ -49,7 +49,7 @@
       <hr/>
       <div class="row">
         <div class="col-md-3"><strong>Picking-up Volunteer</strong></div>
-        <div class="col-md-6" ng-bind="rqst.request.volunteer"></div>
+        <div class="col-md-6" ng-repeat="rqst in vm.accepted">{{ rqst.userInfo.displayName }}</div>
       </div>
     </div>
   </div>

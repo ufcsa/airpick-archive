@@ -6,7 +6,9 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+  Request = mongoose.model('Request'),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  async = require('async');
 
 /**
  * Show the current user
@@ -71,6 +73,48 @@ exports.list = function (req, res) {
 };
 
 /**
+ * list of this user's accepted request
+ */
+exports.reqAccept = function (req, res) {
+  let limit = req.airAcc.length + req.roomAcc.length;
+  var rst = {
+    airAcc: []
+  };
+  if (limit === 0) {
+    res.json(rst);
+    return null;
+  }
+  async.waterfall([
+    function (done) {
+      let airAcc = req.airAcc;
+      limit = airAcc.length;
+      if (limit === 0) {
+        done();
+      }
+      let counter = 0;
+      airAcc.forEach(rqst => {
+        User.find({ username: rqst.user }).then(userInfo => {
+          counter = counter + 1;
+          let entry = {
+            request: rqst,
+            userInfo: {
+              displayName: userInfo.displayName,
+              username: userInfo.username
+            }
+          };
+          rst.airAcc.push(entry);
+          if (counter === limit) { done(); }
+        });
+      });
+    },
+    function () {
+      res.json(rst);
+    }
+  ]);
+};
+
+
+/**
  * User middleware
  */
 exports.userByID = function (req, res, next, id) {
@@ -79,15 +123,38 @@ exports.userByID = function (req, res, next, id) {
       message: 'User is invalid'
     });
   }
-
-  User.findById(id, '-salt -password -providerData').exec(function (err, user) {
-    if (err) {
-      return next(err);
-    } else if (!user) {
-      return next(new Error('Failed to load user ' + id));
+  async.waterfall([
+    function (done) {
+      User.findById(id, '-salt -password -providerData').exec(function (err, user) {
+        if (err) {
+          console.log(err);
+        } else if (!user) {
+          console.log(new Error('Failed to load user ' + id));
+        }
+        req.model = user;
+        done();
+      });
+    },
+    function () {
+      Request.find({ volunteer: id }).exec(function (err, requests) {
+        if (err) {
+          console.log(err);
+        } else if (requests) {
+          req.airAcc = requests;
+        } else {
+          req.airAcc = [];
+        }
+        next();
+      });
     }
+  ]);
+  // User.findById(id, '-salt -password -providerData').exec(function (err, user) {
+  //   if (err) {
+  //     return next(err);
+  //   } else if (!user) {
+  //     return next(new Error('Failed to load user ' + id));
+  //   }
 
-    req.model = user;
-    next();
-  });
+  //   req.model = user;
+  // });
 };
