@@ -39,6 +39,12 @@
         data: {
           pageTitle: '{{ userResolve.displayName }}'
         }
+      })
+      .state('admin.volunteers', {
+        url: '/volunteers',
+        templateUrl: '/modules/users/client/views/admin/list-volunteers.client.view.html',
+        controller: 'VolunteerListController',
+        controllerAs: 'vm'
       });
 
     getUser.$inject = ['$stateParams', 'AdminService'];
