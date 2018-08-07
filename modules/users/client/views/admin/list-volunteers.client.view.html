@@ -1,0 +1,26 @@
+<section class="container">
+  <div class="page-header">
+    <div class="row">
+      <div class="col-md-4">
+        <h1>Volunteers</h1>
+      </div>
+      <div class="col-md-4" style="margin-top: 2em">
+        <input class="form-control col-md-4" type="text" ng-model="vm.search" placeholder="Search" ng-change="vm.figureOutItemsToDisplay()" />
+      </div>
+    </div>
+  </div>
+  <div class="list-group">
+    <div class="row">
+      <div class="col-sm-6 col-md-4 col-lg-3" ng-repeat="user in vm.pagedItems">
+        <a ui-sref="admin.user({userId: user._id})" class="list-group-item">
+          <p class="list-group-item-text pull-right small" ng-bind="user.roles"></p>
+          <h4 class="list-group-item-heading" ng-bind="user.displayName"></h4>
+          <p class="list-group-item-text">Accepted {{user.pickreqs.length}} pick-up requests</p>
+          <p class="list-group-item-text">Accepted {{user.roomreqs.length}} lodging requests</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <uib-pagination boundary-links="true" max-size="8" items-per-page="vm.itemsPerPage" total-items="vm.filterLength" ng-model="vm.currentPage" ng-change="vm.pageChanged()"></uib-pagination>
+</section>

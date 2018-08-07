@@ -39,6 +39,10 @@
       signin: {
         method: 'POST',
         url: '/api/auth/signin'
+      },
+      volunteer: {
+        method: 'GET',
+        url: '/api/requests/:volunteer'
       }
     });
 
@@ -64,13 +68,17 @@
       },
       userSignin: function (credentials) {
         return this.signin(credentials).$promise;
+      },
+      listVolunteers: function (username) {
+        return this.volunteer({
+          volunteer: username
+        }).$promise;
       }
     });
 
     return Users;
   }
 
-  // TODO this should be Users service
   angular
     .module('users.admin.services')
     .factory('AdminService', AdminService);
