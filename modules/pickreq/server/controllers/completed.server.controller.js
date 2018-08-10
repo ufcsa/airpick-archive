@@ -18,24 +18,26 @@ var path = require('path'),
 var recycleService = new CronJob('0 */15 * * * *', function () {
   console.log('Running a clean-up job for passed pick-up requests...');
   let now = new Date();
-  Request.find({ 'arrivalTime': { $lt: now } })
+  console.log(now);
+  Request.find({ $and: [{ 'arrivalTime': { $lt: now } }, { 'published': true }] })
     .exec(function (err, requests) {
       if (err) {
         console.log(errorHandler.getErrorMessage(err));
       }
       let counter = 0;
       requests.forEach(function (rqst) {
-        if (!rqst.volunteer) { return false; }
-        let cmp_rcrd = new Completed();
-        cmp_rcrd.airport = rqst.airport;
-        cmp_rcrd.arrivalTime = rqst.arrivalTime;
-        cmp_rcrd.user = rqst.user;
-        cmp_rcrd.volunteer = rqst.volunteer;
-        cmp_rcrd.save(function (err) {
-          if (err) {
-            console.log(errorHandler.getErrorMessage(err));
-          }
-        });
+        if (rqst.volunteer) {
+          let cmp_rcrd = new Completed();
+          cmp_rcrd.airport = rqst.airport;
+          cmp_rcrd.arrivalTime = rqst.arrivalTime;
+          cmp_rcrd.user = rqst.user;
+          cmp_rcrd.volunteer = rqst.volunteer;
+          cmp_rcrd.save(function (err) {
+            if (err) {
+              console.log(errorHandler.getErrorMessage(err));
+            }
+          });
+        }
         Request.update({ _id: rqst._id },
           { volunteer: '', published: false }, { multi: false },
           function (err) {
@@ -46,7 +48,7 @@ var recycleService = new CronJob('0 */15 * * * *', function () {
         );
         counter = counter + 1;
       });
-      console.log('' + counter + ' pickup request(s) got cleaned up.');
+      console.log('' + requests.length + ' requests examined and ' + counter + ' pickup request(s) got cleaned up.');
       Roomreq.find({ 'leaveDate': { $lt: now } })
         .exec(function (err, roomreqs) {
           if (err) {
@@ -54,18 +56,19 @@ var recycleService = new CronJob('0 */15 * * * *', function () {
           }
           counter = 0;
           roomreqs.forEach(function (rqst) {
-            if (!rqst.volunteer) { return false; }
-            let cmp_rcrd = new Completed();
-            cmp_rcrd.arrivalTime = rqst.startDate;
-            cmp_rcrd.leaveDate = rqst.leaveDate;
-            cmp_rcrd.user = rqst.user;
-            cmp_rcrd.volunteer = rqst.volunteer;
-            cmp_rcrd.isRoomReq = true;
-            cmp_rcrd.save(function (err) {
-              if (err) {
-                console.log(errorHandler.getErrorMessage(err));
-              }
-            });
+            if (rqst.volunteer) {
+              let cmp_rcrd = new Completed();
+              cmp_rcrd.arrivalTime = rqst.startDate;
+              cmp_rcrd.leaveDate = rqst.leaveDate;
+              cmp_rcrd.user = rqst.user;
+              cmp_rcrd.volunteer = rqst.volunteer;
+              cmp_rcrd.isRoomReq = true;
+              cmp_rcrd.save(function (err) {
+                if (err) {
+                  console.log(errorHandler.getErrorMessage(err));
+                }
+              });
+            }
             Roomreq.update({ _id: rqst._id },
               { volunteer: '', published: false }, { multi: false },
               function (err) {
@@ -76,7 +79,7 @@ var recycleService = new CronJob('0 */15 * * * *', function () {
             );
             counter = counter + 1;
           });
-          console.log('' + counter + ' lodging request(s) got cleaned up.');
+          console.log('' + roomreqs.length + ' requests examined and ' + counter + ' lodging request(s) got cleaned up.');
         });
     });
 }, null, true, 'America/Los_Angeles');

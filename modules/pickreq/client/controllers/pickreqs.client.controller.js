@@ -113,6 +113,9 @@
         return false;
       }
 
+      if (!req.published) { req.volunteer = ''; }
+      if (!reqrm.published) { reqrm.volunteer = ''; }
+
       PickreqService.updateRequest(username, request)
         .then(function (response) {
           Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Request(s) successfully added!' });
