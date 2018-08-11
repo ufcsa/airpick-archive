@@ -77,6 +77,9 @@
         update: true
       };
 
+      if (req.published == null) req.published = true;
+      if (reqrm.published == null) req.published = true;
+
       if (vm.datepicker && vm.datepicker.toString().length > 14) {
         req.arrivalTime = moment(vm.datepicker).format();
         if (req.published && !verifyFutureDate(req.arrivalTime)) {
@@ -112,9 +115,6 @@
       } else if (reqrm.published && !verifyFutureDate(reqrm.leaveDate)) {
         return false;
       }
-
-      if (!req.published) { req.volunteer = ''; }
-      if (!reqrm.published) { reqrm.volunteer = ''; }
 
       PickreqService.updateRequest(username, request)
         .then(function (response) {
