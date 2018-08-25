@@ -4,7 +4,8 @@
  * Module dependencies
  */
 var adminPolicy = require('../policies/admin.server.policy'),
-  admin = require('../controllers/admin.server.controller');
+  admin = require('../controllers/admin.server.controller'),
+  adminAction = require('../controllers/adminAction.server.controller');
 
 module.exports = function (app) {
   // User route registration first. Ref: #713
@@ -19,6 +20,9 @@ module.exports = function (app) {
     .get(adminPolicy.isAllowed, admin.read)
     .put(adminPolicy.isAllowed, admin.update)
     .delete(adminPolicy.isAllowed, admin.delete);
+
+  app.route('/api/admin/orientation/email')
+    .post(adminAction.orientationEmail);
 
   // Finish by binding the user middleware
   app.param('userId', admin.userByID);
