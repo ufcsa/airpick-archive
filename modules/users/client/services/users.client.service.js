@@ -78,12 +78,26 @@
   AdminService.$inject = ['$resource'];
 
   function AdminService($resource) {
-    return $resource('/api/users/:userId', {
+    var Accepted = $resource('/api/users/:userId', {
       userId: '@_id'
     }, {
       update: {
         method: 'PUT'
+      },
+      accepted: {
+        method: 'GET',
+        url: '/api/users/:userId'
       }
     });
+
+    angular.extend(Accepted, {
+      listAccepted: function (volunteer) {
+        return this.accepted({
+          volunteer: volunteer
+        }).$promise;
+      }
+    });
+
+    return Accepted;
   }
 }());

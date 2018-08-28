@@ -5,9 +5,9 @@
     .module('users.admin')
     .controller('UserController', UserController);
 
-  UserController.$inject = ['$scope', '$state', '$window', 'Authentication', 'userResolve', 'Notification'];
+  UserController.$inject = ['$scope', '$state', '$window', 'Authentication', 'userResolve', 'Notification', 'AdminService'];
 
-  function UserController($scope, $state, $window, Authentication, user, Notification) {
+  function UserController($scope, $state, $window, Authentication, user, Notification, AdminService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -54,5 +54,15 @@
     function isContextUserSelf() {
       return vm.user.username === vm.authentication.user.username;
     }
+
+    
+    var username = vm.user.username;
+    AdminService.listAccepted(username)
+      .then(function (response) {
+        if (response) {
+          vm.accepted = response.airAcc;
+        }
+      });
+    
   }
 }());
