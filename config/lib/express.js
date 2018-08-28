@@ -10,6 +10,7 @@ var config = require('../config'),
   bodyParser = require('body-parser'),
   session = require('express-session'),
   MongoStore = require('connect-mongo')(session),
+  mongoose = require('mongoose'),
   favicon = require('serve-favicon'),
   compress = require('compression'),
   methodOverride = require('method-override'),
@@ -117,7 +118,7 @@ module.exports.initSession = function (app, db) {
     },
     name: config.sessionKey,
     store: new MongoStore({
-      db: db,
+      mongooseConnection: mongoose.connection,
       collection: config.sessionCollection
     })
   }));
@@ -159,7 +160,6 @@ module.exports.initHelmetHeaders = function (app) {
  */
 module.exports.initModulesClientRoutes = function (app) {
   // Setting the app router and static folder
-  app.use('/', express.static(path.resolve('./public'), { maxAge: 86400000 }));
   app.use('/', express.static(path.resolve('./bower_components'), { maxAge: 86400000 }));
 
   // Globbing static routing

@@ -8,11 +8,9 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
-  nodemailer = require('nodemailer'),
+  mailer = require(path.resolve('./modules/pickreq/server/controllers/mail.server.controller')),
   async = require('async'),
   crypto = require('crypto');
-
-var smtpTransport = nodemailer.createTransport(config.mailer.options);
 
 /**
  * Forgot for reset password (forgot POST)
@@ -78,24 +76,11 @@ exports.forgot = function (req, res, next) {
     },
     // If valid email, send reset email using service
     function (emailHTML, user, done) {
-      var mailOptions = {
-        to: user.email,
-        from: config.mailer.from,
-        subject: 'Password Reset',
-        html: emailHTML
-      };
-      smtpTransport.sendMail(mailOptions, function (err) {
-        if (!err) {
-          res.send({
-            message: 'An email has been sent to the provided email with further instructions.'
-          });
-        } else {
-          return res.status(400).send({
-            message: 'Failure sending email'
-          });
-        }
-
-        done(err);
+      let recipient = user.email;
+      let subject = 'Pick-up system password reset';
+      mailer.sendEmail(recipient, subject, emailHTML);
+      res.send({
+        message: 'An email has been sent to the provided email with further instructions.'
       });
     }
   ], function (err) {
@@ -188,16 +173,9 @@ exports.reset = function (req, res, next) {
     },
     // If valid email, send reset email using service
     function (emailHTML, user, done) {
-      var mailOptions = {
-        to: user.email,
-        from: config.mailer.from,
-        subject: 'Your password has been changed',
-        html: emailHTML
-      };
-
-      smtpTransport.sendMail(mailOptions, function (err) {
-        done(err, 'done');
-      });
+      let subject = 'Your password has been changed';
+      mailer.sendEmail(user.email, subject, emailHTML);
+      done(null, 'done');
     }
   ], function (err) {
     if (err) {

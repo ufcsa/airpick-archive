@@ -159,10 +159,10 @@ var initGlobalConfigFiles = function (config, assets) {
   config.files.server.policies = getGlobbedPaths(assets.server.policies);
 
   // Setting Globbed js files
-  config.files.client.js = getGlobbedPaths(assets.client.lib.js, 'public/').concat(getGlobbedPaths(assets.client.js, ['public/']));
+  config.files.client.js = getGlobbedPaths(assets.client.lib.js, 'bower_components/').concat(getGlobbedPaths(assets.client.js, ['bower_components/']));
 
   // Setting Globbed css files
-  config.files.client.css = getGlobbedPaths(assets.client.lib.css, 'public/').concat(getGlobbedPaths(assets.client.css, ['public/']));
+  config.files.client.css = getGlobbedPaths(assets.client.lib.css, 'bower_components/').concat(getGlobbedPaths(assets.client.css, ['bower_components/']));
 
   // Setting Globbed test files
   config.files.client.tests = getGlobbedPaths(assets.client.tests);
