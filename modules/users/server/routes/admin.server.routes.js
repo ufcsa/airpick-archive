@@ -27,6 +27,9 @@ module.exports = function (app) {
   app.route('/api/admin/csainterview/email')
     .post(adminAction.csaInterviewEmail);
 
+  app.route('/api/admin/interview-result')
+    .post(adminAction.csaInterviewResults);
+
   // Finish by binding the user middleware
   app.param('userId', admin.userByID);
 };
