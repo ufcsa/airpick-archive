@@ -1,5 +1,4 @@
 ﻿
-
 .content {
   margin-top: 50px;
   margin-bottom:0px;
@@ -51,7 +50,8 @@ a:hover .header-profile-image {
 }
 
 .collapsible {
-	background: rgba(166, 166, 166, 0.5);
+	background: rgba(159, 234, 249, 0.5);
+	/*background: rgba(159, 234, 249, 0.5);*/
 	cursor: pointer;
 	padding: 18px;
 	width: 80%;
@@ -118,8 +118,8 @@ a:hover .header-profile-image {
 }
 
 .background {
-	background-image: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%,rgba(255,255,255,0.4) 100%), url(/modules/core/client/img/background/UF.jpg);
-	background-repeat: no-repeat;
+	background-image: linear-gradient(to top left, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%), url(/modules/core/client/img/background/flight.jpg);
+	background-repeat: repeat|repeat-x|repeat-y|no-repeat|initial|inherit;
 	background-position: center;
 	background-attachment: fixed;
 	background-size: auto 100% ;
@@ -153,3 +153,73 @@ h2 {
 	text-shadow: 0.35px 0 #0021A5, 0 0.35px #0021A5, -0.35px 0 #0021A5, 0 -0.35px #0021A5;
 	font-size:25px;
 }
+
+.chinese {
+	font-family: 'Microsoft YaHei';
+	font-size:18px;
+	text-shadow: -1px 0 rgba(255,255,255,0.5), 0 1px rgba(255,255,255,0.5), 1px 0 rgba(255,255,255,0.5), 0 -1px rgba(255,255,255,0.5);
+	font-weight: 800;
+}
+
+.english {
+	font-family: 'Lobster';
+	font-size:18px;
+	text-shadow: -1px 0 rgba(255,255,255,0.5), 0 1px rgba(255,255,255,0.5), 1px 0 rgba(255,255,255,0.5), 0 -1px rgba(255,255,255,0.5);
+	font-weight: 800;
+}
+
+
+.highlight {
+  margin: 0 0 0px;
+  border-radius: 30px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 0px #e5e5e5 solid; }
+  .highlight pre {
+    padding: 12px;
+    overflow: auto;
+    font-size: 16px;
+    line-height: 1.45; }
+    .highlight pre code {
+      display: inline;
+      max-width: initial;
+      padding: 0;
+      margin: 0;
+      overflow: initial;
+      line-height: inherit;
+      word-wrap: normal;
+      background-color: transparent;
+      border: 0; }
+      .highlight pre code:before, .highlight pre code:after {
+        content: none; }
+
+.highlight-dark {
+  color: #a94442;
+  background-image: linear-gradient(to right, rgba(43,46,59,0.85) 40%, rgba(40,0,240,0.4) 100%);
+  border-color: #ffffff; }
+  .highlight-dark code {
+    color: inherit; }
+  .highlight-dark .c1.c1 {
+    color: #2b2e3b; }
+
+.overflow-hidden {
+  overflow: hidden  !important; }
+
+
+pre {
+  overflow: visible;
+}
+  pre .btn-clipboard {
+    outline: 0;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: .25rem .5rem;
+    font-size: 1.2em;
+    border: 0px #e5e5e5 solid;
+    background-color: #f8f8f8;
+    border-radius: 0rem; }
+    pre .btn-clipboard:hover {
+      background-color: #eee; }
+    pre .btn-clipboard:active {
+      background-color: #dfdfdf; }
+
