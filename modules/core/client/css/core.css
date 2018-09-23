@@ -89,7 +89,7 @@ a:hover .header-profile-image {
 	border: solid;
 	border-color: #0021A5;
 	border-width: 2px;
-	text-align: justify;
+	text-align: left;
 	outline: none;
 	font-size: 18px;
 	font-weight: 800;
@@ -162,7 +162,6 @@ h2 {
 }
 
 .english {
-	font-family: 'Lobster';
 	font-size:18px;
 	text-shadow: -1px 0 rgba(255,255,255,0.5), 0 1px rgba(255,255,255,0.5), 1px 0 rgba(255,255,255,0.5), 0 -1px rgba(255,255,255,0.5);
 	font-weight: 800;
@@ -222,4 +221,3 @@ pre {
       background-color: #eee; }
     pre .btn-clipboard:active {
       background-color: #dfdfdf; }
-
