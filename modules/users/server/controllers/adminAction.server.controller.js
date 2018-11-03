@@ -9,7 +9,8 @@ var path = require('path'),
   orientTemp = path.resolve('./modules/users/server/templates/orientation-info'),
   interviewTemp = path.resolve('./modules/users/server/templates/csa-interview'),
   accepted = path.resolve('./modules/users/server/templates/interview-accepted'),
-  rejected = path.resolve('./modules/users/server/templates/interview-rejected');
+  rejected = path.resolve('./modules/users/server/templates/interview-rejected'),
+  bestsinger = path.resolve('./modules/users/server/templates/bestsinger');
 /**
  * Send email regarding orientation location
  */
@@ -71,6 +72,27 @@ exports.csaInterviewResults = function (req, res) {
     } else {
       let recipient = req.body.receiver;
       let subject = 'CSA Fall 2018 Recruitment Result';
+      mailer.sendEmail(recipient, subject, emailHTML);
+      res.send('Success');
+    }
+  });
+};
+
+exports.csaBestSingerRegistered = function (req, res) {
+  let templateOptions = {
+    name: req.body.name,
+    time: req.body.time,
+    appName: 'CSA IT'
+  };
+  let emailTemp = bestsinger;
+  res.render(emailTemp, templateOptions, function (err, emailHTML) {
+    if (err) {
+      console.log('Error preparing orientation email template! ' + err);
+      res.status(400);
+      res.send('Error preparing orientation email template');
+    } else {
+      let recipient = req.body.receiver;
+      let subject = 'CSA Fall 2018 Best Singers Contest';
       mailer.sendEmail(recipient, subject, emailHTML);
       res.send('Success');
     }

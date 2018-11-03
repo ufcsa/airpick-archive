@@ -30,6 +30,9 @@ module.exports = function (app) {
   app.route('/api/admin/interview-result')
     .post(adminAction.csaInterviewResults);
 
+  app.route('/api/admin/bestsinger')
+    .post(adminAction.csaBestSingerRegistered);
+
   // Finish by binding the user middleware
   app.param('userId', admin.userByID);
 };
