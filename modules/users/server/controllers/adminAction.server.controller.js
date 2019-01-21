@@ -7,7 +7,7 @@ var path = require('path'),
   config = require(path.resolve('./config/config')),
   mailer = require(path.resolve('./modules/pickreq/server/controllers/mail.server.controller')),
   orientTemp = path.resolve('./modules/users/server/templates/orientation-info'),
-  interviewTemp = path.resolve('./modules/users/server/templates/csa-interview'),
+  interviewTemp = path.resolve('./modules/users/server/templates/csa-interview2'),
   accepted = path.resolve('./modules/users/server/templates/interview-accepted'),
   rejected = path.resolve('./modules/users/server/templates/interview-rejected'),
   qualified = path.resolve('./modules/users/server/templates/bestsinger-qualified'),
@@ -49,7 +49,7 @@ exports.csaInterviewEmail = function (req, res) {
       res.send('Error preparing orientation email template');
     } else {
       let recipient = req.body.receiver;
-      let subject = 'CSA Recruitment 2018';
+      let subject = 'CSA Recruitment Spring 2019';
       mailer.sendEmail(recipient, subject, emailHTML);
       res.send('Success');
     }
