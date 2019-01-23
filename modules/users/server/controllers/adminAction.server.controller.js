@@ -73,7 +73,7 @@ exports.csaInterviewResults = function (req, res) {
       res.send('Error preparing orientation email template');
     } else {
       let recipient = req.body.receiver;
-      let subject = 'CSA Fall 2018 Recruitment Result';
+      let subject = 'CSA Spring 2019 Recruitment Result';
       mailer.sendEmail(recipient, subject, emailHTML);
       res.send('Success');
     }

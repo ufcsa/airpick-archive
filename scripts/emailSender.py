@@ -2,12 +2,12 @@ from openpyxl import load_workbook
 import requests
 import time
 
-apiURL = "http://localhost:3000/api/admin/csainterview/email"
+apiURL = "http://localhost:3000/api/admin/interview-result"
 
-wb = load_workbook(filename='interview-sp19.xlsx', read_only=True)
+wb = load_workbook(filename='2019-results.xlsx', read_only=True)
 ws = wb['mySheet']
 
-counter = 9
+counter = 1
 
 for row in ws.rows:
     if counter > 0:
@@ -18,7 +18,7 @@ for row in ws.rows:
         continue
     body = {}
     body["name"] = row[2].value
-    body["time"] = row[6].value
+    body["department"] = row[3].value
     body["receiver"] = email
     resp = requests.post(apiURL, json=body)
     time.sleep(3)
