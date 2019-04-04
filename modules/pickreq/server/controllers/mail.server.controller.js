@@ -17,11 +17,16 @@ mailerOptions.auth.type = 'OAuth2';
 var smtpTransport = nodemailer.createTransport(mailerOptions);
 
 function sendEmail(recipient, subject, body) {
+  sendEmailWithAttachment(recipient, subject, body, null);
+}
+
+function sendEmailWithAttachment(recipient, subject, body, attachments) {
   let mailOptions = {
     from: config.mailer.from,
     to: recipient,
     subject: subject,
-    html: body
+    html: body,
+    attachments: attachments
   };
   smtpTransport.sendMail(mailOptions, function (error, info) {
     if (error) {

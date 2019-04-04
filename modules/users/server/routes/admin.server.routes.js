@@ -36,6 +36,9 @@ module.exports = function (app) {
   app.route('/api/admin/bestsingertop16')
     .post(adminAction.csaBestSingerTop16);
 
+  app.route('/api/admin/group-activity')
+    .post(adminAction.csaGroupActivity);
+
   // Finish by binding the user middleware
   app.param('userId', admin.userByID);
 };

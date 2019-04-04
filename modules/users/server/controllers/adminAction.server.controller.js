@@ -4,6 +4,7 @@
  * Module dependencies
  */
 var path = require('path'),
+  fs = require('fs'),
   config = require(path.resolve('./config/config')),
   mailer = require(path.resolve('./modules/pickreq/server/controllers/mail.server.controller')),
   orientTemp = path.resolve('./modules/users/server/templates/orientation-info'),
@@ -12,7 +13,8 @@ var path = require('path'),
   rejected = path.resolve('./modules/users/server/templates/interview-rejected'),
   qualified = path.resolve('./modules/users/server/templates/bestsinger-qualified'),
   disqualified = path.resolve('./modules/users/server/templates/bestsinger-disqualified'),
-  bestsinger = path.resolve('./modules/users/server/templates/bestsinger');
+  bestsinger = path.resolve('./modules/users/server/templates/bestsinger'),
+  groupActivity = path.resolve('./modules/users/server/templates/group_activity');
 /**
  * Send email regarding orientation location
  */
@@ -101,7 +103,7 @@ exports.csaBestSingerRegistered = function (req, res) {
   });
 };
 
-exports.csaBestSingerTop16 = function(req, res) {
+exports.csaBestSingerTop16 = function (req, res) {
   let templateOptions = {
     name: req.body.name,
     appName: 'CSA IT'
@@ -122,4 +124,29 @@ exports.csaBestSingerTop16 = function(req, res) {
       res.send('Success');
     }
   });
-}
+};
+
+exports.csaGroupActivity = function (req, res) {
+  let templateOptions = {
+    name: req.body.name,
+    appName: 'CSA IT'
+  };
+  res.render(groupActivity, templateOptions, function (err, emailHTML) {
+    if (err) {
+      console.log('Error preparing orientation email template! ' + err);
+      res.status(400);
+      res.send('Error preparing orientation email template');
+    } else {
+      let recipient = req.body.receiver;
+      let subject = 'CSA 团建 Confirmation';
+      let attachments = [
+        {
+          filename: 'QRcode.jpg',
+          content: fs.createReadStream(path.resolve('./scripts/temp/qr-code.jpg'))
+        }
+      ];
+      mailer.sendEmail(recipient, subject, emailHTML, attachments);
+      res.send('Success');
+    }
+  });
+};
