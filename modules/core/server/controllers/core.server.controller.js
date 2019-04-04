@@ -12,7 +12,7 @@ var validator = require('validator'),
  */
 var hitService = new CronJob('0 */15 * * * *', function () {
   let options = {
-    host: 'www.uflcsa.org',
+    host: 'airpick.uflcsa.org',
     path: '/empty'
   };
   http.get(options, function (res) {
