@@ -74,6 +74,7 @@
   getRmRequests.$inject = ['PickreqService'];
 
   function getRmRequests(PickreqService) {
+    console.log('getting lodging requets')
     return PickreqService.listRm({}).$promise;
   }
 

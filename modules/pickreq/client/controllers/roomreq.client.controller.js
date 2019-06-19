@@ -15,8 +15,11 @@
     if (!Authentication.user) { $state.go('home'); }
     vm.user = Authentication.user;
     var username = vm.user.username;
-
+    $scope.loading = true;
+    console.log('getting data')
     if (roomReqs) {
+      console.log('got data!')
+      $scope.loading = false;
       vm.requests = roomReqs.requests;
       vm.requests.forEach(function (rqst) {
         let startDate = rqst.request.startDate;
