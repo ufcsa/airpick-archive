@@ -18,6 +18,7 @@
           <th>WeChatId</th>
           <th>carryon</th>
           <th>baggage</th>
+          <th>notes</th>
         </tr>
         <tr ng-repeat="rqst in vm.requests">
           <td></td>
@@ -32,6 +33,7 @@
           <td>{{rqst.userInfo.wechatid}}</td>
           <td>{{rqst.request.carryon}}</td>
           <td>{{rqst.request.baggage}}</td>
+          <td>{{rqst.request.notes}}</td>
         </tr>
       </table>
     </div>

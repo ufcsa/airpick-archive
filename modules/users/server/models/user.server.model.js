@@ -30,6 +30,14 @@ var validateLocalStrategyEmail = function (email) {
   return ((this.provider !== 'local' && !this.updated) || validator.isEmail(email, { require_tld: false }));
 };
 
+var validateUFLEmail = function(email) {
+	if(/@ufl.edu\s*$/.test(email)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 /**
  * A Validation function for username
  * - at least 3 characters

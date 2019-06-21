@@ -18,6 +18,7 @@
           <th>Airport/Address</th>
           <th>carryon</th>
           <th>baggage</th>
+          <th>notes</th>
         </tr>
         <tr ng-repeat="rqst in vm.requests" ng-if="rqst.request.published && !rqst.request.volunteer">
           <td><div style="float:left">
@@ -33,6 +34,7 @@
           <td>{{rqst.request.airport}}</td>
           <td>{{rqst.request.carryon}}</td>
           <td>{{rqst.request.baggage}}</td>
+          <td>{{rqst.request.notes}}</td>
         </tr>
       </table>
     </div>

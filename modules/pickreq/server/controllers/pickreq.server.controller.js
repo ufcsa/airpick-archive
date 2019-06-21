@@ -23,6 +23,7 @@ exports.update = function (req, res, next) {
     if (req.body.request.published === false) {
       req.body.request.volunteer = '';
     }
+    console.log(req.body.request);
     Request.findOneAndUpdate({ user: req.username }, req.body.request,
       { upsert: true }, function (err, doc) {
         if (err) {
