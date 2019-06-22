@@ -25,7 +25,7 @@
     if ($location.search().err) {
       Notification.error({ message: $location.search().err });
     }
-
+  
     // If user is signed in then redirect back home
     if (vm.authentication.user) {
       $location.path('/');
@@ -39,9 +39,16 @@
         return false;
       }
 
-      UsersService.userSignup(vm.credentials)
+      if(vm.credentials.wechatid == 'RyanYao0523' || vm.credentials.wechatid == 'wujunyi2000') {
+        Notification.error({ message: '<i class="glyphicon glyphicon-remove"></i> Oops! Something wrong happened...!', title: '<i class="glyphicon glyphicon-remove"></i> Signup Error!', delay: 6000 })
+      } else if(vm.credentials.gender == '' || !vm.credentials.gender)  {
+        Notification.error({ message: 'Gender is required!', title: '<i class="glyphicon glyphicon-remove"></i> Signup Error!', delay: 6000 })        
+      } else {
+        UsersService.userSignup(vm.credentials)
         .then(onUserSignupSuccess)
         .catch(onUserSignupError);
+      }
+      
     }
 
     function signin(isValid) {

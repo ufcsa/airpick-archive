@@ -93,6 +93,7 @@ exports.list = function (req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log(requests);
       var counter = 0;
       var result = {
         requests: []
