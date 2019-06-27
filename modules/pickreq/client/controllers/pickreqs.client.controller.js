@@ -65,6 +65,7 @@
     }
 
     function addRequest(isValid) {
+      
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.requestForm');
         return false;
@@ -76,10 +77,10 @@
         requestRm: reqrm,
         update: true
       };
-
+      
       if (req.published == null) req.published = true;
-      if (reqrm.published == null) req.published = true;
-
+      if (reqrm.published == null) reqrm.published = true;
+      //console.log(`published? ${req.published}`)
       if (vm.datepicker && vm.datepicker.toString().length > 14) {
         req.arrivalTime = moment(vm.datepicker).format();
         if (req.published && !verifyFutureDate(req.arrivalTime)) {
