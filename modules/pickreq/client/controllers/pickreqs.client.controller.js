@@ -33,8 +33,20 @@
         let arrivalTime = rqst.request.arrivalTime;
         rqst.request.timeObj = formatDateTime(arrivalTime);
       });
+
+      //sort
+      const compare = (a, b) => {
+         if(b.request.arrivalTime < a.request.arrivalTime) {
+           return 1;
+         } else {
+           return -1;
+         };
+      }
+      vm.requests = vm.requests.sort(compare);
+      console.log(vm.requests);
     }
 
+    
     function findMyRequest() {
       PickreqService.viewMyRequest(username)
         .then(function (response) {

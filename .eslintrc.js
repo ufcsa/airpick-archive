@@ -12,7 +12,7 @@ module.exports = {
     eqeqeq: [2, 'smart'],
     'func-names': 0,
     'guard-for-in': 2,
-    indent: [2, 2, { SwitchCase: 1 }],
+    //indent: [2, 2, { SwitchCase: 1 }],
     'key-spacing': [2, { beforeColon: false, afterColon: true }],
     'keyword-spacing': [2, { before: true, after: true }],
     'max-len': 0,
@@ -27,7 +27,7 @@ module.exports = {
     'no-shadow': 0,
     'no-spaced-func': 2,
     'no-throw-literal': 2,
-    'no-trailing-spaces': 2,
+    //'no-trailing-spaces': 2,
     'no-undef': 2,
     'no-unneeded-ternary': 2,
     'no-unreachable': 2,
@@ -40,13 +40,13 @@ module.exports = {
     'one-var': [0, 'never'],
     'one-var-declaration-per-line': [2, 'always'],
     'padded-blocks': 0,
-    'space-before-function-paren': [2, {
-      'anonymous': 'always',
-      'named': 'never',
-      'asyncArrow': 'always'
-    }],
-    'space-in-parens': [2, 'never'],
-    'spaced-comment': [2, 'always'],
+    // 'space-before-function-paren': [2, {
+    //   'anonymous': 'always',
+    //   'named': 'never',
+    //   'asyncArrow': 'always'
+    // }],
+    //'space-in-parens': [2, 'never'],
+    //'spaced-comment': [2, 'always'],
     strict: 0,
     'quote-props': 0,
     quotes: [1, 'single'],

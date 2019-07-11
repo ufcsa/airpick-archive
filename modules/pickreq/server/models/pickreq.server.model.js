@@ -48,7 +48,7 @@ var RequestSchema = new Schema({
     type: Boolean,
     default: true
   },
-  //备注
+  // 备注
   notes: {
     type: String,
     default: ''
